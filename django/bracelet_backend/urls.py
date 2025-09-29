@@ -1,0 +1,13 @@
+# File: bracelet_backend/urls.py
+# Author: Sophia Howson (sophiahowson@gmail.com), 9/17/2025
+# Description: app specific urls file
+
+from django.urls import path
+# from .views import *
+# from django.contrib.auth import views as auth_views
+from . import views
+
+urlpatterns = [
+    path('', views.ListBracelet.as_view()),
+    path('<int:pk>/', views.DetailBracelet.as_view()),
+]

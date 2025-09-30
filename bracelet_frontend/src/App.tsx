@@ -3,31 +3,64 @@
 // year by year: so 2023, 2024, 2025
 // Bracelets that are being sold
 import {createBrowserRouter, Route, RouterProvider, Routes} from "react-router";
-import Nav from "./components/Nav.tsx";
+import Nav from "./components/Navbar/Nav.tsx";
 import Home from "./components/Home.tsx";
 import YearGalleries from "./components/YearGalleries.tsx";
 import Selling from "./components/Selling.tsx";
 import Gallery from "./components/Gallery.tsx";
+import styled from "styled-components";
+
+const StyledPageWrapper = styled.div`
+    width: 80vw;
+    background-color: pink;
+    margin: auto;
+    font-size: calc(1px + 1.2vw);
+    font-family: Georgia, Garamond, serif;
+`;
+
+// const StyledContainer = styled.div`
+//     width: 100%;
+//     display: flex;
+//     flex-direction: row;
+//
+//     @media screen and (max-width: 900px) {
+//         flex-direction: column;
+//         justify-content: center;
+//     }
+// `;
+
+const StyledMain = styled.main`
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    padding: 2vw;
+    //height: 100vh;
+
+    @media screen and (max-width: 900px) {
+        width: 100%;
+    }
+`;
+
 
 function Root() {
 
   return (
     <>
-      <div>
+      <StyledPageWrapper>
         <header></header>
         <div>
-            <Nav></Nav>
-            <main>
+            <Nav />
+            <StyledMain>
                 <Routes>
                     <Route path={`/`} element={<Home/>}/>
                     <Route path={`/Gallery`} element={<Gallery/>}/>
                     <Route path={`/YearGalleries`} element={<YearGalleries/>}/>
                     <Route path={`/Selling`} element={<Selling/>}/>
                 </Routes>
-            </main>
+            </StyledMain>
         </div>
         <footer></footer>
-      </div>
+      </StyledPageWrapper>
     </>
   );
 }

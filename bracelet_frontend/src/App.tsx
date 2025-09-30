@@ -3,7 +3,9 @@
 // year by year: so 2023, 2024, 2025
 // Bracelets that are being sold
 import {createBrowserRouter, Route, RouterProvider, Routes} from "react-router";
+// import Nav from "./components/Navbar/Nav.tsx";
 import Nav from "./components/Navbar/Nav.tsx";
+
 import Home from "./components/Home.tsx";
 import YearGalleries from "./components/YearGalleries.tsx";
 import Selling from "./components/Selling.tsx";
@@ -30,17 +32,17 @@ const StyledPageWrapper = styled.div`
 // `;
 
 const StyledMain = styled.main`
-    display: flex;
-    flex-direction: column;
-    width: 70%;
-    padding: 2vw;
+    //display: flex;
+    //flex-direction: column;
+    //width: 70%;
+    //padding: 2vw;
     //height: 100vh;
+    width: 100%;
 
-    @media screen and (max-width: 900px) {
-        width: 100%;
-    }
+    //@media screen and (max-width: 800px) {
+    //    width: 100%;
+    //}
 `;
-
 
 function Root() {
 

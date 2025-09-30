@@ -31,7 +31,7 @@ export default function Gallery() {
 
     return (
         <ParentDiv>
-            <Bracelets data={data}/>
+            <Bracelets data={data} selling={false}/>
         </ParentDiv>
     );
 }

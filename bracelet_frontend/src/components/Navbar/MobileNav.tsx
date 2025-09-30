@@ -1,65 +1,65 @@
-import {Link} from 'react-router';
+// import {Link} from 'react-router';
 import styled from "styled-components";
 import { IoMenuOutline } from "react-icons/io5";
-
-// position: sticky;
-// top: -16px;
-// z-index: 1000;
-// width: 100%;
-// margin: 0 -32px;
-// padding: 24px 32px 8px;
-
+import { useState } from "react";
+import NavList from "./NavList.tsx"
+import { IoCloseOutline } from "react-icons/io5";
 
 const StyledNav = styled.nav`
     width: 100%;
-    position: sticky;
+    //position: sticky;
+    //top: 0;
+    //height: 5vh;
     height: 10%;
-    background: lightgrey;
+
+    background: slategray;
     align-items: center;
+
+    //height: 10vh;
 `;
 
-const StyledUl = styled.ul`
-    list-style: none;
-    text-align: center;
-`;
-const StyledLi = styled.li`
-    padding: 1% .5%;
-    margin: 1% .5%;
-    text-decoration: none;
-`;
-
-const StyledLink = styled(Link)`
-    text-decoration: none;
-    color: palegreen;
-    
-    &:hover {
-        color: darkgreen;
-    }
-`;
-
+// used
+// https://kenudeh.hashnode.dev/how-to-build-a-responsive-navigation-menu-with-react#heading-building-a-responsive-hamburger-menu-in-react
+// for creating mobile nav/hamburger menu
 const Hamburger = styled(IoMenuOutline)`
     color: black;
     font-size: 3em;
+    // in a class on the tut
+    //position: absolute;
+    display: block;
+    margin-left: auto;
+    //right: 2%;
+    cursor: pointer;
 `;
 
+const Close = styled(IoCloseOutline)`
+    color: black;
+    font-size: 3em;
+    // in a class on the tut
+    //position: absolute;
+    display: block;
+    margin-left: auto;
+    //right: 2%;
+    cursor: pointer;
+`;
+
+
 export default function MobileNav() {
+    const [click, setClick] = useState(false);
+
+    const closeMenu = () => setClick(false);
+
     return (
         <StyledNav>
-            <Hamburger/>
-            <StyledUl>
-                <StyledLi>
-                    <StyledLink to={`/`}>Home</StyledLink>
-                </StyledLi>
-                <StyledLi>
-                    <StyledLink to={`/Gallery`}>Gallery</StyledLink>
-                </StyledLi>
-                <StyledLi>
-                    <StyledLink to={`/YearGalleries`}>Year Galleries</StyledLink>
-                </StyledLi>
-                <StyledLi>
-                    <StyledLink to={`/Selling`}>Selling</StyledLink>
-                </StyledLi>
-            </StyledUl>
+            { click ?
+                (<Close
+                    onClick={() => setClick(!click)}
+                />)
+                :
+                (<Hamburger
+                    onClick={() => setClick(!click)}
+                />)}
+            {click && <NavList isClicked={true} closeMenu={closeMenu} />}
         </StyledNav>
     );
 }

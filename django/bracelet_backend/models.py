@@ -50,6 +50,8 @@ class Bracelet(models.Model):
         SOLD = "SO", _("Sold")
         UNKNOWN = "U", _("Unknown")
 
+    order = models.IntegerField()
+
     name = models.TextField(blank=False)
     pattern_url = models.URLField(blank=True)
     bType = models.CharField(max_length=1, choices=BraceletType, default=BraceletType.NORMAL, blank=False)
@@ -76,6 +78,9 @@ class Bracelet(models.Model):
         else:
             return f'{self.id} : {self.name} going {self.goingWhere}'
         
+    class Meta:
+        ordering = ['order']
+
     def get_images(self):
         '''method that will return the images associated with the given status message.'''
 
@@ -92,6 +97,8 @@ class Bracelet(models.Model):
 
 class Image(models.Model):
     '''Encapsulate the data model of an Image for a Bracelet.'''
+    order = models.IntegerField()
+
     image_file = models.ImageField(blank=False, upload_to="bracelets/")
     timestamp = models.DateTimeField(auto_now=True)
     caption = models.TextField(blank=True)
@@ -99,6 +106,9 @@ class Image(models.Model):
     def __str__(self):
         '''return a string representation of this model instance'''
         return f'{self.caption}'
+    
+    class Meta:
+        ordering = ['order']
 
 
 
@@ -112,7 +122,33 @@ class BraceletImage(models.Model):
     def __str__(self):
         '''return a string representation of this model instance'''
         return f'{self.bracelet.id}: {self.bracelet.name} and {self.image.caption}'
+
+
+ 
+# order_bracelets()
+# set order fields 
+# def order_bracelets() :
+#     '''Function to set the order fields of bracelets'''
+#     bracelets = Bracelet.objects.all()
+#     for bracelet in bracelets:
+#         bracelet.order = bracelet.pk
+#         bracelet.save(update_fields=["order"]) 
+#         print("Set order to pk: ", bracelet.order)
+
+# 129
+# update order of images
+# def update_imageO() :
+#     '''Function to update the order fields of bracelets'''
+#     images = Image.objects.filter(order__gte=154).update(order=models.F('order') + 1)
     
+#     imageToFix = Image.objects.get(order=-1)
+#     imageToFix.order = 154
+#     imageToFix.save(update_fields=["order"])
+
+    # for bracelet in bracelets:
+    #     bracelet.order = bracelet.pk
+    #     bracelet.save(update_fields=["order"]) 
+    #     print("Set order to pk: ", bracelet.order)
 
 # Bracelet load_data() function
 # def load_data():

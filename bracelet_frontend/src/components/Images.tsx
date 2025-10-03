@@ -40,7 +40,11 @@ export default function Images(props: {data: Image[]}) {
                 {
                     props.data.map((image: Image) =>
                         <SingleImageDiv key={image.id}>
-                            <img src={image.image_file} alt={image.caption}/>
+                            <img
+                                loading="lazy"
+                                src={image.image_file}
+                                alt={image.caption}
+                            />
                             {image.caption && <StyledP>{image.caption}</StyledP>}
                             <ul>
                                 {image.bracelets.map((bracelet) =>

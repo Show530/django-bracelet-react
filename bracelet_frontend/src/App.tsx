@@ -11,6 +11,7 @@ import YearGalleries from "./components/YearGalleries.tsx";
 import Selling from "./components/Selling.tsx";
 import Gallery from "./components/Gallery.tsx";
 import styled from "styled-components";
+import ImageGallery from "./components/ImageGallery.tsx";
 
 const StyledPageWrapper = styled.div`
     width: 80vw;
@@ -55,7 +56,10 @@ function Root() {
             <StyledMain>
                 <Routes>
                     <Route path={`/`} element={<Home/>}/>
+                    {/* Change Image Gallery to just Gallery*/}
                     <Route path={`/Gallery`} element={<Gallery/>}/>
+                    <Route path={'/ImageGallery'} element={<ImageGallery/>} />
+
                     <Route path={`/YearGalleries`} element={<YearGalleries/>}/>
                     <Route path={`/Selling`} element={<Selling/>}/>
                 </Routes>

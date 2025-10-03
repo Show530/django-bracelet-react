@@ -26,7 +26,7 @@ export default function Gallery() {
         // fetchData()
         //     .then(() => console.log("Fetched data successfully!"))
         //     .catch((e: Error)=> console.log("There was an error: " + e))
-        axios.get("/api/").then((res) => setData(res.data)).catch((err) => console.log(err));
+        axios.get("/api/bracelets/").then((res) => setData(res.data)).catch((err) => console.log(err));
     }, [data.length]);
 
     return (

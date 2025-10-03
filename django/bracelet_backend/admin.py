@@ -4,3 +4,5 @@ from bracelet_backend.models import *
 
 
 admin.site.register(Bracelet)
+admin.site.register(Image)
+admin.site.register(BraceletImage)

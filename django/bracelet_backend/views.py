@@ -10,8 +10,8 @@ from django.shortcuts import render
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
 
-from bracelet_backend.models import Bracelet
-from bracelet_backend.serializers import BraceletSerializer
+from bracelet_backend.models import Bracelet, Image
+from bracelet_backend.serializers import BraceletSerializer, ImageSerializer
 from bracelet_backend.filters import BraceletFilter
 
 # Create your views here.
@@ -27,3 +27,6 @@ class DetailBracelet(generics.RetrieveUpdateDestroyAPIView):
     queryset = Bracelet.objects.all()
     serializer_class = BraceletSerializer
 
+class ListImage(generics.ListCreateAPIView):
+    queryset = Image.objects.all()
+    serializer_class = ImageSerializer

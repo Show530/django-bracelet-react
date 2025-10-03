@@ -22,11 +22,14 @@ class ListBracelet(generics.ListCreateAPIView):
     filter_backends = [DjangoFilterBackend]
     filterset_class = BraceletFilter
 
-
 class DetailBracelet(generics.RetrieveUpdateDestroyAPIView):
     queryset = Bracelet.objects.all()
     serializer_class = BraceletSerializer
 
 class ListImage(generics.ListCreateAPIView):
+    queryset = Image.objects.all()
+    serializer_class = ImageSerializer
+
+class DetailImage(generics.RetrieveUpdateDestroyAPIView):
     queryset = Image.objects.all()
     serializer_class = ImageSerializer

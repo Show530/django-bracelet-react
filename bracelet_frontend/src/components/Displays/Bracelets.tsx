@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 // import {Bracelet} from "../interfaces/Bracelet.ts";
-import type {Bracelet} from '../interfaces/Bracelet.ts';
+import type {Bracelet} from '../../interfaces/Bracelet.ts';
 
 const AllBraceletsDiv=styled.div`
     display: flex;
@@ -16,9 +16,11 @@ const SingleBraceletDiv=styled.div`
     max-width: 25%;
     padding: 3%;
     margin: 1%;
-    //font: calc(2px + 1vw) Copperplate, fantasy;
+    font: calc(20px + 5vw) Georgia, Garamond, serif;
+    //Copperplate, fantasy
     text-align: center;
     border: 1px inset indianred;
+    color: #544B6C;
     //overflow-wrap: break-word;
 `;
 
@@ -44,7 +46,7 @@ export default function Bracelets(props: {data: Bracelet[], selling: boolean}) {
                             <SingleBraceletDiv key={bracelet.id}>
                                 <h2>Name: {bracelet.name}</h2>
                                 {bracelet.pattern_url && (
-                                        <><StyledH3>Pattern: <a href={bracelet.pattern_url}>{bracelet.pattern_url}</a> </StyledH3></>
+                                        <><StyledH3>Pattern: <a href={bracelet.pattern_url} target="_blank">{bracelet.pattern_url}</a> </StyledH3></>
                                     )
                                 }
                                 <h3>Bracelet type: {bracelet.bType}</h3>

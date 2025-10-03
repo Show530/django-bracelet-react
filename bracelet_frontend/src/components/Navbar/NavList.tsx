@@ -8,15 +8,15 @@ const StyledUl = styled.ul`
     text-align: center;
     padding-left: 0;
     justify-content: right;
-    
+
     @media (max-width: 800px) {
         display: block;
         //justify-items: left;
         justify-items: center;
         list-style: none;
         text-align: center;
-        
-        
+
+
         //display: flex;
         //flex-direction: column;
         //justify-content: space-evenly;
@@ -35,7 +35,7 @@ const StyledLi = styled.li`
     padding: 1% .5%;
     margin: 1% .5%;
     text-decoration: none;
-    
+
     // mobile view
     @media (max-width: 800px) {
         padding: 1% .5%;
@@ -46,10 +46,10 @@ const StyledLi = styled.li`
 
 const StyledLink = styled(Link)`
     text-decoration: none;
-    color: palegreen;
-    
+    color: #785D3F;
+
     &:hover {
-        color: darkgreen;
+        color: #503E2A;
     }
 `;
 
@@ -65,7 +65,8 @@ export default function NavList({isClicked, closeMenu}) {
                     <StyledLink to={`/Gallery`}>Gallery</StyledLink>
                 </StyledLi>
                 <StyledLi onClick={() => isClicked && closeMenu()}>
-                    <StyledLink to={`/ImageGallery`}>Image Gallery</StyledLink>
+                    <StyledLink to={`/BraceletGallery`}>Bracelet
+                        Gallery</StyledLink>
                 </StyledLi>
                 <StyledLi onClick={() => isClicked && closeMenu()}>
                     <StyledLink to={`/YearGalleries`}>Year Galleries</StyledLink>

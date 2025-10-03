@@ -12,7 +12,7 @@ import NavList from "./NavList";
 
 const StyledNav = styled.nav`
     width: 100%;
-    background: slategray;
+    background-color: #C0A487;
     padding: 16px 32px;
 
 

@@ -1,7 +1,7 @@
-import Bracelets from "../components/Bracelets.tsx";
+import Images from "./Displays/Images.tsx";
 import styled from "styled-components";
 import { useEffect, useState } from 'react';
-import type {Bracelet} from "../interfaces/Bracelet.ts";
+import type {Image} from "../interfaces/Image.ts";
 import axios from "axios";
 
 const ParentDiv=styled.div`
@@ -11,7 +11,7 @@ const ParentDiv=styled.div`
 `;
 
 export default function Gallery() {
-    const[data, setData] = useState<Bracelet[]>([]);
+    const[data, setData] = useState<Image[]>([]);
 
     // useEffect hook for error stuff and re-loading
     useEffect(() => {
@@ -26,12 +26,13 @@ export default function Gallery() {
         // fetchData()
         //     .then(() => console.log("Fetched data successfully!"))
         //     .catch((e: Error)=> console.log("There was an error: " + e))
-        axios.get("/api/bracelets/").then((res) => setData(res.data)).catch((err) => console.log(err));
+        axios.get("/api/images/").then((res) => setData(res.data)).catch((err) => console.log(err));
     }, [data.length]);
 
     return (
         <ParentDiv>
-            <Bracelets data={data} selling={false}/>
+            <Images data={data}/>
         </ParentDiv>
     );
+
 }

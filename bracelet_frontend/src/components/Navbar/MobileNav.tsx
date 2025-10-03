@@ -12,9 +12,8 @@ const StyledNav = styled.nav`
     //height: 5vh;
     height: 10%;
 
-    background: slategray;
+    background: #C0A487;
     align-items: center;
-
     //height: 10vh;
 `;
 

@@ -1,4 +1,4 @@
-import Bracelets from "../components/Bracelets.tsx";
+import Bracelets from "./Displays/Bracelets.tsx";
 import styled from "styled-components";
 import { useEffect, useState } from 'react';
 import type {Bracelet} from "../interfaces/Bracelet.ts";

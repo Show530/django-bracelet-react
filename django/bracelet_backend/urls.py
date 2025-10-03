@@ -10,5 +10,6 @@ from . import views
 urlpatterns = [
     path('bracelets/', views.ListBracelet.as_view()),
     path('bracelets/<int:pk>/', views.DetailBracelet.as_view()),
-    path('images/', views.ListImage.as_view())
+    path('images/', views.ListImage.as_view()),
+    path('images/<int:pk>', views.DetailImage.as_view()),
 ]

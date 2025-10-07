@@ -12,7 +12,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from bracelet_backend.models import Bracelet, Image
 from bracelet_backend.serializers import BraceletSerializer, ImageSerializer
-from bracelet_backend.filters import BraceletFilter
+from bracelet_backend.filters import BraceletFilter, ImageFilter
 
 # Create your views here.
 
@@ -29,6 +29,8 @@ class DetailBracelet(generics.RetrieveUpdateDestroyAPIView):
 class ListImage(generics.ListCreateAPIView):
     queryset = Image.objects.all()
     serializer_class = ImageSerializer
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = ImageFilter
 
 class DetailImage(generics.RetrieveUpdateDestroyAPIView):
     queryset = Image.objects.all()

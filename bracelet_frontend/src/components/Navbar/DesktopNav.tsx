@@ -12,10 +12,18 @@ import NavList from "./NavList";
 
 const StyledNav = styled.nav`
     width: 100%;
-    background-color: #C0A487;
     padding: 16px 32px;
+    background: #D3D3D3CC;
 
-
+    // new to try to make nav transulcent:
+    //background-color: #C0A487CC;
+    ///* optional but gives that glassy look */
+    //backdrop-filter: blur(8px);
+    ///* Safari support */
+    //-webkit-backdrop-filter: blur(8px); 
+    
+    
+    
     //width: 100%;
     //// 
     //position: sticky;

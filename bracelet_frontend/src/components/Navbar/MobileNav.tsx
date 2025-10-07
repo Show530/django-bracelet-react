@@ -12,10 +12,14 @@ const StyledNav = styled.nav`
     //height: 5vh;
     height: 10%;
 
-    background: #C0A487;
+    background: #E5CEB3;
     align-items: center;
     //height: 10vh;
 `;
+//
+// const StyledDivEase = styled.div`
+//     transition: all 0.5s ease-in;
+// `;
 
 // used
 // https://kenudeh.hashnode.dev/how-to-build-a-responsive-navigation-menu-with-react#heading-building-a-responsive-hamburger-menu-in-react
@@ -58,7 +62,11 @@ export default function MobileNav() {
                 (<Hamburger
                     onClick={() => setClick(!click)}
                 />)}
-            {click && <NavList isClicked={true} closeMenu={closeMenu} />}
+            {click &&
+                // <StyledDivEase>
+                    <NavList isClicked={true} closeMenu={closeMenu} />
+                // </StyledDivEase>
+                }
         </StyledNav>
     );
 }

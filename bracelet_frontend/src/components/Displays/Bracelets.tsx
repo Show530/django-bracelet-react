@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 // import {Bracelet} from "../interfaces/Bracelet.ts";
 import type {Bracelet} from '../../interfaces/Bracelet.ts';
+import SingleBracelet from './SingleBracelet.tsx';
 
 const AllBraceletsDiv=styled.div`
     display: flex;
@@ -9,24 +10,52 @@ const AllBraceletsDiv=styled.div`
     border: 2px aqua;
 `;
 
-const SingleBraceletDiv=styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    max-width: 25%;
-    padding: 3%;
-    margin: 1%;
-    font: calc(20px + 5vw) Georgia, Garamond, serif;
-    //Copperplate, fantasy
-    text-align: center;
-    border: 1px inset indianred;
-    color: #544B6C;
-    //overflow-wrap: break-word;
-`;
+// const SingleBraceletDiv=styled.div`
+//     display: flex;
+//     flex-direction: column;
+//     justify-content: center;
+//     max-width: 35%;
+//     padding: 1%;
+//     margin: 1%;
+//     //font: calc(20px + 5vw) Georgia, Garamond, serif;
+//     //Copperplate, fantasy
+//     text-align: center;
+//     border: 1px inset green;
+//     color: #544B6C;
+//     //overflow-wrap: break-word;
+// `;
 
-const StyledH3 = styled.h3 `
-    word-wrap: break-word;
-`;
+// const StyledH3 = styled.h3 `
+//     word-wrap: break-word;
+// `;
+
+// const StyledItem = styled.div`
+//     display: flex;
+//     flex-direction: column;
+//     align-items: center;
+//     // keeps label close to value
+//     gap: 0.2rem;
+// `;
+//
+// const StyledLabel = styled.h3 `
+//     //font-size: 1.5rem;
+//     font: clamp(12px, calc(18px + 1vw), 28px) Georgia, Garamond, serif;
+//     color: #666;
+//     text-transform: lowercase;
+//     letter-spacing: 0.03em;
+// `;
+//
+// const StyledVal = styled.h3 `
+//     //font-size: 3rem;
+//     font: clamp(14px, calc(24px + 2vw), 32px) Georgia, Garamond, serif;
+//     font-weight: 500;
+//     color: #111;
+//
+//     // handling url overflow
+//     word-break: break-word;
+//     overflow-wrap: anywhere;
+//
+// `;
 
 // <h2>Name</h2>
 // <h3>Pattern</h3>
@@ -37,33 +66,15 @@ const StyledH3 = styled.h3 `
 // <h3>End date</h3>
 // <h3>Going where?</h3>
 
+
+
 export default function Bracelets(props: {data: Bracelet[], selling: boolean}) {
     return (
         <>
             <AllBraceletsDiv>
                     {
                         props.data.map((bracelet: Bracelet) =>
-                            <SingleBraceletDiv key={bracelet.id}>
-                                <h2>Name: {bracelet.name}</h2>
-                                {bracelet.pattern_url && (
-                                        <><StyledH3>Pattern: <a href={bracelet.pattern_url} target="_blank">{bracelet.pattern_url}</a> </StyledH3></>
-                                    )
-                                }
-                                <h3>Bracelet type: {bracelet.bType}</h3>
-                                <h3>Length: {bracelet.bLength}</h3>
-                                <h3>Number of colors: {bracelet.numColors}</h3>
-                                <h3>{bracelet.startDate} - {bracelet.endDate}</h3>
-                                { props.selling
-                                    ?
-                                    // eventually will have price here!
-                                    (<>
-                                    </>)
-                                    :
-                                    (<h3>Where's it going? : {bracelet.goingWhere}</h3>)
-                                }
-
-
-                            </SingleBraceletDiv>
+                            <SingleBracelet key={bracelet.id} bracelet={bracelet} selling={props.selling}/>
                         )
                     }
             </AllBraceletsDiv>

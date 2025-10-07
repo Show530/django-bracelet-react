@@ -3,7 +3,8 @@
 // year by year: so 2023, 2024, 2025
 // Bracelets that are being sold
 import {createBrowserRouter, Route, RouterProvider, Routes} from "react-router";
-import Nav from "./components/Navbar/Nav.tsx";
+// import Nav from "./components/Navbar/Nav.tsx";
+import Header from "./components/Header.tsx"
 
 import Home from "./components/Home.tsx";
 import YearGalleries from "./components/YearGalleries.tsx";
@@ -61,9 +62,8 @@ function Root() {
   return (
       <>
         <StyledFullPage>
-            <header></header>
             <StyledPageWrapper>
-                <Nav />
+                <Header />
                 <StyledContent>
                     <StyledMain>
                         <Routes>

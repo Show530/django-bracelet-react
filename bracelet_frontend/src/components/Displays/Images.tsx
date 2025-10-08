@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 // import {Bracelet} from "../interfaces/Bracelet.ts";
 import type {Image} from '../../interfaces/Image.ts';
-import {Link} from "react-router";
+import {Link, useParams} from "react-router";
 
 const AllImagesDiv=styled.div`
     display: flex;
@@ -36,10 +36,24 @@ const StyledImg = styled.img`
     max-width: 100%;
     height: auto;
     border-radius: 25px;
+    
+    // CSS to make fade in
+    transition: opacity 0.5s ease-in-out;
+    opacity: 0;
+
+    &.loaded {
+        opacity: 1;
+    }
 `;
 
+type RouteParams = {
+    "*": string; // because your route uses a wildcard
+};
 
 export default function Images(props: {data: Image[]}) {
+    const params = useParams<RouteParams>();
+    const currPage = params["*"] ?? "";
+    // console.log("Curr page: ", currPage);
     return (
         <>
             <AllImagesDiv>
@@ -47,11 +61,13 @@ export default function Images(props: {data: Image[]}) {
                     props.data.map((image: Image) =>
                         <SingleImageDiv key={image.id}>
                             {/*wrap in a link tag*/}
-                            <StyledLink to={`/Gallery/${image.id}`}>
+                            <StyledLink to={`/${currPage}/${image.id}`}>
                                 <StyledImg
                                     loading="lazy"
                                     src={image.image_file}
                                     alt={image.caption}
+                                    // when image is loaded, set the class to loaded to put the opacity back to 1
+                                    onLoad={(event) => event.currentTarget.classList.add("loaded")}
                                 />
                             </StyledLink>
 

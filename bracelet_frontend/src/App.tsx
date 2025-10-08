@@ -9,7 +9,7 @@ import Header from "./components/Header.tsx"
 import Home from "./components/Home.tsx";
 import YearGalleries from "./components/YearGalleries.tsx";
 import Selling from "./components/Selling.tsx";
-import BraceletGallery from "./components/BraceletGallery.tsx";
+import AdminGallery from "./components/AdminGallery.tsx";
 import styled from "styled-components";
 import Gallery from "./components/Gallery.tsx";
 import ImageDetails from "./components/ImageDetails.tsx";
@@ -68,14 +68,15 @@ function Root() {
                     <StyledMain>
                         <Routes>
                             <Route path={`/`} element={<Home/>}/>
-                            {/* Change Image Gallery to just Gallery*/}
                             <Route path={`/Gallery`} element={<Gallery/>}/>
-                            <Route path={'/BraceletGallery'} element={<BraceletGallery/>} />
-
                             <Route path={`/Gallery/:imagePk`} element={<ImageDetails/>} />
 
                             <Route path={`/YearGalleries`} element={<YearGalleries/>}/>
+
                             <Route path={`/Selling`} element={<Selling/>}/>
+                            <Route path={`/Selling/:imagePk`} element={<ImageDetails/>} />
+
+                            <Route path={'/AdminGallery'} element={<AdminGallery/>} />
                         </Routes>
                     </StyledMain>
                     <footer></footer>

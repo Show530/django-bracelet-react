@@ -14,8 +14,19 @@ const StyledImg = styled.img`
     border-radius: 25px;
 `;
 
+type RouteParams = {
+    // because the route uses a wildcard
+    "*": string;
+    "imagePk": string;
+};
+
+
 export default function ImageDetails() {
-    const { imagePk } = useParams<{ imagePk: string }>();
+    const params = useParams<RouteParams>();
+    const currPage = params["*"] ?? "";
+    const imagePk = params["imagePk"] ?? "";
+    const selling = currPage == null ? false : currPage.includes("Selling");
+
     const [imageData, setImageData] = useState<Image | null>(null);
     const [braceletPks, setBraceletPks] = useState<number[]>([]);
     const [braceletData, setBraceletData] = useState<Bracelet[]>([]);
@@ -26,6 +37,7 @@ export default function ImageDetails() {
             // console.log();
     }, [imagePk]);
 
+    // use effect for getting all the bracelet pks for the image
     useEffect(() => {
         if (imageData) {
             const currBraceletPks: number[] = [];
@@ -38,6 +50,7 @@ export default function ImageDetails() {
         }
     }, [imageData]);
 
+    // use effect for getting all the bracelets for the image
     useEffect(() => {
         const fetchBracelets = async () => {
             try {
@@ -47,7 +60,16 @@ export default function ImageDetails() {
                     )
                 );
 
-                const currBraceletData = responses.map((res) => res.data);
+                let currBraceletData = responses.map((res) => res.data);
+
+                // check if page is selling
+                // limit results that way?
+                if (currPage && currPage.includes("Selling")) {
+                    currBraceletData = currBraceletData.filter(
+                        (bracelet) => bracelet.goingWhere === "SE"
+                    );
+                }
+
                 setBraceletData(currBraceletData);
             } catch (err) {
                 console.error("Error fetching bracelets", err);
@@ -66,7 +88,7 @@ export default function ImageDetails() {
               alt={imageData.caption}
               />
           }
-          {braceletData && <Bracelets data={braceletData} selling={false}/>}
+          {braceletData && <Bracelets data={braceletData} selling={selling}/>}
       </>
     );
 }

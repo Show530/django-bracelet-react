@@ -1,8 +1,8 @@
-import Bracelets from "./Displays/Bracelets.tsx";
 import styled from "styled-components";
 import { useEffect, useState } from 'react';
 import type {Bracelet} from "../interfaces/Bracelet.ts";
 import axios from "axios";
+import AdminBracelets from "./Displays/AdminBracelets.tsx";
 
 const ParentDiv=styled.div`
     width: 80vw;
@@ -10,7 +10,7 @@ const ParentDiv=styled.div`
     border: 2px darkred inset;
 `;
 
-export default function BraceletGallery() {
+export default function AdminGallery() {
     const[data, setData] = useState<Bracelet[]>([]);
 
     // useEffect hook for error stuff and re-loading
@@ -31,7 +31,7 @@ export default function BraceletGallery() {
 
     return (
         <ParentDiv>
-            <Bracelets data={data} selling={false}/>
+            <AdminBracelets data={data} selling={false}/>
         </ParentDiv>
     );
 }

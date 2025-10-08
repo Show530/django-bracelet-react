@@ -26,7 +26,7 @@ const StyledItem = styled.div`
 
 const StyledLabel = styled.h3 `
     //font-size: 1.5rem;
-    font: clamp(12px, calc(18px + 1vw), 28px) Georgia, Garamond, serif;
+    font: clamp(12px, calc(18px + 1vw), 32px) Georgia, Garamond, serif;
     color: #666;
     text-transform: lowercase;
     letter-spacing: 0.03em;
@@ -34,7 +34,7 @@ const StyledLabel = styled.h3 `
 
 const StyledVal = styled.h3 `
     //font-size: 3rem;
-    font: clamp(14px, calc(24px + 2vw), 32px) Georgia, Garamond, serif;
+    font: clamp(14px, calc(24px + 2vw), 40px) Georgia, Garamond, serif;
     font-weight: 500;
     color: #111;
 
@@ -156,8 +156,12 @@ export default function SingleBracelet(props:{bracelet:Bracelet, selling: boolea
             { props.selling
                 ?
                 // eventually will have price here!
-                (<>
-                </>)
+                (
+                    <StyledItem>
+                        <StyledLabel>Price:</StyledLabel>
+                        <StyledVal>${props.bracelet.price}</StyledVal>
+                    </StyledItem>
+                )
                 :
                 (<StyledItem>
                     <StyledLabel>Where's it going?:</StyledLabel>

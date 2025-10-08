@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useEffect, useState } from 'react';
 import type {Image} from "../interfaces/Image.ts";
 import axios from "axios";
+import Loading from "./Loading.tsx";
 
 const ParentDiv=styled.div`
     width: 80vw;
@@ -28,6 +29,12 @@ export default function Gallery() {
         //     .catch((e: Error)=> console.log("There was an error: " + e))
         axios.get("/api/images/").then((res) => setData(res.data)).catch((err) => console.log(err));
     }, [data.length]);
+
+    if(!data.length) {
+        return (
+            <Loading/>
+        );
+    }
 
     return (
         <ParentDiv>

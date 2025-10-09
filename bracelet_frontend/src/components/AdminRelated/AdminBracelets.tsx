@@ -49,7 +49,7 @@ const StyledVal = styled.h3 `
     // handling url overflow
     word-break: break-word;
     overflow-wrap: anywhere;
-    
+
 `;
 
 // <h2>Name</h2>

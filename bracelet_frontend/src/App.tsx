@@ -9,7 +9,7 @@ import Header from "./components/Header.tsx"
 import Home from "./components/Home.tsx";
 import YearGalleries from "./components/YearGalleries.tsx";
 import Selling from "./components/Selling.tsx";
-import AdminGallery from "./components/AdminGallery.tsx";
+import AdminGallery from "./components/AdminRelated/AdminGallery.tsx";
 import styled from "styled-components";
 import Gallery from "./components/Gallery.tsx";
 import ImageDetails from "./components/ImageDetails.tsx";

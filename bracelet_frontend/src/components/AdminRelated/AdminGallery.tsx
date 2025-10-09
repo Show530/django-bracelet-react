@@ -1,10 +1,12 @@
 import styled from "styled-components";
 import { useState, useEffect } from 'react';
-import type {Bracelet} from "../../interfaces/Bracelet.ts";
 import axios from "axios";
+
+import type {Bracelet} from "../../interfaces/Bracelet.ts";
 import Loading from "../Loading.tsx";
-// import AdminBracelets from "./Displays/AdminBracelets.tsx";
 import Modal from "./Modal.tsx"
+// import AdminBracelets from "./Displays/AdminBracelets.tsx";
+
 
 const ParentDiv=styled.div`
     width: 80vw;
@@ -25,6 +27,7 @@ const SingleBraceletTr = styled.tr`
 
 const StyledTd = styled.td`
     margin: 2% 3%;
+    padding: 1.5%;
 `;
 
 
@@ -39,7 +42,8 @@ const StyledButton = styled.button`
     //font: clamp(14px, calc(24px + 2vw), 40px) Georgia, Garamond, serif;
 `;
 
-
+// idea- when creating bracelet, add image to database/link them??
+// make sure that fields in form can be null (aren't mandatory)
 export default function AdminGallery() {
     const[data, setData] = useState<Bracelet[]>([]);
     const[modalOpen, setModalOpen] = useState(false);
@@ -59,20 +63,56 @@ export default function AdminGallery() {
         }
     );
 
+    useEffect(function () {
+        refreshList();
+    }, []);
+
+    async function refreshList() {
+        try {
+            const res = await axios.get("/api/bracelets/");
+            setData(res.data);
+        }
+        catch (err) {
+            console.log("Error when refreshing list: ", err)
+        }
+        // axios.get("/api/bracelets/")
+        //     .then((res) => setData(res.data))
+        //     .catch((err) => console.log(err));
+    }
+
     function toggle() {
         setModalOpen(!modalOpen);
     }
 
-    function handleSubmit(bracelet:Bracelet) {
+    async function handleSubmit(bracelet:Bracelet) {
         toggle();
-        alert("save" + JSON.stringify(bracelet));
+        try {
+           if (bracelet.id) {
+               await axios.put(`/api/bracelets/${bracelet.id}/`, bracelet);
+           }
+           else {
+               await axios.post(`/api/bracelets/`, bracelet);
+           }
+           await refreshList();
+        }
+        catch (err) {
+            console.log("Error when handling submit: ", err);
+        }
+        // alert("save" + JSON.stringify(bracelet));
     }
 
-    // function handleDelete(bracelet) {
-    //     alert("delete" + JSON.stringify(bracelet));
+    // async function handleDelete(bracelet) {
+    //     try {
+    //         await axios.delete(`/api/bracelets/${bracelet.id}`);
+    //         await refreshList();
+    //     }
+    //     catch (err) {
+    //         console.log("Error when handling delete: ", err);
+    //     }
+    //     // alert("delete" + JSON.stringify(bracelet));
     // }
 
-    function handleCreate() {
+    function createBracelet() {
         const newBracelet = {
             id: "",
             name: "",
@@ -90,15 +130,15 @@ export default function AdminGallery() {
         setModalOpen(true);
     }
 
-    function handleEdit(bracelet:Bracelet) {
+    function editBracelet(bracelet:Bracelet) {
         setActiveBracelet(bracelet);
         setModalOpen(true);
     }
 
     // useEffect hook for error stuff and re-loading
-    useEffect(() => {
-        axios.get("/api/bracelets/").then((res) => setData(res.data)).catch((err) => console.log(err));
-    }, [data.length]);
+    // useEffect(() => {
+    //     axios.get("/api/bracelets/").then((res) => setData(res.data)).catch((err) => console.log(err));
+    // }, [data.length]);
 
 
 
@@ -109,7 +149,7 @@ export default function AdminGallery() {
     return (
         <ParentDiv>
             <AddBraceletDiv>
-                <StyledButton onClick={handleCreate}>Add a Bracelet</StyledButton>
+                <StyledButton onClick={createBracelet}>Add a Bracelet</StyledButton>
             </AddBraceletDiv>
             <AllBraceletsTable>
                 <thead>
@@ -126,7 +166,7 @@ export default function AdminGallery() {
                             <StyledTd>{bracelet.name}</StyledTd>
                             <StyledTd>
                                 <button onClick={ function () {
-                                    handleEdit(bracelet);
+                                    editBracelet(bracelet);
                                 }}
                                 >Edit</button>
                             </StyledTd>

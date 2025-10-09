@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import type {Image} from "../interfaces/Image.ts";
 import axios from "axios";
 import Loading from "./Loading.tsx";
+import {useParams} from "react-router";
 
 const ParentDiv=styled.div`
     width: 80vw;
@@ -13,6 +14,8 @@ const ParentDiv=styled.div`
 
 export default function Gallery() {
     const[data, setData] = useState<Image[]>([]);
+    const params = useParams();
+    const year = params["year"] ?? "";
 
     // useEffect hook for error stuff and re-loading
     useEffect(() => {
@@ -27,8 +30,13 @@ export default function Gallery() {
         // fetchData()
         //     .then(() => console.log("Fetched data successfully!"))
         //     .catch((e: Error)=> console.log("There was an error: " + e))
-        axios.get("/api/images/").then((res) => setData(res.data)).catch((err) => console.log(err));
-    }, [data.length]);
+        if (year != null) {
+            axios.get(`/api/images/?year=${year}`).then((res) => setData(res.data)).catch((err) => console.log(err));
+        }
+        else {
+            axios.get("/api/images/").then((res) => setData(res.data)).catch((err) => console.log(err));
+        }
+    }, [data.length, year]);
 
     if(!data.length) {
         return (

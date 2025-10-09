@@ -72,6 +72,8 @@ function Root() {
                             <Route path={`/Gallery/:imagePk`} element={<ImageDetails/>} />
 
                             <Route path={`/YearGalleries`} element={<YearGalleries/>}/>
+                            <Route path={`/YearGalleries/:year`} element={<Gallery/>}/>
+                            <Route path={`/YearGalleries/:year/:imagePk`} element={<ImageDetails/>}/>
 
                             <Route path={`/Selling`} element={<Selling/>}/>
                             <Route path={`/Selling/:imagePk`} element={<ImageDetails/>} />

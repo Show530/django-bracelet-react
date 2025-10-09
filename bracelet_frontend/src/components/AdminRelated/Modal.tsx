@@ -2,6 +2,9 @@ import styled from 'styled-components';
 import React, {useState } from 'react';
 import type {Bracelet} from '../../interfaces/Bracelet.ts';
 
+// Followed
+// https://www.digitalocean.com/community/tutorials/build-a-to-do-application-using-django-and-react
+
 interface CustomModalProps {
     activeBracelet: Bracelet;
     toggle: () => void;
@@ -21,8 +24,8 @@ const Overlay = styled.div`
 
 const ModalContainer = styled.div`
   background: #fff;
-  width: 90%;
-  max-width: 500px;
+  width: 40%;
+  //max-width: 2000px;
   border-radius: 12px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
   padding: 1.5rem;
@@ -58,14 +61,14 @@ const Label = styled.label`
 
 const Input = styled.input`
   padding: 0.5rem;
-  font-size: 1rem;
+  font-size: clamp(14px, calc(24px + 2vw), 40px);
   border: 1px solid #ccc;
   border-radius: 6px;
 `;
 
 const Select = styled.select`
     padding: 0.5rem;
-    font-size: 1rem;
+    font-size: clamp(14px, calc(24px + 2vw), 40px);
     border: 1px solid #ccc;
     border-radius: 6px;
     background: white;
@@ -91,7 +94,7 @@ const Button = styled.button<{$primary?: boolean}>`
   border-radius: 6px;
   padding: 0.6rem 1.2rem;
   cursor: pointer;
-  font-size: 1rem;
+  //font-size: 1rem;
 
   &:hover {
     opacity: 0.9;

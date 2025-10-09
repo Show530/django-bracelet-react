@@ -1,5 +1,4 @@
 import styled from 'styled-components';
-// import {Bracelet} from "../interfaces/Bracelet.ts";
 import type {Bracelet} from '../../interfaces/Bracelet.ts';
 
 const AllBraceletsDiv=styled.div`

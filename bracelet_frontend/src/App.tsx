@@ -8,7 +8,6 @@ import Header from "./components/Header.tsx"
 
 import Home from "./components/Home.tsx";
 import YearGalleries from "./components/YearGalleries.tsx";
-import Selling from "./components/Selling.tsx";
 import AdminGallery from "./components/AdminRelated/AdminGallery.tsx";
 import styled from "styled-components";
 import Gallery from "./components/Gallery.tsx";
@@ -75,7 +74,7 @@ function Root() {
                             <Route path={`/YearGalleries/:year`} element={<Gallery/>}/>
                             <Route path={`/YearGalleries/:year/:imagePk`} element={<ImageDetails/>}/>
 
-                            <Route path={`/Selling`} element={<Selling/>}/>
+                            <Route path={`/Selling`} element={<Gallery/>}/>
                             <Route path={`/Selling/:imagePk`} element={<ImageDetails/>} />
 
                             <Route path={'/AdminGallery'} element={<AdminGallery/>} />

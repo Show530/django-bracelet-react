@@ -50,7 +50,7 @@ class Bracelet(models.Model):
         SOLD = "SO", _("Sold")
         UNKNOWN = "U", _("Unknown")
 
-    order = models.IntegerField()
+    order = models.IntegerField(blank=True, null=True)
 
     name = models.TextField(blank=False)
     pattern_url = models.URLField(blank=True)
@@ -62,6 +62,13 @@ class Bracelet(models.Model):
     numStrings = models.IntegerField(blank=False)
     goingWhere = models.CharField(max_length=2, choices=GoingWhere, default=GoingWhere.KEEPING, blank=False)
     price = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=True)
+
+    # def save(self, *args, **kwargs):
+    #     super().save(*args, **kwargs)
+    #     # Only set order after the ID exists
+    #     if self.order != self.id:
+    #         self.order = self.id
+    #         super().save(update_fields=["order"])
 
     def __str__(self):
         '''A string representation of the model.'''
@@ -80,6 +87,8 @@ class Bracelet(models.Model):
         
     class Meta:
         ordering = ['order']
+    
+
 
     def get_images(self):
         '''method that will return the images associated with the given status message.'''
@@ -97,11 +106,18 @@ class Bracelet(models.Model):
 
 class Image(models.Model):
     '''Encapsulate the data model of an Image for a Bracelet.'''
-    order = models.IntegerField()
+    order = models.IntegerField(blank=True, null=True)
 
     image_file = models.ImageField(blank=False, upload_to="bracelets/")
     timestamp = models.DateTimeField(auto_now=True)
     caption = models.TextField(blank=True)
+
+    # def save(self, *args, **kwargs):
+    #     super().save(*args, **kwargs)
+    #     # Only set order after the ID exists
+    #     if self.order != self.id:
+    #         self.order = self.id
+    #         super().save(update_fields=["order"])
 
     def __str__(self):
         '''return a string representation of this model instance'''

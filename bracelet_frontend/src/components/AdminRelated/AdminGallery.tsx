@@ -5,6 +5,7 @@ import axios from "axios";
 import type {Bracelet} from "../../interfaces/Bracelet.ts";
 import Loading from "../Loading.tsx";
 import Modal from "./Modal.tsx"
+import {useParams} from "react-router";
 // import AdminBracelets from "./Displays/AdminBracelets.tsx";
 
 
@@ -45,6 +46,8 @@ const StyledButton = styled.button`
 // idea- when creating bracelet, add image to database/link them??
 // make sure that fields in form can be null (aren't mandatory)
 export default function AdminGallery() {
+    const params = useParams();
+    const currPage = params["*"] ?? "";
     const[data, setData] = useState<Bracelet[]>([]);
     const[modalOpen, setModalOpen] = useState(false);
     const[activeBracelet, setActiveBracelet] = useState<Bracelet>(
@@ -84,16 +87,38 @@ export default function AdminGallery() {
         setModalOpen(!modalOpen);
     }
 
-    async function handleSubmit(bracelet:Bracelet) {
+    async function handleSubmit(bracelet:Bracelet, imageFile:File|null, caption:string) {
         toggle();
         try {
-           if (bracelet.id) {
-               await axios.put(`/api/bracelets/${bracelet.id}/`, bracelet);
-           }
-           else {
-               await axios.post(`/api/bracelets/`, bracelet);
-           }
-           await refreshList();
+            // all here is new
+            const formData = new FormData();
+            for (const[key, value] of Object.entries(bracelet)) {
+                if (value !== null && value !== undefined) {
+                    formData.append(key, value);
+                }
+
+            }
+
+            if(imageFile){
+                formData.append("image_file", imageFile);
+                if (caption != "") {
+                    formData.append("caption", caption)
+                }
+            }
+            const headers = { "Content-Type": "multipart/form-data" };
+
+            // this is back to old code
+            if (bracelet.id) {
+                // await axios.put(`/api/bracelets/${bracelet.id}/`, bracelet);
+                console.log(Object.fromEntries(formData.entries()));
+                await axios.put(`/api/bracelets/${bracelet.id}/`, formData, {headers});
+            }
+            else {
+                // await axios.post(`/api/bracelets/`, bracelet);
+                console.log(Object.fromEntries(formData.entries()));
+                await axios.post('/api/bracelets/', formData, {headers});
+            }
+            await refreshList();
         }
         catch (err) {
             console.log("Error when handling submit: ", err);
@@ -143,7 +168,7 @@ export default function AdminGallery() {
 
 
     if(!data.length) {
-        return <Loading />;
+    return <Loading where={currPage}/>;
     }
 
     return (

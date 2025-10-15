@@ -12,7 +12,10 @@ from django_filters.rest_framework import DjangoFilterBackend
 
 from bracelet_backend.models import Bracelet, Image
 from bracelet_backend.serializers import BraceletSerializer, ImageSerializer
+# allows filters for API- in this instance, selling/year filters
 from bracelet_backend.filters import BraceletFilter, ImageFilter
+# allows bracelet forms to accpet images- upload from front end
+from rest_framework.parsers import MultiPartParser, FormParser
 
 # Create your views here.
 
@@ -21,10 +24,12 @@ class ListBracelet(generics.ListCreateAPIView):
     serializer_class = BraceletSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = BraceletFilter
+    parser_classes = [MultiPartParser, FormParser]
 
 class DetailBracelet(generics.RetrieveUpdateDestroyAPIView):
     queryset = Bracelet.objects.all()
     serializer_class = BraceletSerializer
+    parser_classes = [MultiPartParser, FormParser]
 
 class ListImage(generics.ListCreateAPIView):
     queryset = Image.objects.all()

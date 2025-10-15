@@ -6,11 +6,13 @@ const StyledDiv = styled.div`
     align-items: center;
 `;
 
-export default function Loading() {
+
+
+export default function Loading(props:{where:string}) {
 
     return (
         <StyledDiv>
-            <p>Loading gallery...</p>
+            <p>Loading {props.where}...</p>
         </StyledDiv>
     );
 }

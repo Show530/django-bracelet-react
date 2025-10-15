@@ -9,7 +9,9 @@ from bracelet_backend.models import Bracelet, Image, BraceletImage
 
 class BraceletSerializer(serializers.ModelSerializer):
     '''Serializer for Bracelets'''
-    
+    image_file = serializers.ImageField(write_only=True, required=False)
+    caption = serializers.CharField(write_only=True, required=False)
+
     # images = serializers.SerializerMethodField()
     class Meta:
         model = Bracelet
@@ -25,11 +27,89 @@ class BraceletSerializer(serializers.ModelSerializer):
             'numStrings',
             'goingWhere',
             'price',
+            # need to include new fields!!
+            'image_file',
+            'caption',
         )
 
-        # def get_images(self, obj):
-        #     ''' Returns a list of all the images associated with the given Bracelet'''
-        #     return [img.image_file.url for img in obj.get_images()]
+    # def get_images(self, obj):
+    #     ''' Returns a list of all the images associated with the given Bracelet'''
+    #     return [img.image_file.url for img in obj.get_images()]
+
+    # Custom create method
+    # Returns complete instances based on data- based on documentation
+
+    # NEED TO ADD ORDER FUNCTIONALITY
+    def create(self, validated_data):
+        '''Returns bracelet object while first creating an Image and BraceletImage object
+            based on an input image if input'''
+        # Get variables from data- pop off so that fields are not included 
+        # for bracelet creation
+        image_file = validated_data.pop("image_file", None)
+        print("Image_file is: ", image_file)
+        caption = validated_data.pop("caption", "")
+        print("Caption is: ", caption)
+        bracelet = Bracelet.objects.create(**validated_data)
+
+        # if image is included,
+        # create the image and bracelet image objects 
+        if image_file:
+            print("In Image File if statement- found")
+            image = Image.objects.create(
+                image_file=image_file,
+                caption=caption or bracelet.name
+            )
+            # for image: set order to id
+            if image.order != image.id:
+                image.order = image.id
+                image.save(update_fields=["order"])
+            
+            print("Image is: ", image)
+
+            # no need to save var of BraceletImage because goal is to create it!
+            BraceletImage.objects.create(bracelet=bracelet, image=image)
+            print("Saved BI")
+
+        # for bracelet: set order to id
+        if bracelet.order != bracelet.id:
+            bracelet.order = bracelet.id
+            bracelet.save(update_fields=["order"])
+        
+        
+        return bracelet
+    
+    def update(self, instance, validated_data):
+        '''Returns updated Bracelet instance while potentially adding an image'''
+        # Get variables from data- pop off so that fields are not included 
+        # for bracelet update
+        image_file = validated_data.pop("image_file", None)
+        print("Image_file is: ", image_file)
+        caption = validated_data.pop("caption", "")
+        print("Caption is: ", caption)
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+        if image_file:
+            print("In Image File if statement- found")
+            image = Image.objects.create(
+                image_file=image_file,
+                caption=caption or instance.name
+            )
+
+            # for image: set order to id
+            if image.order != image.id:
+                image.order = image.id
+                image.save(update_fields=["order"])
+            print("Image is: ", image)
+
+            BraceletImage.objects.create(bracelet=instance, image=image)
+            print("Saved BI")
+
+        return instance
+
+
 
 class ImageSerializer(serializers.ModelSerializer):
     '''Serializer for Images'''

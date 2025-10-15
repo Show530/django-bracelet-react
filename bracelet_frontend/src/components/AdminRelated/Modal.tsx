@@ -8,7 +8,7 @@ import type {Bracelet} from '../../interfaces/Bracelet.ts';
 interface CustomModalProps {
     activeBracelet: Bracelet;
     toggle: () => void;
-    onSave: (item: Bracelet) => void;
+    onSave: (bracelet: Bracelet, image: File|null, caption: string) => void;
 }
 
 
@@ -60,10 +60,16 @@ const Label = styled.label`
 `;
 
 const Input = styled.input`
-  padding: 0.5rem;
-  font-size: clamp(14px, calc(24px + 2vw), 40px);
-  border: 1px solid #ccc;
-  border-radius: 6px;
+    padding: 0.5rem;
+    font-size: clamp(14px, calc(24px + 2vw), 40px);
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    //width: 100%;
+
+    //&[type="date"] {
+    //    height: 2.5rem;
+    //    min-height: 40px;
+    //}
 `;
 
 const Select = styled.select`
@@ -103,6 +109,8 @@ const Button = styled.button<{$primary?: boolean}>`
 
 export default function Modal({ activeBracelet, toggle, onSave }: CustomModalProps) {
     const [bracelet, setBracelet] = useState(activeBracelet);
+    const [imageFile, setImageFile] = useState<File | null>(null);
+    const [caption, setCaption] = useState<string>("");
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
@@ -111,6 +119,18 @@ export default function Modal({ activeBracelet, toggle, onSave }: CustomModalPro
                 [name]: value}
         );
     };
+
+    // automatically sets image caption based on file name
+    function handleFileChange(e: React.ChangeEvent<HTMLInputElement>) {
+        const file = e.target.files?.[0];
+        setImageFile(file || null);
+        if (file) {
+            // keeping extension as the rest of the files in the database do that
+            const defaultCaption = file.name;
+            console.log(defaultCaption);
+            setCaption(defaultCaption);
+        }
+    }
 
     return (
         <Overlay>
@@ -129,17 +149,19 @@ export default function Modal({ activeBracelet, toggle, onSave }: CustomModalPro
                             value={bracelet.name || ""}
                             onChange={handleChange}
                             placeholder="Enter Bracelet name"
+                            autoComplete="off"
                         />
                     </FormGroup>
                     <FormGroup>
-                        <Label htmlFor="patternURL">Pattern URL</Label>
+                        <Label htmlFor="pattern_url">Pattern URL</Label>
                         <Input
                             type="text"
-                            id="patternURL"
-                            name="patternURL"
+                            id="pattern_url"
+                            name="pattern_url"
                             value={bracelet.pattern_url || ""}
                             onChange={handleChange}
                             placeholder="Enter Pattern URL"
+                            autoComplete="off"
                         />
                     </FormGroup>
                     <FormGroup>
@@ -250,11 +272,33 @@ export default function Modal({ activeBracelet, toggle, onSave }: CustomModalPro
                             onChange={handleChange}
                         />
                     </FormGroup>
+                    <FormGroup>
+                        <Label htmlFor="file">Upload Image:</Label>
+                        <Input id="file"
+                               name="file"
+                               type="file"
+                               onChange={handleFileChange}
+                               // onChange={(e) => setImageFile(e.target.files?.[0] || null)}
+                        />
+                    </FormGroup>
+                    <FormGroup>
+                        <Label htmlFor="caption">Image Caption:</Label>
+                        <Input id="caption"
+                               name="caption"
+                               type="text"
+                               value={caption}
+                               onChange={(e) => setCaption(e.target.value)}
+                        />
+                    </FormGroup>
 
 
                     <Footer>
-                        <Button onClick={toggle}>Cancel</Button>
-                        <Button $primary onClick={() => onSave(bracelet)}>
+                        <Button type="button"
+                                onClick={toggle}
+                        >Cancel</Button>
+                        <Button type="button"
+                                $primary onClick={() => onSave(bracelet, imageFile, caption)}
+                        >
                             Save
                         </Button>
                     </Footer>

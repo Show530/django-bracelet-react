@@ -42,7 +42,6 @@ export default function ImageDetails() {
         const fetchAllData = async () => {
             try {
                 // call for getting image data
-
                 const imageRes = await axios.get("/api/images/"+ imagePk);
                 const image = imageRes.data as Image;
                 if(!image) {
@@ -50,19 +49,8 @@ export default function ImageDetails() {
                     return;
                 }
                 setImageData(image);
-                // axios.get("/api/images/"+ imagePk)
-                //     .then((res) => setImageData(res.data))
-                //     .catch((err) => {
-                //             console.log(err);
-                //             setErr(err);
-                //         }
-                //     );
 
                 // call to getting all the bracelet pks for the image
-                // const currBraceletPks: number[] = [];
-                // imageData.bracelets.forEach((bracelet) => {
-                //     currBraceletPks.push(bracelet.id);
-                // });
                 const currBraceletPks = image.bracelets.map(bracelet => bracelet.id);
 
                 // get all the bracelets associated with image
@@ -120,7 +108,7 @@ export default function ImageDetails() {
     }
 
     if(!braceletData.length) {
-        return <Loading />;
+        return <Loading where="Details"/>;
     }
 
     return (

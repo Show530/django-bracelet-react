@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useEffect, useState } from 'react';
 import type {Image} from "../interfaces/Image.ts";
 import axios from "axios";
+
 import Images from "./Displays/Images.tsx";
 import ErrorPage from "./Error.tsx";
 import Loading from "./Loading.tsx";
@@ -78,7 +79,7 @@ export default function Gallery() {
 
     if(!data.length) {
         return (
-            <Loading/>
+            <Loading where="Gallery"/>
         );
     }
 

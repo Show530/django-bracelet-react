@@ -64,7 +64,9 @@ export default function Images(props: {data: Image[]}) {
                             <StyledLink to={`/${currPage}/${image.id}`}>
                                 <StyledImg
                                     loading="lazy"
-                                    src={image.image_file}
+
+                                    // src={image.image_file}
+                                    src={image.image_url}
                                     alt={image.caption}
                                     // when image is loaded, set the class to loaded to put the opacity back to 1
                                     onLoad={(event) => event.currentTarget.classList.add("loaded")}

@@ -114,15 +114,28 @@ class BraceletSerializer(serializers.ModelSerializer):
 class ImageSerializer(serializers.ModelSerializer):
     '''Serializer for Images'''
     bracelets = serializers.SerializerMethodField()
+    # added for absolute url
+    image_url = serializers.SerializerMethodField()
 
     class Meta:
         model = Image
         fields = (
             'id',
             'image_file',
+            # new for absolute url
+            'image_url',
             'caption',
             'bracelets',
         )
+
+    # attempting to fix absolute uri
+    def get_image_url(self, obj):
+        '''Returns an absolute path for an image'''
+        request = self.context.get('request')
+        if request is not None:
+            return request.build_absolute_uri(obj.image_file.url)
+        return obj.image.url
+
 
     def get_bracelets(self, obj):
         ''' Returns a list of all the given bracelets associated with the given Image'''

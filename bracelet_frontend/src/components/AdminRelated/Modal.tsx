@@ -13,50 +13,50 @@ interface CustomModalProps {
 
 
 const Overlay = styled.div`
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.45);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 1000;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
 `;
 
 const ModalContainer = styled.div`
-  background: #fff;
-  width: 40%;
-  //max-width: 2000px;
-  border-radius: 12px;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-  padding: 1.5rem;
+    background: #fff;
+    width: 40%;
+    //max-width: 2000px;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    padding: 1.5rem;
 `;
 
 const ModalHeader = styled.h2`
-  margin-top: 0;
-  margin-bottom: 1rem;
-  color: #333;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #333;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 `;
 
 const CloseButton = styled.button`
-  background: none;
-  border: none;
-  font-size: 1.5rem;
-  cursor: pointer;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
 `;
 
 const FormGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
 `;
 
 const Label = styled.label`
-  margin-bottom: 0.3rem;
-  font-weight: 500;
-  color: #444;
+    margin-bottom: 0.3rem;
+    font-weight: 500;
+    color: #444;
 `;
 
 const Input = styled.input`
@@ -87,24 +87,24 @@ const Select = styled.select`
 `;
 
 const Footer = styled.div`
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 1rem;
-  gap: 1rem;
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+    gap: 1rem;
 `;
 
 const Button = styled.button<{$primary?: boolean}>`
-  background: ${($primary) => ($primary ? "#28a745" : "#aaa")};
-  color: white;
-  border: none;
-  border-radius: 6px;
-  padding: 0.6rem 1.2rem;
-  cursor: pointer;
-  //font-size: 1rem;
-
-  &:hover {
+    background: ${($primary) => ($primary ? "#28a745" : "#aaa")};
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.6rem 1.2rem;
+    cursor: pointer;
+    //font-size: 1rem;
+    
+    &:hover {
     opacity: 0.9;
-  }
+    }
 `;
 
 export default function Modal({ activeBracelet, toggle, onSave }: CustomModalProps) {
@@ -127,7 +127,7 @@ export default function Modal({ activeBracelet, toggle, onSave }: CustomModalPro
         if (file) {
             // keeping extension as the rest of the files in the database do that
             const defaultCaption = file.name;
-            console.log(defaultCaption);
+            // console.log(defaultCaption);
             setCaption(defaultCaption);
         }
     }
@@ -295,7 +295,9 @@ export default function Modal({ activeBracelet, toggle, onSave }: CustomModalPro
                     <Footer>
                         <Button type="button"
                                 onClick={toggle}
-                        >Cancel</Button>
+                        >
+                            Cancel
+                        </Button>
                         <Button type="button"
                                 $primary onClick={() => onSave(bracelet, imageFile, caption)}
                         >

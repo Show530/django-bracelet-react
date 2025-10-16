@@ -50,6 +50,9 @@ export default function ImageDetails() {
                 }
                 setImageData(image);
 
+                // console.log() check
+                console.log("Absolute Image URL:", image.image_url);
+
                 // call to getting all the bracelet pks for the image
                 const currBraceletPks = image.bracelets.map(bracelet => bracelet.id);
 
@@ -89,7 +92,7 @@ export default function ImageDetails() {
                     }
                 }
 
-                // now that all data validation has occured, set bracelets!
+                // now that all data validation has occurred, set bracelets!
                 setBraceletData(currBraceletData);
 
             }
@@ -116,7 +119,7 @@ export default function ImageDetails() {
             {imageData &&
                 <StyledImg
                     loading="lazy"
-                    src = {imageData.image_file}
+                    src = {imageData.image_url}
                     alt={imageData.caption}
                 />
             }

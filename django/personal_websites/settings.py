@@ -24,7 +24,9 @@ SECRET_KEY = 'django-insecure-&&j)tnsfq478pl#fk%_c5jhc8s&50p&kz8opu8!v_93oe2xsn0
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+# TAKE OUT ON DEPLOY '*'
+# 
+ALLOWED_HOSTS = ['localhost', '127.0.0.1' ,'192.0.2.215', '192.0.2.215:5173', '192.0.2.215:8000']
 
 
 # Application definition
@@ -58,6 +60,7 @@ MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware', # for API usage
     'django.middleware.common.CommonMiddleware', # for API usage
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware", # for WhiteNoise to serve files
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -84,6 +87,9 @@ MIDDLEWARE = [
 # and using vite react
 CORS_ORIGIN_WHITELIST = (
     'http://localhost:5173',
+    # 'http://127.0.0.1:5173',
+    # 'http://192.0.2.215:800',
+    'http://192.0.2.215:5173',
 )
 #  old port using create-react-app
 #  'http://localhost:3000',
@@ -163,7 +169,7 @@ DEBUG = True
 
 # DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = 'static/'
 
 # STATICFILES_DIRS = [

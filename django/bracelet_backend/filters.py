@@ -36,12 +36,13 @@ class BraceletFilter(django_filters.FilterSet):
     
 class ImageFilter(django_filters.FilterSet):
     '''FilterSet for Images'''
-    # Filter by when the last bracelet in the image was completed
-    # year = django_filters.NumberFilter(field_name="endDate", lookup_expr="year")
+    # Filter by favorite images
+    favorite = django_filters.BooleanFilter(field_name="favorite")
 
     # Filter by whether any of the Bracelets their associated Images are for sale
     selling = django_filters.BooleanFilter(method="selling_filter")
 
+    # Filter by when the last bracelet in the image was completed
     year = django_filters.NumberFilter(lookup_expr="year", method="year_filter")
     class Meta:
         model = Image

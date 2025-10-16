@@ -112,6 +112,8 @@ class Image(models.Model):
     timestamp = models.DateTimeField(auto_now=True)
     caption = models.TextField(blank=True)
 
+    favorite = models.BooleanField(blank=True)
+
     # def save(self, *args, **kwargs):
     #     super().save(*args, **kwargs)
     #     # Only set order after the ID exists
@@ -153,18 +155,15 @@ class BraceletImage(models.Model):
 
 # 129
 # update order of images
-# def update_imageO() :
-#     '''Function to update the order fields of bracelets'''
-#     images = Image.objects.filter(order__gte=154).update(order=models.F('order') + 1)
+def update_imageO() :
+    '''Function to update the order fields of bracelets'''
+    images = Image.objects.filter(order__gte=35).update(order=models.F('order') + 1)
     
-#     imageToFix = Image.objects.get(order=-1)
-#     imageToFix.order = 154
-#     imageToFix.save(update_fields=["order"])
+    imageToFix = Image.objects.get(order=-1)
+    imageToFix.order = 33
+    imageToFix.save(update_fields=["order"])
 
-    # for bracelet in bracelets:
-    #     bracelet.order = bracelet.pk
-    #     bracelet.save(update_fields=["order"]) 
-    #     print("Set order to pk: ", bracelet.order)
+    
 
 # Bracelet load_data() function
 # def load_data():

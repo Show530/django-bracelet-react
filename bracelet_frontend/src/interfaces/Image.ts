@@ -1,6 +1,7 @@
 export interface Image {
     id: number;
     image_file: string;
+    image_url: string;
     caption: string;
     bracelets : {
         id: number;

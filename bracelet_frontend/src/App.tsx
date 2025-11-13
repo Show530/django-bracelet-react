@@ -5,6 +5,7 @@
 import {createBrowserRouter, Route, RouterProvider, Routes} from "react-router";
 // import Nav from "./components/Navbar/Nav.tsx";
 import Header from "./components/Header.tsx"
+import Footer from "./components/Footer";
 
 import Home from "./components/Home.tsx";
 import YearGalleries from "./components/YearGalleries.tsx";
@@ -13,78 +14,66 @@ import styled from "styled-components";
 import Gallery from "./components/Gallery.tsx";
 import ImageDetails from "./components/ImageDetails.tsx";
 
-const StyledFullPage = styled.div`
-    background-color: #D4CDF4;
-`;
-
 const StyledPageWrapper = styled.div`
     //width: 80vw;
     //background-color: pink;
+    background-color: #D4CDF4;
+
     margin: auto;
     font-size: calc(1px + 1.2vw);
     font-family: Georgia, Garamond, serif;
-    min-height: 100vh;
+    //min-height: 100vh;
+    min-height: 100dvh;
+
+    //maybe
+    display: flex;
+    flex-direction: column;
 `;
 
 const StyledContent = styled.div`
     width: 80vw;
     background-color: #D4CDF4;
     margin: auto;
+
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 `;
 
-// const StyledContainer = styled.div`
-//     width: 100%;
-//     display: flex;
-//     flex-direction: row;
-//
-//     @media screen and (max-width: 900px) {
-//         flex-direction: column;
-//         justify-content: center;
-//     }
-// `;
 
 const StyledMain = styled.main`
-    //display: flex;
-    //flex-direction: column;
-    //width: 70%;
-    //padding: 2vw;
-    //height: 100vh;
-    width: 100%;
-
-    //@media screen and (max-width: 800px) {
-    //    width: 100%;
-    //}
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
 `;
 
 function Root() {
 
   return (
       <>
-        <StyledFullPage>
-            <StyledPageWrapper>
-                <Header />
-                <StyledContent>
-                    <StyledMain>
-                        <Routes>
-                            <Route path={`/`} element={<Home/>}/>
-                            <Route path={`/Gallery`} element={<Gallery/>}/>
-                            <Route path={`/Gallery/:imagePk`} element={<ImageDetails/>} />
+        <StyledPageWrapper>
+            <Header />
+            <StyledContent>
+                <StyledMain>
+                    <Routes>
+                        <Route path={`/`} element={<Home/>}/>
+                        <Route path={`/Gallery`} element={<Gallery/>}/>
+                        <Route path={`/Gallery/:imagePk`} element={<ImageDetails/>} />
 
-                            <Route path={`/YearGalleries`} element={<YearGalleries/>}/>
-                            <Route path={`/YearGalleries/:year`} element={<Gallery/>}/>
-                            <Route path={`/YearGalleries/:year/:imagePk`} element={<ImageDetails/>}/>
+                        <Route path={`/YearGalleries`} element={<YearGalleries/>}/>
+                        <Route path={`/YearGalleries/:year`} element={<Gallery/>}/>
+                        <Route path={`/YearGalleries/:year/:imagePk`} element={<ImageDetails/>}/>
 
-                            <Route path={`/Selling`} element={<Gallery/>}/>
-                            <Route path={`/Selling/:imagePk`} element={<ImageDetails/>} />
+                        <Route path={`/Selling`} element={<Gallery/>}/>
+                        <Route path={`/Selling/:imagePk`} element={<ImageDetails/>} />
 
-                            <Route path={'/AdminGallery'} element={<AdminGallery/>} />
-                        </Routes>
-                    </StyledMain>
-                    <footer></footer>
-                </StyledContent>
-            </StyledPageWrapper>
-        </StyledFullPage>
-        </>
+                        <Route path={'/AdminGallery'} element={<AdminGallery/>} />
+                    </Routes>
+                </StyledMain>
+            </StyledContent>
+            <Footer/>
+        </StyledPageWrapper>
+      </>
   );
 }
 

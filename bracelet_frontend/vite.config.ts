@@ -12,12 +12,14 @@ export default defineConfig({
         // This is the django server address
         // Replace if hosting!!
         // target: 'http://localhost:8000',
-        target: "http://192.0.2.215:8000",
+        // target: "http://192.0.2.215:8000",
+        target: 'http://localhost:8000',
         changeOrigin: true,
       },
     // added to attempt to get images to load on phonr
     "/media": {
-        target: "http://192.0.2.215:8000",
+        // target: "http://192.0.2.215:8000",
+        target: 'http://localhost:8000',
         changeOrigin: true,
     },
     }

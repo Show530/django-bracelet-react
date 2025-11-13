@@ -157,10 +157,10 @@ class BraceletImage(models.Model):
 # update order of images
 def update_imageO() :
     '''Function to update the order fields of bracelets'''
-    images = Image.objects.filter(order__gte=35).update(order=models.F('order') + 1)
+    images = Image.objects.filter(order__gte=82).update(order=models.F('order') + 1)
     
     imageToFix = Image.objects.get(order=-1)
-    imageToFix.order = 33
+    imageToFix.order = 82
     imageToFix.save(update_fields=["order"])
 
     

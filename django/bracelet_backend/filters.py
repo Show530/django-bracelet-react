@@ -44,10 +44,11 @@ class ImageFilter(django_filters.FilterSet):
 
     # Filter by when the last bracelet in the image was completed
     year = django_filters.NumberFilter(lookup_expr="year", method="year_filter")
+    
     class Meta:
         model = Image
         # fields that we're filtering on, not necessarily fields included in result!
-        fields = ['selling', 'year']
+        fields = ['selling', 'year', 'favorite']
 
     def year_filter(self, queryset, name, value):
         '''Custom filter to filter for the last finish date in a set of bracelets'''

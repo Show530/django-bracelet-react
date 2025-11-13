@@ -57,7 +57,8 @@ class BraceletSerializer(serializers.ModelSerializer):
             print("In Image File if statement- found")
             image = Image.objects.create(
                 image_file=image_file,
-                caption=caption or bracelet.name
+                caption=caption or bracelet.name,
+                favorite=False
             )
             # for image: set order to id
             if image.order != image.id:
@@ -95,7 +96,8 @@ class BraceletSerializer(serializers.ModelSerializer):
             print("In Image File if statement- found")
             image = Image.objects.create(
                 image_file=image_file,
-                caption=caption or instance.name
+                caption=caption or instance.name,
+                favorite=False
             )
 
             # for image: set order to id

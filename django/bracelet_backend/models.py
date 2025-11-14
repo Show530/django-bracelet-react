@@ -106,7 +106,7 @@ class Bracelet(models.Model):
 
 class Image(models.Model):
     '''Encapsulate the data model of an Image for a Bracelet.'''
-    order = models.IntegerField(blank=True, null=True)
+    order = models.IntegerField(unique=True)
 
     image_file = models.ImageField(blank=False, upload_to="bracelets/")
     timestamp = models.DateTimeField(auto_now=True)

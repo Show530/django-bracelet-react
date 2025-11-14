@@ -46,10 +46,12 @@ const StyledLi = styled.li`
 
 const StyledLink = styled(Link)`
     text-decoration: none;
-    color: #785D3F;
+    //color: #785D3F;
+    color: #303030;
 
     &:hover {
-        color: #503E2A;
+        //color: #503E2A;
+        color: #000000;
     }
 `;
 

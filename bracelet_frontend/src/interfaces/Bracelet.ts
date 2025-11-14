@@ -1,5 +1,6 @@
 export interface Bracelet {
-    id: string;
+    id: number;
+    order: string;
     name: string;
     pattern_url: string | null;
     bType: string;

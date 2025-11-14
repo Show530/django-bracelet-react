@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {useParams} from "react-router";
+import {Link, useParams} from "react-router";
 
 import styled from "styled-components";
 import axios from "axios";
@@ -10,6 +10,11 @@ import Bracelets from "./Displays/Bracelets.tsx"
 import ErrorPage from "./Error.tsx";
 import Loading from "./Loading.tsx";
 
+import { MdOutlineArrowForwardIos } from "react-icons/md";
+import { MdOutlineArrowBackIos } from "react-icons/md";
+
+
+
 const StyledImg = styled.img`
     width: 30%;
     display: block;
@@ -17,32 +22,52 @@ const StyledImg = styled.img`
     border-radius: 25px;
 `;
 
+const RowDiv = styled.div`
+    display: flex;
+    flex-direction: row;
+    //justify-content: center;
+    align-items: center;
+`;
+
 type RouteParams = {
     // because the route uses a wildcard
     "*": string;
-    "imagePk": string;
+    // was imagePk
+    "imageOrder": string;
     "year": string;
 };
 
 
 export default function ImageDetails() {
     const params = useParams<RouteParams>();
+
+    const fullPattern = params["*"] ?? "";
     // is either Gallery, Selling, or YearGalleries
-    const currPage = params["*"] ?? "";
-    const imagePk = params["imagePk"] ?? "";
+    const currPage = fullPattern.split("/")[0] as string;
+    // const currPage = params["*"] ?? "";
+    // was imagePk
+    const imageOrder = params["imageOrder"] ?? "";
     const year = params["year"] ?? "";
     const selling = currPage == null ? false : currPage.includes("Selling");
 
     const [err, setErr] = useState<Error | null>(null);
     const [imageData, setImageData] = useState<Image | null>(null);
     const [braceletData, setBraceletData] = useState<Bracelet[]>([]);
+    const [displayPrev, setDisplayPrev] = useState<boolean>(true);
+    const [displayNext, setDisplayNext] = useState<boolean>(true);
 
 
     useEffect(() => {
         const fetchAllData = async () => {
             try {
+                // Gallery end/2023End, 2024End, 2025End
+                const currEnd: string[]  = ["224", "140", "224"];
+                // Gallery start/2023Start, 2024Start, 2025Start
+                const currStart: string[] = ["1", "77", "141"];
+
+                // console.log(page);
                 // call for getting image data
-                const imageRes = await axios.get("/api/images/"+ imagePk);
+                const imageRes = await axios.get("/api/images/"+ imageOrder);
                 const image = imageRes.data as Image;
                 if(!image) {
                     setErr(new Error("Image not found"));
@@ -75,6 +100,10 @@ export default function ImageDetails() {
                         setErr(new Error("No selling bracelets"));
                     }
                     currBraceletData = sellableBracelets;
+
+                    // set prev and next arrow potential, for now no
+                    setDisplayPrev(false);
+                    setDisplayNext(false);
                 }
 
                 // make sure user didn't tamper with url part 2-
@@ -90,6 +119,42 @@ export default function ImageDetails() {
                         console.log("Inconsistent request");
                         setErr(new Error("Year mismatch"))
                     }
+                    
+                    // set prev and next arrow potential
+                    if(year === "2023") {
+                        if (imageOrder === currStart[0]) {
+                            setDisplayPrev(false);
+                        }
+                        else if (imageOrder === currEnd[0]) {
+                            setDisplayNext(false);
+                        }
+                    }
+                    else if (year === "2024") {
+                        if (imageOrder === currStart[1]) {
+                            setDisplayPrev(false);
+                        }
+                        else if (imageOrder === currEnd[1]) {
+                            setDisplayNext(false);
+                        }
+                    }
+                    else if (year === "2025") {
+                        if (imageOrder === currStart[2]) {
+                            setDisplayPrev(false);
+                        }
+                        else if (imageOrder === currEnd[2]) {
+                            setDisplayNext(false);
+                        }
+                    }
+                }
+
+                // set prev and next arrow potential
+                if (currPage.includes("Gallery")) {
+                    if (imageOrder === currStart[0]) {
+                        setDisplayPrev(false);
+                    }
+                    else if (imageOrder === currEnd[0]) {
+                        setDisplayNext(false);
+                    }
                 }
 
                 // now that all data validation has occurred, set bracelets!
@@ -102,7 +167,7 @@ export default function ImageDetails() {
             }
         };
         fetchAllData();
-    }, [imagePk, currPage, selling, year]);
+    }, [imageOrder, currPage, selling, year]);
 
     if(err != null) {
         return (
@@ -117,11 +182,46 @@ export default function ImageDetails() {
     return (
         <>
             {imageData &&
-                <StyledImg
-                    loading="lazy"
-                    src = {imageData.image_url}
-                    alt={imageData.caption}
-                />
+                <RowDiv>
+                    {
+                        displayPrev
+                        ? <>
+                            {
+                                year
+                                ? <Link to={`/${currPage}/${year}/${String(Number(imageOrder) - 1)}`}>
+                                        <MdOutlineArrowBackIos />
+                                    </Link>
+                                :
+                                <Link to={`/${currPage}/${String(Number(imageOrder) - 1)}`}>
+                                    <MdOutlineArrowBackIos />
+                                </Link>
+                            }
+                            </>
+                        : <></>
+                    }
+                    <StyledImg
+                        loading="lazy"
+                        src = {imageData.image_url}
+                        alt={imageData.caption}
+                    />
+                    {
+                        displayNext
+                            ? <>
+                                {
+                                    year
+                                        ? <Link to={`/${currPage}/${year}/${String(Number(imageOrder) + 1)}`}>
+                                            <MdOutlineArrowForwardIos />
+                                        </Link>
+                                        :
+                                        <Link to={`/${currPage}/${String(Number(imageOrder) + 1)}`}>
+                                            <MdOutlineArrowForwardIos />
+                                        </Link>
+                                }
+                            </>
+
+                            : <></>
+                    }
+                </RowDiv>
             }
             {braceletData && <Bracelets data={braceletData} selling={selling}/>}
         </>

@@ -1,20 +1,24 @@
 import styled from 'styled-components';
 import type {Bracelet} from '../../interfaces/Bracelet.ts';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+// import Typography from '@mui/material/Typography';
 
-const SingleBraceletDiv=styled.div`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    max-width: 35%;
-    padding: 1%;
-    margin: 1%;
-    //font: calc(20px + 5vw) Georgia, Garamond, serif;
-    //Copperplate, fantasy
-    text-align: center;
-    border: 1px inset green;
-    color: #544B6C;
-    //overflow-wrap: break-word;
-`;
+
+// const SingleBraceletDiv=styled.div`
+//     display: flex;
+//     flex-direction: column;
+//     justify-content: center;
+//     max-width: 35%;
+//     padding: 1%;
+//     margin: 1%;
+//     //font: calc(20px + 5vw) Georgia, Garamond, serif;
+//     //Copperplate, fantasy
+//     text-align: center;
+//     //border: 1px inset green;
+//     color: #544B6C;
+//     //overflow-wrap: break-word;
+// `;
 
 const StyledItem = styled.div`
     display: flex;
@@ -41,6 +45,7 @@ const StyledVal = styled.h3 `
     // handling url overflow
     word-break: break-word;
     overflow-wrap: anywhere;
+    text-align: center;
     
 `;
 
@@ -117,58 +122,114 @@ export default function SingleBracelet(props:{bracelet:Bracelet, selling: boolea
         goingWhere = switchGoingWhere(props.bracelet.goingWhere);
     }
 
+    // return (
+    //     // Inspiration from https://chuckdries.com/
+    //     <SingleBraceletDiv>
+    //         <StyledItem>
+    //             <StyledLabel>Name:</StyledLabel>
+    //             <StyledVal>{props.bracelet.name}</StyledVal>
+    //         </StyledItem>
+    //         {props.bracelet.pattern_url && (
+    //             <>
+    //                 <StyledItem>
+    //                     <StyledLabel>Pattern:</StyledLabel>
+    //                     <StyledVal>
+    //                         <a href={props.bracelet.pattern_url} target="_blank">
+    //                             {props.bracelet.pattern_url}
+    //                         </a>
+    //                     </StyledVal>
+    //                 </StyledItem>
+    //             </>
+    //         )
+    //         }
+    //         <StyledItem>
+    //             <StyledLabel>Bracelet type:</StyledLabel>
+    //             <StyledVal>{bType}</StyledVal>
+    //         </StyledItem>
+    //         <StyledItem>
+    //             <StyledLabel>Length:</StyledLabel>
+    //             <StyledVal>{bLength}</StyledVal>
+    //         </StyledItem>
+    //         <StyledItem>
+    //             <StyledLabel>Number of colors:</StyledLabel>
+    //             <StyledVal>{props.bracelet.numColors}</StyledVal>
+    //         </StyledItem>
+    //         <StyledItem>
+    //             <StyledLabel>Dates created:</StyledLabel>
+    //             <StyledVal>{props.bracelet.startDate} - {props.bracelet.endDate}</StyledVal>
+    //         </StyledItem>
+    //         { props.selling
+    //             ?
+    //             // eventually will have price here!
+    //             (
+    //                 <StyledItem>
+    //                     <StyledLabel>Price:</StyledLabel>
+    //                     <StyledVal>${props.bracelet.price}</StyledVal>
+    //                 </StyledItem>
+    //             )
+    //             :
+    //             (<StyledItem>
+    //                 <StyledLabel>Where's it going?:</StyledLabel>
+    //                 <StyledVal>{goingWhere}</StyledVal>
+    //             </StyledItem>)
+    //         }
+    //     </SingleBraceletDiv>
+    // );
     return (
         // Inspiration from https://chuckdries.com/
-        <SingleBraceletDiv>
-            <StyledItem>
-                <StyledLabel>Name:</StyledLabel>
-                <StyledVal>{props.bracelet.name}</StyledVal>
-            </StyledItem>
-            {props.bracelet.pattern_url && (
-                <>
+        // <SingleBraceletDiv>
+            <Card sx={{ width: "20%", m: "2%" , borderRadius: 4, boxShadow: 3 }}>
+                <CardContent>
                     <StyledItem>
-                        <StyledLabel>Pattern:</StyledLabel>
-                        <StyledVal>
-                            <a href={props.bracelet.pattern_url} target="_blank">
-                                {props.bracelet.pattern_url}
-                            </a>
-                        </StyledVal>
+                        <StyledLabel>Name:</StyledLabel>
+                        <StyledVal>{props.bracelet.name}</StyledVal>
                     </StyledItem>
-                </>
-            )
-            }
-            <StyledItem>
-                <StyledLabel>Bracelet type:</StyledLabel>
-                <StyledVal>{bType}</StyledVal>
-            </StyledItem>
-            <StyledItem>
-                <StyledLabel>Length:</StyledLabel>
-                <StyledVal>{bLength}</StyledVal>
-            </StyledItem>
-            <StyledItem>
-                <StyledLabel>Number of colors:</StyledLabel>
-                <StyledVal>{props.bracelet.numColors}</StyledVal>
-            </StyledItem>
-            <StyledItem>
-                <StyledLabel>Dates created:</StyledLabel>
-                <StyledVal>{props.bracelet.startDate} - {props.bracelet.endDate}</StyledVal>
-            </StyledItem>
-            { props.selling
-                ?
-                // eventually will have price here!
-                (
+                    {props.bracelet.pattern_url && (
+                        <>
+                            <StyledItem>
+                                <StyledLabel>Pattern:</StyledLabel>
+                                <StyledVal>
+                                    <a href={props.bracelet.pattern_url} target="_blank">
+                                        {props.bracelet.pattern_url}
+                                    </a>
+                                </StyledVal>
+                            </StyledItem>
+                        </>
+                    )
+                    }
                     <StyledItem>
-                        <StyledLabel>Price:</StyledLabel>
-                        <StyledVal>${props.bracelet.price}</StyledVal>
+                        <StyledLabel>Bracelet type:</StyledLabel>
+                        <StyledVal>{bType}</StyledVal>
                     </StyledItem>
-                )
-                :
-                (<StyledItem>
-                    <StyledLabel>Where's it going?:</StyledLabel>
-                    <StyledVal>{goingWhere}</StyledVal>
-                </StyledItem>)
-            }
-        </SingleBraceletDiv>
+                    <StyledItem>
+                        <StyledLabel>Length:</StyledLabel>
+                        <StyledVal>{bLength}</StyledVal>
+                    </StyledItem>
+                    <StyledItem>
+                        <StyledLabel>Number of colors:</StyledLabel>
+                        <StyledVal>{props.bracelet.numColors}</StyledVal>
+                    </StyledItem>
+                    <StyledItem>
+                        <StyledLabel>Dates created:</StyledLabel>
+                        <StyledVal>{props.bracelet.startDate} - {props.bracelet.endDate}</StyledVal>
+                    </StyledItem>
+                    { props.selling
+                        ?
+                        // eventually will have price here!
+                        (
+                            <StyledItem>
+                                <StyledLabel>Price:</StyledLabel>
+                                <StyledVal>${props.bracelet.price}</StyledVal>
+                            </StyledItem>
+                        )
+                        :
+                        (<StyledItem>
+                            <StyledLabel>Where's it going?:</StyledLabel>
+                            <StyledVal>{goingWhere}</StyledVal>
+                        </StyledItem>)
+                    }
+                </CardContent>
+            </Card>
+        // </SingleBraceletDiv>
     );
-
 }

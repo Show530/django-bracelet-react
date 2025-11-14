@@ -11,7 +11,7 @@ import {useParams} from "react-router";
 const ParentDiv=styled.div`
     width: 80vw;
     margin: auto;
-    border: 2px darkred inset;
+    //border: 2px darkred inset;
 `;
 
 // type RouteParams = {

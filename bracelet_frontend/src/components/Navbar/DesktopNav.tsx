@@ -13,7 +13,7 @@ import NavList from "./NavList";
 const StyledNav = styled.nav`
     width: 100%;
     padding: 16px 32px;
-    background: #D3D3D3CC;
+    background: rgba(129, 127, 127, 0.8);
 
     // new to try to make nav transulcent:
     //background-color: #C0A487CC;
@@ -21,9 +21,8 @@ const StyledNav = styled.nav`
     //backdrop-filter: blur(8px);
     ///* Safari support */
     //-webkit-backdrop-filter: blur(8px); 
-    
-    
-    
+
+
     //width: 100%;
     //// 
     //position: sticky;

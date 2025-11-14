@@ -17,7 +17,9 @@ import ImageDetails from "./components/ImageDetails.tsx";
 const StyledPageWrapper = styled.div`
     //width: 80vw;
     //background-color: pink;
-    background-color: #D4CDF4;
+    //background-color: #D4CDF4; c3beb6
+    background-color: #acb5b3;
+
 
     margin: auto;
     font-size: calc(1px + 1.2vw);
@@ -32,7 +34,7 @@ const StyledPageWrapper = styled.div`
 
 const StyledContent = styled.div`
     width: 80vw;
-    background-color: #D4CDF4;
+    //background-color: #D4CDF4;
     margin: auto;
 
     flex: 1;
@@ -58,14 +60,17 @@ function Root() {
                     <Routes>
                         <Route path={`/`} element={<Home/>}/>
                         <Route path={`/Gallery`} element={<Gallery/>}/>
-                        <Route path={`/Gallery/:imagePk`} element={<ImageDetails/>} />
+                        {/*was imagePk*/}
+                        <Route path={`/Gallery/:imageOrder`} element={<ImageDetails/>} />
 
                         <Route path={`/YearGalleries`} element={<YearGalleries/>}/>
                         <Route path={`/YearGalleries/:year`} element={<Gallery/>}/>
-                        <Route path={`/YearGalleries/:year/:imagePk`} element={<ImageDetails/>}/>
+                        {/*was imagePk*/}
+                        <Route path={`/YearGalleries/:year/:imageOrder`} element={<ImageDetails/>}/>
 
                         <Route path={`/Selling`} element={<Gallery/>}/>
-                        <Route path={`/Selling/:imagePk`} element={<ImageDetails/>} />
+                        {/*was imagePk*/}
+                        <Route path={`/Selling/:imageOrder`} element={<ImageDetails/>} />
 
                         <Route path={'/AdminGallery'} element={<AdminGallery/>} />
                     </Routes>

@@ -11,5 +11,7 @@ urlpatterns = [
     path('bracelets/', views.ListBracelet.as_view()),
     path('bracelets/<int:pk>/', views.DetailBracelet.as_view()),
     path('images/', views.ListImage.as_view()),
-    path('images/<int:pk>', views.DetailImage.as_view()),
+    # important: now gets images based on their ORDER, not pk
+    path('images/<int:order>', views.DetailImage.as_view()),
+    # path('images/')
 ]

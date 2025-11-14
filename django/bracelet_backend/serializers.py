@@ -17,6 +17,7 @@ class BraceletSerializer(serializers.ModelSerializer):
         model = Bracelet
         fields = (
             'id',
+            'order',
             'name',
             'pattern_url',
             'bType',
@@ -123,6 +124,7 @@ class ImageSerializer(serializers.ModelSerializer):
         model = Image
         fields = (
             'id',
+            'order',
             'image_file',
             # new for absolute url
             'image_url',

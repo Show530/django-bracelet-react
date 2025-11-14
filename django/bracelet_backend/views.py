@@ -40,3 +40,5 @@ class ListImage(generics.ListCreateAPIView):
 class DetailImage(generics.RetrieveUpdateDestroyAPIView):
     queryset = Image.objects.all()
     serializer_class = ImageSerializer
+    # important- not id anymore! Can remove to change to pk
+    lookup_field = 'order'

@@ -47,7 +47,7 @@ const StyledImg = styled.img`
 `;
 
 type RouteParams = {
-    "*": string; // because your route uses a wildcard
+    "*": string;
 };
 
 export default function Images(props: {data: Image[]}) {
@@ -61,7 +61,7 @@ export default function Images(props: {data: Image[]}) {
                     props.data.map((image: Image) =>
                         <SingleImageDiv key={image.id}>
                             {/*wrap in a link tag*/}
-                            <StyledLink to={`/${currPage}/${image.id}`}>
+                            <StyledLink to={`/${currPage}/${image.order}`}>
                                 <StyledImg
                                     loading="lazy"
 

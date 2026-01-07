@@ -39,31 +39,31 @@ class BraceletSerializer(serializers.ModelSerializer):
 
     # Custom create method
     # Returns complete instances based on data- based on documentation
-
-    # NEED TO ADD ORDER FUNCTIONALITY
     def create(self, validated_data):
         '''Returns bracelet object while first creating an Image and BraceletImage object
             based on an input image if input'''
         # Get variables from data- pop off so that fields are not included 
         # for bracelet creation
         image_file = validated_data.pop("image_file", None)
-        print("Image_file is: ", image_file)
+        # print("Image_file is: ", image_file)
         caption = validated_data.pop("caption", "")
-        print("Caption is: ", caption)
+        # print("Caption is: ", caption)
         bracelet = Bracelet.objects.create(**validated_data)
 
         # if image is included,
         # create the image and bracelet image objects 
         if image_file:
             print("In Image File if statement- found")
+            # order cannot be null on create, but will change after object is created
             image = Image.objects.create(
                 image_file=image_file,
                 caption=caption or bracelet.name,
-                favorite=False
+                favorite=False,
+                order=-1
             )
             # for image: set order to id
             if image.order != image.id:
-                image.order = image.id
+                image.order = image.id - 2
                 image.save(update_fields=["order"])
             
             print("Image is: ", image)
@@ -85,9 +85,9 @@ class BraceletSerializer(serializers.ModelSerializer):
         # Get variables from data- pop off so that fields are not included 
         # for bracelet update
         image_file = validated_data.pop("image_file", None)
-        print("Image_file is: ", image_file)
+        # print("Image_file is: ", image_file)
         caption = validated_data.pop("caption", "")
-        print("Caption is: ", caption)
+        # print("Caption is: ", caption)
 
         for attr, value in validated_data.items():
             setattr(instance, attr, value)
@@ -95,15 +95,17 @@ class BraceletSerializer(serializers.ModelSerializer):
 
         if image_file:
             print("In Image File if statement- found")
+            # order cannot be null on create, but will change after object is created
             image = Image.objects.create(
                 image_file=image_file,
                 caption=caption or instance.name,
-                favorite=False
+                favorite=False,
+                order=-1
             )
 
             # for image: set order to id
             if image.order != image.id:
-                image.order = image.id
+                image.order = image.id - 2
                 image.save(update_fields=["order"])
             print("Image is: ", image)
 

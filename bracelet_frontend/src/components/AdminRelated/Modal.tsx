@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import React, {useState } from 'react';
 import type {Bracelet} from '../../interfaces/Bracelet.ts';
+import { createPortal } from "react-dom";
 
 // Followed
 // https://www.digitalocean.com/community/tutorials/build-a-to-do-application-using-django-and-react
@@ -24,8 +25,12 @@ const Overlay = styled.div`
 
 const ModalContainer = styled.div`
     background: #fff;
-    width: 40%;
-    //max-width: 2000px;
+    width: min(600px, 90vw);
+    max-height: 90vh;
+    overflow-y: auto;
+    
+    //width: 40%;
+    // //max-width: 2000px;
     border-radius: 12px;
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
     padding: 1.5rem;
@@ -61,7 +66,8 @@ const Label = styled.label`
 
 const Input = styled.input`
     padding: 0.5rem;
-    font-size: clamp(14px, calc(24px + 2vw), 40px);
+    //font-size: clamp(14px, calc(12px + 2vw), 40px);
+    font-size: clamp(0.9rem, 1rem, 1.1rem);
     border: 1px solid #ccc;
     border-radius: 6px;
     //width: 100%;
@@ -74,7 +80,9 @@ const Input = styled.input`
 
 const Select = styled.select`
     padding: 0.5rem;
-    font-size: clamp(14px, calc(24px + 2vw), 40px);
+    //font-size: clamp(14px, calc(12px + 2vw), 40px);
+    font-size: clamp(0.9rem, 1rem, 1.1rem);
+
     border: 1px solid #ccc;
     border-radius: 6px;
     background: white;
@@ -132,7 +140,7 @@ export default function Modal({ activeBracelet, toggle, onSave }: CustomModalPro
         }
     }
 
-    return (
+    return createPortal(
         <Overlay>
             <ModalContainer>
                 <ModalHeader>
@@ -306,6 +314,7 @@ export default function Modal({ activeBracelet, toggle, onSave }: CustomModalPro
                     </Footer>
                 </form>
             </ModalContainer>
-        </Overlay>
+        </Overlay>,
+        document.body
     );
 }

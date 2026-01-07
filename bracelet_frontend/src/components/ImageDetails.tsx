@@ -14,9 +14,8 @@ import { MdOutlineArrowForwardIos } from "react-icons/md";
 import { MdOutlineArrowBackIos } from "react-icons/md";
 
 
-
 const StyledImg = styled.img`
-    width: 30%;
+    width: 40%;
     display: block;
     margin: 2% auto;
     border-radius: 25px;
@@ -27,6 +26,8 @@ const RowDiv = styled.div`
     flex-direction: row;
     //justify-content: center;
     align-items: center;
+    justify-content: space-evenly;
+    margin: auto;
 `;
 
 type RouteParams = {
@@ -53,6 +54,8 @@ export default function ImageDetails() {
     const [err, setErr] = useState<Error | null>(null);
     const [imageData, setImageData] = useState<Image | null>(null);
     const [braceletData, setBraceletData] = useState<Bracelet[]>([]);
+    const [numBracelets, setNumBracelets] = useState(0);
+
     const [displayPrev, setDisplayPrev] = useState<boolean>(true);
     const [displayNext, setDisplayNext] = useState<boolean>(true);
 
@@ -60,12 +63,12 @@ export default function ImageDetails() {
     useEffect(() => {
         const fetchAllData = async () => {
             try {
+                // arrays to code in starts/ends to arrows
                 // Gallery end/2023End, 2024End, 2025End
-                const currEnd: string[]  = ["224", "140", "224"];
+                const currEnd: string[]  = ["75", "139", "232"];
                 // Gallery start/2023Start, 2024Start, 2025Start
-                const currStart: string[] = ["1", "77", "141"];
+                const currStart: string[] = ["1", "76", "140"];
 
-                // console.log(page);
                 // call for getting image data
                 const imageRes = await axios.get("/api/images/"+ imageOrder);
                 const image = imageRes.data as Image;
@@ -90,7 +93,7 @@ export default function ImageDetails() {
                 let currBraceletData = responses.map((res) => res.data);
 
                 // if the currPage selling, filter out the non-sellable bracelets
-                // if this means that there are no bracelets, throw an error:
+                // if this means that there are no bracelets, throw an error;
                 // that means the user tampered with the url
                 if(selling) {
                     const sellableBracelets = currBraceletData.filter(
@@ -121,12 +124,19 @@ export default function ImageDetails() {
                     }
                     
                     // set prev and next arrow potential
+                    // if image is at the start of the set- no prev arrow
+                    // if image is at the end of the set- no next arrow
+                    // otherwise, set both to true! Need to reset
                     if(year === "2023") {
                         if (imageOrder === currStart[0]) {
                             setDisplayPrev(false);
                         }
                         else if (imageOrder === currEnd[0]) {
                             setDisplayNext(false);
+                        }
+                        else {
+                            setDisplayPrev(true);
+                            setDisplayNext(true);
                         }
                     }
                     else if (year === "2024") {
@@ -136,6 +146,10 @@ export default function ImageDetails() {
                         else if (imageOrder === currEnd[1]) {
                             setDisplayNext(false);
                         }
+                        else {
+                            setDisplayPrev(true);
+                            setDisplayNext(true);
+                        }
                     }
                     else if (year === "2025") {
                         if (imageOrder === currStart[2]) {
@@ -144,18 +158,25 @@ export default function ImageDetails() {
                         else if (imageOrder === currEnd[2]) {
                             setDisplayNext(false);
                         }
+                        else {
+                            setDisplayPrev(true);
+                            setDisplayNext(true);
+                        }
                     }
                 }
-
-                // set prev and next arrow potential
                 if (currPage.includes("Gallery")) {
                     if (imageOrder === currStart[0]) {
                         setDisplayPrev(false);
                     }
-                    else if (imageOrder === currEnd[0]) {
+                    else if (imageOrder === currEnd[2]) {
                         setDisplayNext(false);
                     }
+                    else {
+                        setDisplayPrev(true);
+                        setDisplayNext(true);
+                    }
                 }
+                setNumBracelets(currBraceletData.length);
 
                 // now that all data validation has occurred, set bracelets!
                 setBraceletData(currBraceletData);
@@ -185,7 +206,8 @@ export default function ImageDetails() {
                 <RowDiv>
                     {
                         displayPrev
-                        ? <>
+                        ?
+                            <>
                             {
                                 year
                                 ? <Link to={`/${currPage}/${year}/${String(Number(imageOrder) - 1)}`}>
@@ -197,7 +219,8 @@ export default function ImageDetails() {
                                 </Link>
                             }
                             </>
-                        : <></>
+                        :
+                            <></>
                     }
                     <StyledImg
                         loading="lazy"
@@ -206,24 +229,25 @@ export default function ImageDetails() {
                     />
                     {
                         displayNext
-                            ? <>
-                                {
-                                    year
-                                        ? <Link to={`/${currPage}/${year}/${String(Number(imageOrder) + 1)}`}>
-                                            <MdOutlineArrowForwardIos />
-                                        </Link>
-                                        :
-                                        <Link to={`/${currPage}/${String(Number(imageOrder) + 1)}`}>
-                                            <MdOutlineArrowForwardIos />
-                                        </Link>
-                                }
+                            ?
+                            <>
+                            {
+                                year
+                                    ? <Link to={`/${currPage}/${year}/${String(Number(imageOrder) + 1)}`}>
+                                        <MdOutlineArrowForwardIos />
+                                    </Link>
+                                    :
+                                    <Link to={`/${currPage}/${String(Number(imageOrder) + 1)}`}>
+                                        <MdOutlineArrowForwardIos />
+                                    </Link>
+                            }
                             </>
-
-                            : <></>
+                            :
+                            <></>
                     }
                 </RowDiv>
             }
-            {braceletData && <Bracelets data={braceletData} selling={selling}/>}
+            {braceletData && <Bracelets data={braceletData} num={numBracelets} selling={selling}/>}
         </>
     );
 }

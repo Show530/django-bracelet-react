@@ -30,7 +30,7 @@ const StyledItem = styled.div`
 
 const StyledLabel = styled.h3 `
     //font-size: 1.5rem;
-    font: clamp(12px, calc(18px + 1vw), 32px) Georgia, Garamond, serif;
+    font: clamp(10px, calc(8px + 1vw), 26px) Georgia, Garamond, serif;
     color: #666;
     text-transform: lowercase;
     letter-spacing: 0.03em;
@@ -38,7 +38,8 @@ const StyledLabel = styled.h3 `
 
 const StyledVal = styled.h3 `
     //font-size: 3rem;
-    font: clamp(14px, calc(24px + 2vw), 40px) Georgia, Garamond, serif;
+    //   font: clamp(12px, calc(24px + 2vw), 40px) Georgia, Garamond, serif;
+    font: clamp(12px, calc(10px + 2vw), 30px) Georgia, Garamond, serif;
     font-weight: 500;
     color: #111;
 
@@ -106,7 +107,7 @@ function switchGoingWhere(goingWhere:string) {
     }
 }
 
-export default function SingleBracelet(props:{bracelet:Bracelet, selling: boolean}) {
+export default function SingleBracelet(props:{bracelet:Bracelet, num: number, selling: boolean}) {
     let bType;
     if (props.bracelet && props.bracelet.bType) {
         bType= switchbType(props.bracelet.bType);
@@ -175,10 +176,12 @@ export default function SingleBracelet(props:{bracelet:Bracelet, selling: boolea
     //         }
     //     </SingleBraceletDiv>
     // );
+    const cardWidth = props.num <= 2 ? "40%" : "25%";
     return (
         // Inspiration from https://chuckdries.com/
         // <SingleBraceletDiv>
-            <Card sx={{ width: "20%", m: "2%" , borderRadius: 4, boxShadow: 3 }}>
+        //     <Card sx={{ width: "40%", m: "2%" , borderRadius: 4, boxShadow: 3 }}>
+        <Card sx={{ width: cardWidth, m: "2%" , borderRadius: 4, boxShadow: 3 }}>
                 <CardContent>
                     <StyledItem>
                         <StyledLabel>Name:</StyledLabel>

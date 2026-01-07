@@ -12,7 +12,7 @@ import {useParams} from "react-router";
 const ParentDiv=styled.div`
     width: 80vw;
     margin: auto;
-    border: 2px darkred inset;
+    //border: 2px darkred inset;
 `;
 
 
@@ -53,6 +53,7 @@ export default function AdminGallery() {
     const[activeBracelet, setActiveBracelet] = useState<Bracelet>(
         {
             id: "",
+            order: "",
             name: "",
             pattern_url: "",
             bType: "",
@@ -62,7 +63,7 @@ export default function AdminGallery() {
             bLength: "",
             numStrings: 0,
             goingWhere: "",
-            price: 0
+            price: 0,
         }
     );
 
@@ -140,6 +141,7 @@ export default function AdminGallery() {
     function createBracelet() {
         const newBracelet = {
             id: "",
+            order: "",
             name: "",
             pattern_url: "",
             bType: "",

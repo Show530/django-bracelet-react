@@ -15,7 +15,7 @@ export default function Home() {
 
         <Container>
             <p>Hi! My name is Sophia Howson, and welcome to my bracelet website!</p>
-            <p>I've been making friendship bracelets for 5 years now, and it's a craft that I
+            <p>I've been making friendship bracelets for 6 years now, and it's a craft that I
                 really enjoy. I started crafting right before the pandemic and was able to dive into
                 it!
             </p>

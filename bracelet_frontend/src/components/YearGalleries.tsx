@@ -39,7 +39,7 @@ const StyledImg = styled.img`
 `;
 
 const StyledH1 = styled.h1`
-    font: clamp(30px, calc(46px + 2vw), 54px) Georgia, Garamond, serif;
+    font: clamp(22px, calc(18px + 2vw), 34px) Georgia, Garamond, serif;
     margin: auto;
     text-align: center;
 `;

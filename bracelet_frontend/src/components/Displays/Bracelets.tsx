@@ -68,13 +68,14 @@ const AllBraceletsDiv=styled.div`
 
 
 
-export default function Bracelets(props: {data: Bracelet[], selling: boolean}) {
+export default function Bracelets(props: {data: Bracelet[], num: number, selling: boolean}) {
+
     return (
         <>
             <AllBraceletsDiv>
                     {
                         props.data.map((bracelet: Bracelet) =>
-                            <SingleBracelet key={bracelet.id} bracelet={bracelet} selling={props.selling}/>
+                            <SingleBracelet key={bracelet.id} bracelet={bracelet} num={props.num} selling={props.selling}/>
                         )
                     }
             </AllBraceletsDiv>

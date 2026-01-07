@@ -106,6 +106,7 @@ class Bracelet(models.Model):
 
 class Image(models.Model):
     '''Encapsulate the data model of an Image for a Bracelet.'''
+    # order = models.IntegerField(unique=True)
     order = models.IntegerField(unique=True)
 
     image_file = models.ImageField(blank=False, upload_to="bracelets/")
@@ -157,11 +158,15 @@ class BraceletImage(models.Model):
 # update order of images
 def update_imageO() :
     '''Function to update the order fields of bracelets'''
-    images = Image.objects.filter(order__gte=82).update(order=models.F('order') + 1)
+    images = Image.objects.filter(order__gte=75).update(order=models.F('order') - 1)
+    # images = images.filter(order__lte=140).update(order=models.F('order') - 1)
     
-    imageToFix = Image.objects.get(order=-1)
-    imageToFix.order = 82
-    imageToFix.save(update_fields=["order"])
+    # for image in images:
+    #     image.order = image.order -1
+    #     image.save(update_fields=["order"])
+    # # imageToFix = Image.objects.get(order=-1)
+    # imageToFix.order = 82
+    # imageToFix.save(update_fields=["order"])
 
     
 

@@ -9,6 +9,7 @@ import Footer from "./components/Footer";
 
 import Home from "./components/Home.tsx";
 import YearGalleries from "./components/YearGalleries.tsx";
+import About from "./components/About";
 import AdminGallery from "./components/AdminRelated/AdminGallery.tsx";
 import styled from "styled-components";
 import Gallery from "./components/Gallery.tsx";
@@ -72,6 +73,7 @@ function Root() {
                         {/*was imagePk*/}
                         <Route path={`/Selling/:imageOrder`} element={<ImageDetails/>} />
 
+                        <Route path={'/About'} element={<About/>} />
                         <Route path={'/AdminGallery'} element={<AdminGallery/>} />
                     </Routes>
                 </StyledMain>

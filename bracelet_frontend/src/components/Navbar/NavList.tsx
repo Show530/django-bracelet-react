@@ -74,6 +74,9 @@ export default function NavList({isClicked, closeMenu}) {
                     <StyledLink to={`/Selling`}>Selling</StyledLink>
                 </StyledLi>
                 <StyledLi onClick={() => isClicked && closeMenu()}>
+                    <StyledLink to={`/About`}>About</StyledLink>
+                </StyledLi>
+                <StyledLi onClick={() => isClicked && closeMenu()}>
                     <StyledLink to={`/AdminGallery`}>Admin Gallery</StyledLink>
                 </StyledLi>
             </StyledUl>

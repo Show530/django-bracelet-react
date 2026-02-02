@@ -12,7 +12,9 @@ import NavList from "./NavList";
 
 const StyledNav = styled.nav`
     width: 100%;
-    padding: 16px 32px;
+    //padding: 16px 32px;
+    margin: 0;
+    
     background: rgba(129, 127, 127, 0.8);
 
     // new to try to make nav transulcent:

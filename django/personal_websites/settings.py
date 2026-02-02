@@ -26,7 +26,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv()  # reads .env file
 
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
-# SECRET_KEY = 'django-insecure-&&j)tnsfq478pl#fk%_c5jhc8s&50p&kz8opu8!v_93oe2xsn0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

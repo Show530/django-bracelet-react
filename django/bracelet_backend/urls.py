@@ -14,4 +14,5 @@ urlpatterns = [
     # important: now gets images based on their ORDER, not pk
     path('images/<int:order>', views.DetailImage.as_view()),
     # path('images/')
+    path('year-boundaries/', views.year_bounds), # api route to calc year bounds
 ]

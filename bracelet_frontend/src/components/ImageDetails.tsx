@@ -6,6 +6,7 @@ import axios from "axios";
 
 import type {Image} from "../interfaces/Image.ts";
 import type {Bracelet} from "../interfaces/Bracelet.ts";
+import type {YearBounds} from "../interfaces/YearBounds.ts"
 import Bracelets from "./Displays/Bracelets.tsx"
 import ErrorPage from "./Error.tsx";
 import Loading from "./Loading.tsx";
@@ -63,11 +64,10 @@ export default function ImageDetails() {
     useEffect(() => {
         const fetchAllData = async () => {
             try {
-                // arrays to code in starts/ends to arrows
-                // Gallery end/2023End, 2024End, 2025End, 2026End
-                const currEnd: string[]  = ["75", "139", "232", "237"];
-                // Gallery start/2023Start, 2024Start, 2025Start, 2026Start
-                const currStart: string[] = ["1", "76", "140", "233"];
+                // setting arrays for start/end arrows
+                const response = await axios.get('/api/year-boundaries/');
+                const yearBoundsRes: YearBounds = response.data
+        
 
                 // call for getting image data
                 const imageRes = await axios.get("/api/images/"+ imageOrder);
@@ -127,47 +127,12 @@ export default function ImageDetails() {
                     // if image is at the start of the set- no prev arrow
                     // if image is at the end of the set- no next arrow
                     // otherwise, set both to true! Need to reset
-                    if(year === "2023") {
-                        if (imageOrder === currStart[0]) {
+
+                    if (year in yearBoundsRes){                        
+                        if (imageOrder === yearBoundsRes[year].start.toString()) {
                             setDisplayPrev(false);
                         }
-                        else if (imageOrder === currEnd[0]) {
-                            setDisplayNext(false);
-                        }
-                        else {
-                            setDisplayPrev(true);
-                            setDisplayNext(true);
-                        }
-                    }
-                    else if (year === "2024") {
-                        if (imageOrder === currStart[1]) {
-                            setDisplayPrev(false);
-                        }
-                        else if (imageOrder === currEnd[1]) {
-                            setDisplayNext(false);
-                        }
-                        else {
-                            setDisplayPrev(true);
-                            setDisplayNext(true);
-                        }
-                    }
-                    else if (year === "2025") {
-                        if (imageOrder === currStart[2]) {
-                            setDisplayPrev(false);
-                        }
-                        else if (imageOrder === currEnd[2]) {
-                            setDisplayNext(false);
-                        }
-                        else {
-                            setDisplayPrev(true);
-                            setDisplayNext(true);
-                        }
-                    }
-                    else if (year === "2026") {
-                        if (imageOrder === currStart[3]) {
-                            setDisplayPrev(false);
-                        }
-                        else if (imageOrder === currEnd[3]) {
+                        else if (imageOrder === yearBoundsRes[year].end.toString()) {
                             setDisplayNext(false);
                         }
                         else {
@@ -177,10 +142,14 @@ export default function ImageDetails() {
                     }
                 }
                 if (currPage.includes("Gallery")) {
-                    if (imageOrder === currStart[0]) {
+                    const allYears = Object.keys(yearBoundsRes).sort();
+                    const firstYear = allYears[0];
+                    const lastYear = allYears[allYears.length - 1]
+
+                    if (imageOrder === yearBoundsRes[firstYear].start.toString()) {
                         setDisplayPrev(false);
                     }
-                    else if (imageOrder === currEnd[3]) {
+                    else if (imageOrder === yearBoundsRes[lastYear].end.toString()) {
                         setDisplayNext(false);
                     }
                     else {

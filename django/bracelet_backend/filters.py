@@ -4,7 +4,7 @@
 import django_filters
 from bracelet_backend.models import Bracelet, BraceletImage, Image
 from django.db.models import Max
-
+from datetime import datetime
 
 class BraceletFilter(django_filters.FilterSet):
     '''FilterSet for Bracelets'''
@@ -53,7 +53,9 @@ class ImageFilter(django_filters.FilterSet):
     def year_filter(self, queryset, name, value):
         '''Custom filter to filter for the last finish date in a set of bracelets'''
         # currImage = Image.objects.filter(image_pk=self.pk)
-        if value == 2023 or value == 2024 or value == 2025 or value == 2026:
+        # if value == 2023 or value == 2024 or value == 2025 or value == 2026:
+        if value >= 2023 and value <= datetime.now().year:
+            # print(datetime.now().year)
             # The following gets all of the Images that have bracelets within the filtered year
             # yearB = Bracelet.objects.filter(endDate__year=value)
             # yearBI = BraceletImage.objects.filter(bracelet__in=yearB)

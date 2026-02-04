@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import {Link} from "react-router";
-
+import {useAuth} from "../../auth/AuthContext.tsx"
 
 const StyledUl = styled.ul`
     display: flex;
@@ -55,8 +55,23 @@ const StyledLink = styled(Link)`
     }
 `;
 
+const StyledButton = styled.button`
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    color: #303030;
+
+    &:hover {
+        //color: #503E2A;
+        color: #000000;
+    }
+`;
+
 // @ts-expect-error isClicked and closeMenu have any type
 export default function NavList({isClicked, closeMenu}) {
+    const {isAuthenticated, user, logout, loading} = useAuth();
+
     return (
         <>
             <StyledUl>
@@ -76,9 +91,25 @@ export default function NavList({isClicked, closeMenu}) {
                 <StyledLi onClick={() => isClicked && closeMenu()}>
                     <StyledLink to={`/About`}>About</StyledLink>
                 </StyledLi>
-                <StyledLi onClick={() => isClicked && closeMenu()}>
-                    <StyledLink to={`/AdminGallery`}>Admin Gallery</StyledLink>
-                </StyledLi>
+                {
+                        isAuthenticated 
+                        ?  
+                        <>
+                            {
+                                user?.is_staff && 
+                                <StyledLi onClick={() => isClicked && closeMenu()}>
+                                    <StyledLink to={`/AdminGallery`}>Admin Gallery</StyledLink>
+                                </StyledLi>
+                            }
+                            <StyledLi>
+                                <StyledButton onClick={logout}>Log out</StyledButton>
+                            </StyledLi>
+                        </>
+                        :
+                        <StyledLi onClick={() => isClicked && closeMenu()}>
+                            <StyledLink to={`/Login`}>Log in</StyledLink>
+                        </StyledLi>
+                    }
             </StyledUl>
         </>
     );

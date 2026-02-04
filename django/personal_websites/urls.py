@@ -18,6 +18,11 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
+from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
+from allauth.socialaccount.providers.oauth2.client import OAuth2Client
+from dj_rest_auth.registration.views import SocialLoginView
+import json
+
 
 # https://www.digitalocean.com/community/tutorials/build-a-to-do-application-using-django-and-react#step-2-setting-up-the-apis
 # from rest_framework import routers
@@ -26,14 +31,36 @@ from django.conf.urls.static import static
 # router = routers.DefaultRouter()
 # router.register(r'bracelets', views.ListBracelet, 'bracelet')
 
+# Create a view that specifies the adapter
+class GoogleLogin(SocialLoginView):
+    adapter_class = GoogleOAuth2Adapter
+    # react frontend
+    callback_url = "http://localhost:5173"
+    client_class = OAuth2Client
+    # debugging
+    def post(self, request, *args, **kwargs):
+        print("="*50)
+        print("Received data:", request.data)
+        print("="*50)
+        return super().post(request, *args, **kwargs)
 # api path via
 # https://medium.com/@gazzaazhari/django-backend-react-frontend-basic-tutorial-6249af7964e4
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('bracelet_backend.urls')),
+
+    path("accounts/", include("allauth.urls")),  # for oauth
     path('api/auth/', include('dj_rest_auth.urls')), # for oauth
     path('api/auth/registration/', include('dj_rest_auth.registration.urls')), # for oauth
-
+    
+    # problem fixed?
+    # Google social login
+    path(
+        'api/auth/social/google/',
+        GoogleLogin.as_view(),
+        name='google_login'
+    ),    
+        
     # path('bracelet_backend/', include('bracelet_backend.urls'))
 ]
 

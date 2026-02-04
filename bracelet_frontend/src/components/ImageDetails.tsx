@@ -64,10 +64,10 @@ export default function ImageDetails() {
         const fetchAllData = async () => {
             try {
                 // arrays to code in starts/ends to arrows
-                // Gallery end/2023End, 2024End, 2025End
-                const currEnd: string[]  = ["75", "139", "232"];
-                // Gallery start/2023Start, 2024Start, 2025Start
-                const currStart: string[] = ["1", "76", "140"];
+                // Gallery end/2023End, 2024End, 2025End, 2026End
+                const currEnd: string[]  = ["75", "139", "232", "237"];
+                // Gallery start/2023Start, 2024Start, 2025Start, 2026Start
+                const currStart: string[] = ["1", "76", "140", "233"];
 
                 // call for getting image data
                 const imageRes = await axios.get("/api/images/"+ imageOrder);
@@ -163,12 +163,24 @@ export default function ImageDetails() {
                             setDisplayNext(true);
                         }
                     }
+                    else if (year === "2026") {
+                        if (imageOrder === currStart[3]) {
+                            setDisplayPrev(false);
+                        }
+                        else if (imageOrder === currEnd[3]) {
+                            setDisplayNext(false);
+                        }
+                        else {
+                            setDisplayPrev(true);
+                            setDisplayNext(true);
+                        }
+                    }
                 }
                 if (currPage.includes("Gallery")) {
                     if (imageOrder === currStart[0]) {
                         setDisplayPrev(false);
                     }
-                    else if (imageOrder === currEnd[2]) {
+                    else if (imageOrder === currEnd[3]) {
                         setDisplayNext(false);
                     }
                     else {

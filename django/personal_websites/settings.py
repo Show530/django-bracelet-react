@@ -26,7 +26,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv()  # reads .env file
 
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
-# SECRET_KEY = 'django-insecure-&&j)tnsfq478pl#fk%_c5jhc8s&50p&kz8opu8!v_93oe2xsn0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -52,17 +51,16 @@ INSTALLED_APPS = [
     
     'rest_framework', # for API usage
     'rest_framework.authtoken', # for oauth
+    'dj_rest_auth', # for oauth
     'corsheaders', # for API usage
     'django_filters', # for API filtering
 
     # for oauth
     'allauth',
     'allauth.account',
+    'dj_rest_auth.registration',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
-
-    'dj_rest_auth',
-    'dj_rest_auth.registration',
 
     'bracelet_backend', # FOR bracelet website
 ]
@@ -89,10 +87,12 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.AllowAny',
     ],
     'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
         'dj_rest_auth.jwt_auth.JWTCookieAuthentication',
     ),
 }
 
+# for oauth
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
@@ -128,16 +128,66 @@ MIDDLEWARE = [
 # for API usage
 # https://medium.com/@gazzaazhari/django-backend-react-frontend-basic-tutorial-6249af7964e4
 # and using vite react
-CORS_ORIGIN_WHITELIST = (
+CORS_ORIGIN_WHITELIST = [
     'http://localhost:5173',
     # 'http://127.0.0.1:5173',
     # 'http://192.0.2.215:800',
     'http://192.0.2.215:5173',
-)
+]
 #  old port using create-react-app
 #  'http://localhost:3000',
+# And for crFedentials support:
+CORS_ALLOW_CREDENTIALS = True
+# added for oauth
+CORS_ALLOWED_ORGINS = [
+    'http://localhost:5173',
+    'http://192.0.2.215:5173',
+]
+CORS_ALLOW_HEADERS = [
+    'accept', 
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+    ]
 
 
+# for oauth
+ACCOUNT_LOGIN_METHODS = {'email'}
+ACCOUNT_SIGNUP_FIELDS = [
+    'email*',
+    'password1*',
+    'password2*'
+]
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+
+# ACCOUNT_EMAIL_REQUIRED = True
+# ACCOUNT_USERNAME_REQUIRED = False
+# ACCOUNT_AUTHENTICATION_METHOD = "email"
+# ACCOUNT_UNIQUE_EMAIL = True
+# ACCOUNT_SIGNUP_FIELDS = {
+#     "username": {"required": False},
+#     "email": {"required": False},
+# }
+# fixing django expectations for backend
+SOCIALACCOUNT_AUTO_SIGNUP = True
+SOCIALACCOUNT_EMAIL_AUTHENTICATION = True
+SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
+SOCIALACCOUNT_LOGIN_ON_GET = True
+
+# still oauth
+REST_AUTH = {
+    "USE_JWT": True,
+    "JWT_AUTH_HTTPONLY": False,
+    "USER_DETAILS_SERIALIZER": "bracelet_backend.serializers.UserSerializer",
+}
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
 
 ROOT_URLCONF = 'personal_websites.urls'
 

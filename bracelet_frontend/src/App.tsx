@@ -4,6 +4,7 @@
 // Bracelets that are being sold
 import {createBrowserRouter, Route, RouterProvider, Routes} from "react-router";
 // import Nav from "./components/Navbar/Nav.tsx";
+import ProtectedRoute from "./components/Navbar/ProtectedRoute.tsx";
 import Header from "./components/Header.tsx"
 import Footer from "./components/Footer";
 
@@ -14,6 +15,7 @@ import AdminGallery from "./components/AdminRelated/AdminGallery.tsx";
 import styled from "styled-components";
 import Gallery from "./components/Gallery.tsx";
 import ImageDetails from "./components/ImageDetails.tsx";
+import Landing from "./auth/login.tsx";
 
 const StyledPageWrapper = styled.div`
     //width: 80vw;
@@ -74,7 +76,12 @@ function Root() {
                         <Route path={`/Selling/:imageOrder`} element={<ImageDetails/>} />
 
                         <Route path={'/About'} element={<About/>} />
-                        <Route path={'/AdminGallery'} element={<AdminGallery/>} />
+                        <Route path={'/AdminGallery'} element={
+                            <ProtectedRoute requireStaff={true}>
+                                <AdminGallery />
+                            </ProtectedRoute>
+                            } />
+                        <Route path={'/Login'} element={<Landing/>}/>
                     </Routes>
                 </StyledMain>
             </StyledContent>

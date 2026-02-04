@@ -53,7 +53,7 @@ class ImageFilter(django_filters.FilterSet):
     def year_filter(self, queryset, name, value):
         '''Custom filter to filter for the last finish date in a set of bracelets'''
         # currImage = Image.objects.filter(image_pk=self.pk)
-        if value == 2023 or value == 2024 or value == 2025:
+        if value == 2023 or value == 2024 or value == 2025 or value == 2026:
             # The following gets all of the Images that have bracelets within the filtered year
             # yearB = Bracelet.objects.filter(endDate__year=value)
             # yearBI = BraceletImage.objects.filter(bracelet__in=yearB)

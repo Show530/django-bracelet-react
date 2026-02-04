@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import axios from "axios";
 
 import type {Bracelet} from "../../interfaces/Bracelet.ts";
+import ErrorPage from "../Error.tsx";
 import Loading from "../Loading.tsx";
 import Modal from "./Modal.tsx"
 import {useParams} from "react-router";
@@ -49,6 +50,7 @@ export default function AdminGallery() {
     const params = useParams();
     const currPage = params["*"] ?? "";
     const[data, setData] = useState<Bracelet[]>([]);
+    const [err, setErr] = useState<Error | null>(null);
     const[modalOpen, setModalOpen] = useState(false);
     const[activeBracelet, setActiveBracelet] = useState<Bracelet>(
         {
@@ -77,7 +79,8 @@ export default function AdminGallery() {
             setData(res.data);
         }
         catch (err) {
-            console.log("Error when refreshing list: ", err)
+            console.log("Error when refreshing list: ", err);
+            setErr(err as Error);
         }
         // axios.get("/api/bracelets/")
         //     .then((res) => setData(res.data))
@@ -106,18 +109,30 @@ export default function AdminGallery() {
                     formData.append("caption", caption)
                 }
             }
-            const headers = { "Content-Type": "multipart/form-data" };
+            const multHeaders = { "Content-Type": "multipart/form-data" };
 
             // this is back to old code
             if (bracelet.id) {
                 // await axios.put(`/api/bracelets/${bracelet.id}/`, bracelet);
                 console.log(Object.fromEntries(formData.entries()));
-                await axios.put(`/api/bracelets/${bracelet.id}/`, formData, {headers});
+                await axios.put(`/api/bracelets/${bracelet.id}/`, formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        Authorization: `Bearer ${localStorage.getItem("access_token")}`
+                    }
+                }
+                );
             }
             else {
                 // await axios.post(`/api/bracelets/`, bracelet);
                 console.log(Object.fromEntries(formData.entries()));
-                await axios.post('/api/bracelets/', formData, {headers});
+                await axios.post('/api/bracelets/', formData, {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        Authorization: `Bearer ${localStorage.getItem("access_token")}`
+                    }
+                }
+                );
             }
             await refreshList();
         }
@@ -167,11 +182,16 @@ export default function AdminGallery() {
     //     axios.get("/api/bracelets/").then((res) => setData(res.data)).catch((err) => console.log(err));
     // }, [data.length]);
 
-
+    if(err != null) {
+        return (
+            <ErrorPage err={err}/>
+        );
+    }
 
     if(!data.length) {
-    return <Loading where={currPage}/>;
+        return <Loading where={currPage}/>;
     }
+
 
     return (
         <ParentDiv>

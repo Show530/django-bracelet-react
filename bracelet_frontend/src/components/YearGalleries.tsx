@@ -48,6 +48,7 @@ export default function YearGalleries() {
     const [randomTwentyThree, setRandomTwentyThree] = useState<Image | null>(null);
     const [randomTwentyFour, setRandomTwentyFour] = useState<Image | null>(null);
     const [randomTwentyFive, setRandomTwentyFive] = useState<Image | null>(null);
+    const [randomTwentySix, setRandomTwentySix] = useState<Image | null>(null);
 
     const [err, setErr] = useState<Error | null>(null);
 
@@ -62,16 +63,18 @@ export default function YearGalleries() {
     useEffect(() => {
         const fetchAllData = async () => {
             try {
-                const [res23, res24, res25] = await Promise.all([
+                const [res23, res24, res25, res26] = await Promise.all([
                     axios.get("api/images/?favorite=true&year=2023"),
                     axios.get("api/images/?favorite=true&year=2024"),
-                    axios.get("api/images/?favorite=true&year=2025")
+                    axios.get("api/images/?favorite=true&year=2025"),
+                    axios.get("api/images/?favorite=true&year=2026"),
                 ]);
 
                 const getRandomImage = (arr: Image[]) => arr[Math.floor(Math.random() * arr.length)];
                 setRandomTwentyThree(getRandomImage(res23.data));
                 setRandomTwentyFour(getRandomImage(res24.data));
                 setRandomTwentyFive(getRandomImage(res25.data));
+                setRandomTwentySix(getRandomImage(res26.data));
             }
             catch (err) {
                 console.log(err);
@@ -89,7 +92,7 @@ export default function YearGalleries() {
         );
     }
 
-    if(!randomTwentyThree && !randomTwentyFour && !randomTwentyFive) {
+    if(!randomTwentyThree && !randomTwentyFour && !randomTwentyFive && !randomTwentySix) {
         return (
             <Loading where="Year Galleries"/>
         );
@@ -145,6 +148,22 @@ export default function YearGalleries() {
                           />
                       }
                       <StyledH1>2025</StyledH1>
+                  </div>
+              </StyledLink>
+          </StyledImgH1Div>
+          <StyledImgH1Div>
+              <StyledLink to="/YearGalleries/2026">
+                  <div>
+                      { randomTwentySix &&
+                          <StyledImg
+                              loading="lazy"
+                              src={randomTwentySix.image_url}
+                              alt={randomTwentySix.caption}
+                              // when image is loaded, set the class to loaded to put the opacity back to 1
+                              onLoad={(event) => event.currentTarget.classList.add("loaded")}
+                          />
+                      }
+                      <StyledH1>2026</StyledH1>
                   </div>
               </StyledLink>
           </StyledImgH1Div>

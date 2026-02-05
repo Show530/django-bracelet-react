@@ -3,7 +3,7 @@ import type {Bracelet} from '../../interfaces/Bracelet.ts';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 // import Typography from '@mui/material/Typography';
-
+import { useAuth } from '../../auth/AuthContext.tsx';
 
 // const SingleBraceletDiv=styled.div`
 //     display: flex;
@@ -107,7 +107,10 @@ function switchGoingWhere(goingWhere:string) {
     }
 }
 
+
 export default function SingleBracelet(props:{bracelet:Bracelet, num: number, selling: boolean}) {
+    const {isAuthenticated, user} = useAuth();
+
     let bType;
     if (props.bracelet && props.bracelet.bType) {
         bType= switchbType(props.bracelet.bType);
@@ -177,6 +180,18 @@ export default function SingleBracelet(props:{bracelet:Bracelet, num: number, se
     //     </SingleBraceletDiv>
     // );
     const cardWidth = props.num <= 2 ? "40%" : "25%";
+
+    
+    const myEmail = "accsophsories@gmail.com"
+    const subject = "Looking to purchase " + props.bracelet.name
+    const body = `Hi!\n\nI’m interested in purchasing this item: \nName: ${props.bracelet.name}\nID: ${props.bracelet.id}\nLength: ${bLength}\nColors: ${ props.bracelet.numColors}\nPrice: \$${props.bracelet.price}
+    \nMy details:\nName: \nShipping location: \nAdditional information (if any): 
+    \nThanks!`
+
+    const mailToUrl = `mailto:${myEmail}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+// \n\n Link: ${} 
+    
+
     return (
         // Inspiration from https://chuckdries.com/
         // <SingleBraceletDiv>
@@ -216,8 +231,7 @@ export default function SingleBracelet(props:{bracelet:Bracelet, num: number, se
                         <StyledLabel>Dates created:</StyledLabel>
                         <StyledVal>{props.bracelet.startDate} - {props.bracelet.endDate}</StyledVal>
                     </StyledItem>
-                    { props.selling
-                        ?
+                    { props.selling &&
                         // eventually will have price here!
                         (
                             <StyledItem>
@@ -225,7 +239,16 @@ export default function SingleBracelet(props:{bracelet:Bracelet, num: number, se
                                 <StyledVal>${props.bracelet.price}</StyledVal>
                             </StyledItem>
                         )
-                        :
+                    }
+                    { isAuthenticated && props.selling && (
+                        <StyledItem> 
+                            <a href={mailToUrl} target="_blank" rel="noopener noreferrer">
+                                <StyledLabel>Send a request email</StyledLabel>
+                            </a>
+                        </StyledItem>
+                        )
+                    }
+                    { !props.selling && 
                         (<StyledItem>
                             <StyledLabel>Where's it going?:</StyledLabel>
                             <StyledVal>{goingWhere}</StyledVal>

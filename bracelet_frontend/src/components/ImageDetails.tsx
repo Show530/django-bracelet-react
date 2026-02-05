@@ -13,7 +13,7 @@ import Loading from "./Loading.tsx";
 
 import { MdOutlineArrowForwardIos } from "react-icons/md";
 import { MdOutlineArrowBackIos } from "react-icons/md";
-
+import { useNavigate } from "react-router";
 
 const StyledImg = styled.img`
     width: 40%;
@@ -59,8 +59,9 @@ export default function ImageDetails() {
 
     const [displayPrev, setDisplayPrev] = useState<boolean>(true);
     const [displayNext, setDisplayNext] = useState<boolean>(true);
+    const navigate = useNavigate();
 
-
+    // useEffect that collects/sets the data
     useEffect(() => {
         const fetchAllData = async () => {
             try {
@@ -170,6 +171,46 @@ export default function ImageDetails() {
         };
         fetchAllData();
     }, [imageOrder, currPage, selling, year]);
+
+
+    // useEffect for button clicks:
+    useEffect(()=> {
+
+        const handleKeyPress = (event: KeyboardEvent) =>  {
+            // if left arrow key is clicked and previous page is possible
+            if (event.key === 'ArrowLeft' && displayPrev) {
+                // if year, navigate to year page
+                if(year) {
+                    navigate(`/${currPage}/${year}/${String(Number(imageOrder) - 1)}`);
+                }
+                // else navigate to gallery page
+                else {
+                    navigate(`/${currPage}/${String(Number(imageOrder) - 1)}`);
+                }
+            }
+            // if right arrow key is clicked and next page is possible
+            if (event.key === 'ArrowRight' && displayNext) {
+                // if year, navigate to year page
+                if(year) {
+                    navigate(`/${currPage}/${year}/${String(Number(imageOrder) + 1)}`);
+                }
+                // else navigate to gallery page
+                else {
+                    navigate(`/${currPage}/${String(Number(imageOrder) + 1)}`);
+                }
+            }
+        }
+
+        // Add event listener- adds handlekeypress as function
+        window.addEventListener('keydown', handleKeyPress);
+
+        // Cleanup - remove listener when component unmounts
+        return () => {
+            window.removeEventListener('keydown', handleKeyPress);
+        };
+
+    }, [displayPrev, displayNext, year, currPage, imageOrder]);
+
 
     if(err != null) {
         return (

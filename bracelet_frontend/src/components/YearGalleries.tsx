@@ -28,6 +28,7 @@ const StyledImg = styled.img`
     max-width: 70%;
     height: auto;
     border-radius: 25px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
     
     // CSS to make fade in
     transition: opacity 0.5s ease-in-out;

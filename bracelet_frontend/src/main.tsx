@@ -6,6 +6,8 @@ import {GoogleOAuthProvider} from '@react-oauth/google';
 // adds auth context to whole application
 import { AuthProvider } from './auth/AuthContext.tsx';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { ThemeProvider } from 'styled-components';
+import {theme} from "./theme.ts";
 
 const clientId = import.meta.env.VITE_CLIENT_ID;
 
@@ -17,7 +19,9 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <GoogleOAuthProvider clientId={clientId}>
       <AuthProvider>
-        <App />
+        <ThemeProvider theme={theme}>
+          <App />
+        </ThemeProvider>
       </AuthProvider>
     </GoogleOAuthProvider>
   </StrictMode>,

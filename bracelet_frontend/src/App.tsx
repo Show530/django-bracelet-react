@@ -21,7 +21,12 @@ const StyledPageWrapper = styled.div`
     //width: 80vw;
     //background-color: pink;
     //background-color: #D4CDF4; c3beb6
-    background-color: #acb5b3;
+    // background-color: #acb5b3;
+    background: linear-gradient(
+        180deg,
+        #e6ecea 0%,
+        #dde5e2 100%
+        );
 
 
     margin: auto;
@@ -37,8 +42,15 @@ const StyledPageWrapper = styled.div`
 
 const StyledContent = styled.div`
     width: 80vw;
-    //background-color: #D4CDF4;
     margin: auto;
+
+    // testing
+    // background: rgba(255,255,255,0.55);
+    // border-radius: 16px;
+    // padding: 1.5rem;
+
+    // box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    // end testing
 
     flex: 1;
     display: flex;

@@ -30,7 +30,7 @@ const StyledItem = styled.div`
 
 const StyledLabel = styled.h3 `
     //font-size: 1.5rem;
-    font: clamp(10px, calc(8px + 1vw), 26px) Georgia, Garamond, serif;
+    font-size: ${({theme}) => theme.text.label};
     color: #666;
     text-transform: lowercase;
     letter-spacing: 0.03em;
@@ -38,8 +38,7 @@ const StyledLabel = styled.h3 `
 
 const StyledVal = styled.h3 `
     //font-size: 3rem;
-    //   font: clamp(12px, calc(24px + 2vw), 40px) Georgia, Garamond, serif;
-    font: clamp(12px, calc(10px + 2vw), 30px) Georgia, Garamond, serif;
+    font-size: ${({theme}) => theme.text.value};
     font-weight: 500;
     color: #111;
 

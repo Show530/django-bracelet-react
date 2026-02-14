@@ -66,8 +66,7 @@ const Label = styled.label`
 
 const Input = styled.input`
     padding: 0.5rem;
-    //font-size: clamp(14px, calc(12px + 2vw), 40px);
-    font-size: clamp(0.9rem, 1rem, 1.1rem);
+    font-size: ${({theme}) => theme.text.body};
     border: 1px solid #ccc;
     border-radius: 6px;
     //width: 100%;
@@ -80,9 +79,7 @@ const Input = styled.input`
 
 const Select = styled.select`
     padding: 0.5rem;
-    //font-size: clamp(14px, calc(12px + 2vw), 40px);
-    font-size: clamp(0.9rem, 1rem, 1.1rem);
-
+    font-size: ${({theme}) => theme.text.body};
     border: 1px solid #ccc;
     border-radius: 6px;
     background: white;

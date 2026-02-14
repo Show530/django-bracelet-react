@@ -20,6 +20,7 @@ const StyledImg = styled.img`
     display: block;
     margin: 2% auto;
     border-radius: 25px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
 `;
 
 const RowDiv = styled.div`

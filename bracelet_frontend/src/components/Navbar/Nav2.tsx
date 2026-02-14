@@ -1,7 +1,5 @@
 // import {Link} from 'react-router';
 import styled from "styled-components";
-// import DesktopNav from "./DesktopNav.tsx";
-// import MobileNav from "./MobileNav.tsx";
 // import {Link} from 'react-router';
 import {IoCloseOutline, IoMenuOutline} from "react-icons/io5";
 import { useState } from "react";
@@ -98,14 +96,14 @@ export default function Nav2() {
                                 />)
                             }
                             (   <>
-                                    {click && <NavList isClicked={true} closeMenu={closeMenu} />}
+                                    {click && <NavList size="M" isClicked={true} closeMenu={closeMenu} />}
                                 </>
                             )
                         </>
                     )
                     :
                     // Desktop view
-                    (<NavList isClicked={undefined} closeMenu={undefined}/>)}
+                    (<NavList size="D" isClicked={undefined} closeMenu={undefined}/>)}
             </StyledNav>
         </>
     );

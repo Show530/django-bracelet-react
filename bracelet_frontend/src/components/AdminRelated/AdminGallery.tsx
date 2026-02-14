@@ -7,7 +7,6 @@ import ErrorPage from "../Error.tsx";
 import Loading from "../Loading.tsx";
 import Modal from "./Modal.tsx"
 import {useParams} from "react-router";
-// import AdminBracelets from "./Displays/AdminBracelets.tsx";
 
 
 const ParentDiv=styled.div`

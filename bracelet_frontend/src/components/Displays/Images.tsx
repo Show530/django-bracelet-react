@@ -53,7 +53,7 @@ type RouteParams = {
 export default function Images(props: {data: Image[]}) {
     const params = useParams<RouteParams>();
     const currPage = params["*"] ?? "";
-    // console.log("Curr page: ", currPage);
+
     return (
         <>
             <AllImagesDiv>

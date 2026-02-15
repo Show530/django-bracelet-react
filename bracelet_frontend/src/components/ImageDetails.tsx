@@ -32,6 +32,10 @@ const RowDiv = styled.div`
     margin: auto;
 `;
 
+// const AnimatedLink = L`
+
+// `
+
 type RouteParams = {
     // because the route uses a wildcard
     "*": string;
@@ -68,7 +72,7 @@ export default function ImageDetails() {
             try {
                 // setting arrays for start/end arrows
                 const response = await axios.get('/api/year-boundaries/');
-                const yearBoundsRes: YearBounds = response.data
+                const yearBoundsRes: YearBounds = response.data;
         
 
                 // call for getting image data

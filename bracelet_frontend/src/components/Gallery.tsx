@@ -27,24 +27,9 @@ export default function Gallery() {
     const currPage = params["*"] ?? "";
     const year = params["year"] ?? "";
 
-    // console.log(currPage)
     // useEffect hook for error stuff and re-loading
     useEffect(() => {
-        // async function fetchData(): Promise<void> {
-        //     // fix where we're fetching from to axios!
-        //     // axios.get("/api/")
-        //     // const rawData = await fetch("https://www.amiiboapi.com/api/amiibo/?type=Card");
-        //     // axios.get("/api/").set
-        //     // const {bracelet} : {bracelet: Bracelet[]} = await rawData.json();
-        //     // setData(bracelet);
-        // }
-        // fetchData()
-        //     .then(() => console.log("Fetched data successfully!"))
-        //     .catch((e: Error)=> console.log("There was an error: " + e))
-        // if () {
-        //
-        // }
-        // elif (year != null) {
+        // if on the gallery selling page, load that data
         if (currPage == "Selling") {
             axios.get("/api/images/?selling=true").
             then((res) => setData(res.data)).
@@ -53,6 +38,7 @@ export default function Gallery() {
                 setErr(err);
             });
         }
+        // if on the gallery year page, load that data
         else if (year != null) {
             axios.get(`/api/images/?year=${year}`)
                 .then((res) => setData(res.data))
@@ -61,6 +47,7 @@ export default function Gallery() {
                     setErr(err);
                 });
         }
+        // otherwise load all image data
         else {
             axios.get("/api/images/")
                 .then((res) => setData(res.data))

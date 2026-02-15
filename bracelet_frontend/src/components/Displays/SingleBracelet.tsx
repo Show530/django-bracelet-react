@@ -125,59 +125,6 @@ export default function SingleBracelet(props:{bracelet:Bracelet, num: number, se
         goingWhere = switchGoingWhere(props.bracelet.goingWhere);
     }
 
-    // return (
-    //     // Inspiration from https://chuckdries.com/
-    //     <SingleBraceletDiv>
-    //         <StyledItem>
-    //             <StyledLabel>Name:</StyledLabel>
-    //             <StyledVal>{props.bracelet.name}</StyledVal>
-    //         </StyledItem>
-    //         {props.bracelet.pattern_url && (
-    //             <>
-    //                 <StyledItem>
-    //                     <StyledLabel>Pattern:</StyledLabel>
-    //                     <StyledVal>
-    //                         <a href={props.bracelet.pattern_url} target="_blank">
-    //                             {props.bracelet.pattern_url}
-    //                         </a>
-    //                     </StyledVal>
-    //                 </StyledItem>
-    //             </>
-    //         )
-    //         }
-    //         <StyledItem>
-    //             <StyledLabel>Bracelet type:</StyledLabel>
-    //             <StyledVal>{bType}</StyledVal>
-    //         </StyledItem>
-    //         <StyledItem>
-    //             <StyledLabel>Length:</StyledLabel>
-    //             <StyledVal>{bLength}</StyledVal>
-    //         </StyledItem>
-    //         <StyledItem>
-    //             <StyledLabel>Number of colors:</StyledLabel>
-    //             <StyledVal>{props.bracelet.numColors}</StyledVal>
-    //         </StyledItem>
-    //         <StyledItem>
-    //             <StyledLabel>Dates created:</StyledLabel>
-    //             <StyledVal>{props.bracelet.startDate} - {props.bracelet.endDate}</StyledVal>
-    //         </StyledItem>
-    //         { props.selling
-    //             ?
-    //             // eventually will have price here!
-    //             (
-    //                 <StyledItem>
-    //                     <StyledLabel>Price:</StyledLabel>
-    //                     <StyledVal>${props.bracelet.price}</StyledVal>
-    //                 </StyledItem>
-    //             )
-    //             :
-    //             (<StyledItem>
-    //                 <StyledLabel>Where's it going?:</StyledLabel>
-    //                 <StyledVal>{goingWhere}</StyledVal>
-    //             </StyledItem>)
-    //         }
-    //     </SingleBraceletDiv>
-    // );
     const cardWidth = props.num <= 2 ? "40%" : "25%";
 
     

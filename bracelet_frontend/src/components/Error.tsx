@@ -1,7 +1,26 @@
+import styled from 'styled-components';
+
 
 interface errProps {
     err: Error;
 }
+
+const StyledDiv = styled.div`
+    margin: 1%;
+`;
+
+const StyledText = styled.h2`
+    margin: auto;
+    text-align: center;
+    font-size: ${({theme}) => theme.text.body};
+`;
+
+const StyledSmaller = styled.p`
+    margin: auto;
+    text-align: center;
+    font-size: ${({theme}) => theme.text.label};
+`;
+
 
 export default function ErrorPage({err}: errProps) {
     // This page doesn't exist-
@@ -10,36 +29,48 @@ export default function ErrorPage({err}: errProps) {
     // database is down!!
     if(err) {
         if(err.message === ("Request failed with status code 500")) {
-            return <h2>Having issues connecting to the database!</h2>
+            return (
+                <StyledDiv>
+                    <StyledText>Having issues connecting to the database!</StyledText>
+                </StyledDiv>
+            );
         }
         else if (err.message === ("Image not found")) {
-            return <h2>Having issues finding the image.</h2>;
+            return (
+                <StyledDiv>
+                    <StyledText>Having issues finding the image.</StyledText>
+                </StyledDiv>
+                );
         }
         else if (err.message === ("No selling bracelets")) {
             return (
-                <>
-                    <h2>No bracelets are being sold for this image.</h2>
-                    <p>Did you change the url?</p>
-                </>
+                <StyledDiv>
+                    <StyledText>No bracelets are being sold for this image.</StyledText>
+                    <StyledSmaller>Did you change the url?</StyledSmaller>
+                </StyledDiv>
             );
         }
         else if(err.message === ("Year mismatch")) {
             return (
-                <>
-                    <h2>The image selected has no bracelets from the year in the url.</h2>
-                    <p>Did you change the url?</p>
-                </>
+                <StyledDiv>
+                    <StyledText>The image selected has no bracelets from the year in the url.</StyledText>
+                    <StyledSmaller>Did you change the url?</StyledSmaller>
+                </StyledDiv>
             );
         }
         else {
             return (
-                <h2>There was an error!</h2>
+                <StyledDiv>
+                     <StyledText>There was an error!</StyledText>
+                </StyledDiv>
             );
         }
     }
 
     // General error
     return (
-        <h2>There was an error!</h2>
+        <StyledDiv>
+            <StyledText>There was an error!</StyledText>
+        </StyledDiv>
     );
 }

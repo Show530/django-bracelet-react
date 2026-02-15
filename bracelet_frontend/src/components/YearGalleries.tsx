@@ -10,9 +10,14 @@ import ErrorPage from "./Error.tsx";
 import Loading from "./Loading.tsx";
 
 const StyledDiv = styled.div`
-    display: flex;
-    align-items: center;
     justify-items: center;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    padding: 0.5rem;
+
+    @media (max-width: 800px) {
+        grid-template-columns: 1fr;
+    }
 `;
 
 const StyledLink = styled(Link)`
@@ -21,8 +26,11 @@ const StyledLink = styled(Link)`
 `;
 
 const StyledImgH1Div = styled.div`
-    justify-content: center;
-    margin: auto;
+    // justify-content: center;
+    // margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 `;
 
 const StyledImg = styled.img`
@@ -54,19 +62,12 @@ interface YearImage {
 }
 
 export default function YearGalleries() {
-    // const [imageYearArr, setImageYearArr] = useState<Record<string, Image | null>>({});
     const [imageYearArr, setImageYearArr] = useState<YearImage[] | null>(null);
-
-    // const [randomTwentyThree, setRandomTwentyThree] = useState<Image | null>(null);
-    // const [randomTwentyFour, setRandomTwentyFour] = useState<Image | null>(null);
-    // const [randomTwentyFive, setRandomTwentyFive] = useState<Image | null>(null);
-    // const [randomTwentySix, setRandomTwentySix] = useState<Image | null>(null);
-
     const [err, setErr] = useState<Error | null>(null);
 
     // const [loadedCount, setLoadedCount] = useState(0);
     // const allLoaded = loadedCount === 3;
-    //
+    
     // const handleImageLoad = () => {
     //     setLoadedCount(prev => prev + 1);
     // };

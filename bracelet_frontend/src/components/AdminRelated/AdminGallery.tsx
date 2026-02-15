@@ -35,6 +35,7 @@ const StyledTd = styled.td`
 const AddBraceletDiv = styled.div`
     display: flex;
     justify-items: center;
+    margin: 1%;
 `;
 
 const StyledButton = styled.button`

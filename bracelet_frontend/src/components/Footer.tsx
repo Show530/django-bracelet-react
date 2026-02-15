@@ -4,10 +4,12 @@ import { FaInstagram } from "react-icons/fa";
 
 const StyledFooter = styled.footer`
     margin: auto;
+    justify-content: center;
 `;
 
 const StyledP = styled.p`
     font-size: ${({theme}) => theme.text.body};
+    text-align: center;
 `;
 
 export default function Footer() {

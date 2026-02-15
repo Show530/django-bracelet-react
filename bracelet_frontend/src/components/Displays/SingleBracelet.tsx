@@ -2,23 +2,21 @@ import styled from 'styled-components';
 import type {Bracelet} from '../../interfaces/Bracelet.ts';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
-// import Typography from '@mui/material/Typography';
 import { useAuth } from '../../auth/AuthContext.tsx';
 
-// const SingleBraceletDiv=styled.div`
-//     display: flex;
-//     flex-direction: column;
-//     justify-content: center;
-//     max-width: 35%;
-//     padding: 1%;
-//     margin: 1%;
-//     //font: calc(20px + 5vw) Georgia, Garamond, serif;
-//     //Copperplate, fantasy
-//     text-align: center;
-//     //border: 1px inset green;
-//     color: #544B6C;
-//     //overflow-wrap: break-word;
-// `;
+const StyledCard = styled(Card) `
+    width: 100px; 
+    max-width: 360px; 
+    min-width: 280px; 
+    height: 100%; 
+    border-radius: 16px; 
+    margin: 0 auto;
+    // Add mobile styles
+    @media (max-width: 800px) {
+        width: calc(100% - 1rem);
+        max-width: 400px;
+    }
+`;
 
 const StyledItem = styled.div`
     display: flex;
@@ -26,6 +24,7 @@ const StyledItem = styled.div`
     align-items: center;
     // keeps label close to value
     gap: 0.2rem;
+    // width: 100%;
 `;
 
 const StyledLabel = styled.h3 `
@@ -124,9 +123,6 @@ export default function SingleBracelet(props:{bracelet:Bracelet, num: number, se
     if (props.bracelet && props.bracelet.goingWhere) {
         goingWhere = switchGoingWhere(props.bracelet.goingWhere);
     }
-
-    const cardWidth = props.num <= 2 ? "40%" : "25%";
-
     
     const myEmail = "accsophsories@gmail.com"
     const subject = "Looking to purchase " + props.bracelet.name
@@ -140,9 +136,7 @@ export default function SingleBracelet(props:{bracelet:Bracelet, num: number, se
 
     return (
         // Inspiration from https://chuckdries.com/
-        // <SingleBraceletDiv>
-        //     <Card sx={{ width: "40%", m: "2%" , borderRadius: 4, boxShadow: 3 }}>
-        <Card sx={{ width: cardWidth, m: "2%" , borderRadius: 4, boxShadow: 3 }}>
+        <StyledCard elevation={3}>
                 <CardContent>
                     <StyledItem>
                         <StyledLabel>Name:</StyledLabel>
@@ -201,7 +195,6 @@ export default function SingleBracelet(props:{bracelet:Bracelet, num: number, se
                         </StyledItem>)
                     }
                 </CardContent>
-            </Card>
-        // </SingleBraceletDiv>
+            </StyledCard>
     );
 }

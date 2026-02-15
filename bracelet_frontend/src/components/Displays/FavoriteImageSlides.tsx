@@ -1,11 +1,11 @@
-import type {Image} from '../../interfaces/Image.ts'
+import type { Image } from '../../interfaces/Image.ts'
 import CollectionSlide from './CollectionSlide.tsx'
 import styled from 'styled-components';
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 
-import 'swiper/swiper-bundle.css'
+import 'swiper/swiper-bundle.css';
 
 // import "swiper/css";
 // import "swiper/css/navigation";
@@ -14,11 +14,17 @@ import 'swiper/swiper-bundle.css'
 const StyledSwiper = styled(Swiper)`
     width: 100%;
     // added
-    max-height: 100vh;
+    max-height: 90vh;
 
     // changed from 4 to 2
     padding-block: 1rem;
-
+    background: white;
+    border-radius: 15px;
+    margin: 2% 0;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+     @media (max-width: 800px) {
+        max-height: 100vh;
+    }
 `;
 
 export default function FavoriteImageSlides(props:{images:Image[]}) {

@@ -2,7 +2,10 @@ import styled from 'styled-components';
 import {Link} from "react-router";
 import {useState, useEffect} from "react";
 import axios from "axios";
+
 import type {Image} from "../interfaces/Image.ts";
+import type {YearBounds} from "../interfaces/YearBounds.ts"
+
 import ErrorPage from "./Error.tsx";
 import Loading from "./Loading.tsx";
 
@@ -40,16 +43,24 @@ const StyledImg = styled.img`
 `;
 
 const StyledH1 = styled.h1`
-    font: clamp(22px, calc(18px + 2vw), 34px) Georgia, Garamond, serif;
+    font-size: ${({theme}) => theme.text.subheading};
     margin: auto;
     text-align: center;
 `;
 
+interface YearImage {
+    year: string;
+    image: Image | null;
+}
+
 export default function YearGalleries() {
-    const [randomTwentyThree, setRandomTwentyThree] = useState<Image | null>(null);
-    const [randomTwentyFour, setRandomTwentyFour] = useState<Image | null>(null);
-    const [randomTwentyFive, setRandomTwentyFive] = useState<Image | null>(null);
-    const [randomTwentySix, setRandomTwentySix] = useState<Image | null>(null);
+    // const [imageYearArr, setImageYearArr] = useState<Record<string, Image | null>>({});
+    const [imageYearArr, setImageYearArr] = useState<YearImage[] | null>(null);
+
+    // const [randomTwentyThree, setRandomTwentyThree] = useState<Image | null>(null);
+    // const [randomTwentyFour, setRandomTwentyFour] = useState<Image | null>(null);
+    // const [randomTwentyFive, setRandomTwentyFive] = useState<Image | null>(null);
+    // const [randomTwentySix, setRandomTwentySix] = useState<Image | null>(null);
 
     const [err, setErr] = useState<Error | null>(null);
 
@@ -64,18 +75,31 @@ export default function YearGalleries() {
     useEffect(() => {
         const fetchAllData = async () => {
             try {
-                const [res23, res24, res25, res26] = await Promise.all([
-                    axios.get("api/images/?favorite=true&year=2023"),
-                    axios.get("api/images/?favorite=true&year=2024"),
-                    axios.get("api/images/?favorite=true&year=2025"),
-                    axios.get("api/images/?favorite=true&year=2026"),
-                ]);
+                // get year boundaries
+                const response = await axios.get('/api/year-boundaries/');
+                const yearBoundsRes: YearBounds = response.data;
+                const years = Object.keys(yearBoundsRes);
+                
+                // get data for each year favorite
+                const reqs = years.map(year =>
+                    axios.get(`api/images/?favorite=true&year=${year}`)
+                );
+                const resps = await Promise.all(reqs);
 
+                // get random image function
                 const getRandomImage = (arr: Image[]) => arr[Math.floor(Math.random() * arr.length)];
-                setRandomTwentyThree(getRandomImage(res23.data));
-                setRandomTwentyFour(getRandomImage(res24.data));
-                setRandomTwentyFive(getRandomImage(res25.data));
-                setRandomTwentySix(getRandomImage(res26.data));
+
+                // now sort through to get a random favorite image per year
+                // and assign data
+                const favsPerYear: YearImage[] = resps.map((res, index) => ({
+                    year: years[index],
+                    image: res.data.length > 0
+                            ? getRandomImage(res.data)
+                            : null
+                }));
+
+                // set image and year array
+                setImageYearArr(favsPerYear);
             }
             catch (err) {
                 console.log(err);
@@ -93,7 +117,7 @@ export default function YearGalleries() {
         );
     }
 
-    if(!randomTwentyThree && !randomTwentyFour && !randomTwentyFive && !randomTwentySix) {
+    if(!imageYearArr) {
         return (
             <Loading where="Year Galleries"/>
         );
@@ -101,73 +125,29 @@ export default function YearGalleries() {
 
     return (
 
-      <StyledDiv>
-          <StyledImgH1Div>
-              <StyledLink to="/YearGalleries/2023">
-                  <StyledImgH1Div>
-                      { randomTwentyThree &&
-                          <StyledImg
-                              loading="lazy"
-                              src={randomTwentyThree.image_url}
-                              alt={randomTwentyThree.caption}
-                              // when image is loaded, set the class to loaded to put the opacity back to 1
-                              onLoad={(event) => event.currentTarget.classList.add("loaded")}
-                          />
-                      }
-                      <StyledH1>2023</StyledH1>
-                  </StyledImgH1Div>
-              </StyledLink>
-          </StyledImgH1Div>
-
-          <StyledImgH1Div>
-              <StyledLink to="/YearGalleries/2024">
-                  <StyledImgH1Div>
-                      { randomTwentyFour &&
-                          <StyledImg
-                              loading="lazy"
-                              src={randomTwentyFour.image_url}
-                              alt={randomTwentyFour.caption}
-                              // when image is loaded, set the class to loaded to put the opacity back to 1
-                              onLoad={(event) => event.currentTarget.classList.add("loaded")}
-                          />
-                      }
-                      <StyledH1>2024</StyledH1>
-                  </StyledImgH1Div>
-              </StyledLink>
-          </StyledImgH1Div>
-
-          <StyledImgH1Div>
-              <StyledLink to="/YearGalleries/2025">
-                  <div>
-                      { randomTwentyFive &&
-                          <StyledImg
-                              loading="lazy"
-                              src={randomTwentyFive.image_url}
-                              alt={randomTwentyFive.caption}
-                              // when image is loaded, set the class to loaded to put the opacity back to 1
-                              onLoad={(event) => event.currentTarget.classList.add("loaded")}
-                          />
-                      }
-                      <StyledH1>2025</StyledH1>
-                  </div>
-              </StyledLink>
-          </StyledImgH1Div>
-          <StyledImgH1Div>
-              <StyledLink to="/YearGalleries/2026">
-                  <div>
-                      { randomTwentySix &&
-                          <StyledImg
-                              loading="lazy"
-                              src={randomTwentySix.image_url}
-                              alt={randomTwentySix.caption}
-                              // when image is loaded, set the class to loaded to put the opacity back to 1
-                              onLoad={(event) => event.currentTarget.classList.add("loaded")}
-                          />
-                      }
-                      <StyledH1>2026</StyledH1>
-                  </div>
-              </StyledLink>
-          </StyledImgH1Div>
+        <StyledDiv>
+             { 
+                imageYearArr.map(({year, image}) => (
+                    <StyledImgH1Div key={year}> 
+                        <StyledLink to={`/YearGalleries/${year}`}>
+                            <StyledImgH1Div>
+                                { image &&
+                                    <StyledImg
+                                        loading="lazy"
+                                        src={image.image_url}
+                                        alt={image.caption}
+                                        // when image is loaded, set the class to loaded to put the opacity back to 1
+                                        // makes load more refined
+                                        onLoad={(event) => event.currentTarget.classList.add("loaded")}
+                                    />
+                                }
+                                <StyledH1>{year}</StyledH1>
+                            </StyledImgH1Div>
+                        </StyledLink>
+                    </StyledImgH1Div>
+                ))  
+            }
+         
       </StyledDiv>
     );
 }

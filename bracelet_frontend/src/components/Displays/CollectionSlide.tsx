@@ -1,5 +1,6 @@
 import type { Image } from '../../interfaces/Image.ts'
 import styled from 'styled-components';
+import { Link } from 'react-router';
 
 const SlideDiv = styled.div`
     width: 100%;
@@ -58,15 +59,34 @@ const InfoDiv = styled.div`
     gap: 1rem;
 `;
 
-const StyledText = styled.p`
+const StyledSubheading = styled.p`
     font-size: ${({theme}) => theme.text.subheading};
+    margin: 0;
 `;
 
+const StyledText = styled.p`
+    font-size: ${({theme}) => theme.text.body};
+    margin: 0;
+`;
+
+function trunacteNames(bracelets:Image['bracelets'], max:number) {
+    // let names: String[] = []
+    if (bracelets.length > max) {
+        return [
+            ...bracelets.slice(0, max).map(bracelet => bracelet.name),
+            `+${bracelets.length - max} more`
+        ];
+    }
+    else {
+        return bracelets.map(bracelet => bracelet.name);
+    }
+}
 
 export default function CollectionSlide(props:{image:Image}) {
     const yearMatch = props.image.caption.match(/img_(\d{4})/);
     const year = yearMatch ? yearMatch[1] : "Unknown";
 
+    const names = trunacteNames(props.image.bracelets, 2);
     return (
         <SlideDiv>
             <ImageWrapperDiv>
@@ -75,12 +95,31 @@ export default function CollectionSlide(props:{image:Image}) {
 
 
             <InfoDiv>
+                {
+                    props.image.bracelets.length > 1 
 
-
-                {year != 'Unknown' &&
-                 <StyledText>{year}</StyledText>
+                    ?
+                    <>
+                        <StyledSubheading>Collection of </StyledSubheading> 
+                        {
+                            names.map(name => (
+                                <StyledText key={name}>{name}</StyledText>
+                            ))
+                        }
+                    </>
+                        
+                    :
+                    <>
+                    {names.map(name => (
+                        <StyledSubheading key={name}>{name}</StyledSubheading>
+                    ))}
+                    </>
                 }
 
+                {year != 'Unknown' &&
+                 <StyledSubheading>Created in {year}</StyledSubheading>
+                }
+                <Link to={`/Gallery/${props.image.order}`}><StyledText>See details</StyledText></Link>
             </InfoDiv>
         </SlideDiv>
     );

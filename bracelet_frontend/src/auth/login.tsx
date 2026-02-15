@@ -16,13 +16,16 @@ const PageContainer = styled.div`
 const GoogleButton = styled.button`
     display: flex;
     align-items: center;
+
+    margin: 2%;
+
     gap: 12px;
     padding: 12px 24px;
     border: 1px solid #dadce0;
     border-radius: 4px;
     background-color: white;
     cursor: pointer;
-    font-size: 14px;
+    font-size: ${({theme}) => theme.text.body};
     font-family: 'Roboto', Arial, sans-serif;
     font-weight: 500;
     color: #3c4043;

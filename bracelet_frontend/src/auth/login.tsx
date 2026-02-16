@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import {useAuth} from "./AuthContext.tsx";
 import axios from "axios";
 import styled from 'styled-components';
+import ErrorPage from "../components/Error.tsx";
 
 // const DJANGO_API_URL = import.meta.env.VITE_DJANGO_API_URL;
 const PageContainer = styled.div`
@@ -18,7 +19,6 @@ const GoogleButton = styled.button`
     align-items: center;
 
     margin: 2%;
-
     gap: 12px;
     padding: 12px 24px;
     border: 1px solid #dadce0;
@@ -62,11 +62,9 @@ export default function Landing() {
     const { login: authLogin } = useAuth();
 
     const login = useGoogleLogin({
-            // flow: "implicit",
-            // scope: "email profile",
             onSuccess: async (tokenResponse) => {
                 try {
-                    console.log("Token response: ", tokenResponse);
+                    // console.log("Token response: ", tokenResponse);
                     const response = await axios.post('/api/auth/social/google/',
                     {
                         access_token: tokenResponse.access_token,
@@ -78,24 +76,24 @@ export default function Landing() {
 
                     );
 
-                    console.log("Response data: ", response.data);
+                    // console.log("Response data: ", response.data);
                     // store JWT tokens if existing
                     if (response.data.access) {
                         await authLogin(response.data.access, response.data.refresh);
-                        // localStorage.setItem('access_token', response.data.access);
-                        // localStorage.setItem('refresh_token', response.data.refresh);
-                        // console.log("Token saved: ", localStorage.getItem('access_token'));
-                        // await checkAuth();
 
-                        console.log("login sucessful!", response.data);
+                        // console.log("login sucessful!", response.data);
                         navigate("/");
                     }
                 }
                 catch(error) {
                     console.error("Login failed");
+                    return <ErrorPage err={new Error("Login failed.")}/>
                 }
             },
-            onError: () => {console.log("Login Failed.");}
+            onError: () => {
+                console.log("Login Failed.");
+                return <ErrorPage err={new Error("Login failed.")}/>
+            }
         }
     );
 

@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import {Link} from "react-router";
 import {useAuth} from "../../auth/AuthContext.tsx"
+// import { IoConstructSharp } from "react-icons/io5";
 
 const StyledRow = styled.div`
     display:flex;
@@ -29,25 +30,12 @@ const StyledUl = styled.ul`
         justify-items: center;
         list-style: none;
         text-align: center;
-
-
-        //display: flex;
-        //flex-direction: column;
-        //justify-content: space-evenly;
-        //border-top: 3px solid orange;
-        //right: 0;
-        //background:blue;
-
-        //top: 10%;
-        //height: 50vh;
-        //width: 100%;
-        //position: absolute;
     }
 `;
 const StyledLi = styled.li`
     //Desktop view
-    padding: 1% .5%;
-    margin: 1% .5%;
+    padding: 0.5% .5%;
+    margin: 0.5% .5%;
     text-decoration: none;
 
     // mobile view
@@ -68,6 +56,10 @@ const StyledLink = styled(Link)`
         //color: #503E2A;
         color: #445e4f;
     }
+`;
+
+const StyledText = styled.p`
+    font-size: ${({theme}) => theme.text.value};
 `;
 
 const StyledButton = styled.button`
@@ -91,13 +83,19 @@ export default function NavList({size, isClicked, closeMenu}) {
     const FirstHalf = () => (
         <>
             <StyledLi onClick={() => isClicked && closeMenu()}>
-                <StyledLink to={`/`}>Home</StyledLink>
+                <StyledLink to={`/`}>
+                    <StyledText>Home</StyledText>
+                </StyledLink>
             </StyledLi>
             <StyledLi onClick={() => isClicked && closeMenu()}>
-                <StyledLink to={`/Gallery`}>Gallery</StyledLink>
+                <StyledLink to={`/Gallery`}>
+                    <StyledText>Gallery</StyledText>
+                </StyledLink>
             </StyledLi>
             <StyledLi onClick={() => isClicked && closeMenu()}>
-                <StyledLink to={`/YearGalleries`}>Year Galleries</StyledLink>
+                <StyledLink to={`/YearGalleries`}>
+                    <StyledText>Year Galleries</StyledText>
+                </StyledLink>
             </StyledLi>
         </>
     );
@@ -105,10 +103,14 @@ export default function NavList({size, isClicked, closeMenu}) {
     const SecondHalf = () => (
             <>
                 <StyledLi onClick={() => isClicked && closeMenu()}>
-                    <StyledLink to={`/Selling`}>Selling</StyledLink>
+                    <StyledLink to={`/Selling`}>
+                        <StyledText>For Sale</StyledText>
+                    </StyledLink>
                 </StyledLi>
                 <StyledLi onClick={() => isClicked && closeMenu()}>
-                    <StyledLink to={`/About`}>About</StyledLink>
+                    <StyledLink to={`/About`}>
+                        <StyledText>About</StyledText>
+                    </StyledLink>
                 </StyledLi>
                 {
                         isAuthenticated 
@@ -117,16 +119,22 @@ export default function NavList({size, isClicked, closeMenu}) {
                             {
                                 user?.is_staff && 
                                 <StyledLi onClick={() => isClicked && closeMenu()}>
-                                    <StyledLink to={`/AdminGallery`}>Admin Gallery</StyledLink>
+                                    <StyledLink to={`/AdminGallery`}>
+                                        <StyledText>Admin Gallery</StyledText>
+                                    </StyledLink>
                                 </StyledLi>
                             }
                             <StyledLi>
-                                <StyledButton onClick={logout}>Log out</StyledButton>
+                                <StyledButton onClick={logout}>
+                                    <StyledText>Log out</StyledText>
+                                </StyledButton>
                             </StyledLi>
                         </>
                         :
                         <StyledLi onClick={() => isClicked && closeMenu()}>
-                            <StyledLink to={`/Login`}>Log in</StyledLink>
+                            <StyledLink to={`/Login`}>
+                                <StyledText>Log in</StyledText>
+                            </StyledLink>
                         </StyledLi>
                     }
             </>

@@ -23,20 +23,18 @@ const MobileNavContainer = styled.div`
 
 const StyledNav = styled.nav`
     width: 100%;
-    //padding: 16px 32px;
+    // padding: 16px 32px;
     margin: 0;
+    // height: 10%;
     
-    // background: rgba(129, 127, 127, 0.8);
-
     backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-
+    // -webkit-backdrop-filter: blur(6px);
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    padding: 0.25px;
 
     @media (max-width: 800px) {
         width: 100%;
         height: 10%;
-
         align-items: center;
     }
 `;

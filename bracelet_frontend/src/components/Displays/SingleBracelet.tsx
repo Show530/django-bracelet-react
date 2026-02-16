@@ -11,7 +11,7 @@ const StyledCard = styled(Card) `
     height: 100%; 
     border-radius: 16px; 
     margin: 0 auto;
-    // Add mobile styles
+    // mobile row formatting
     @media (max-width: 800px) {
         width: calc(100% - 1rem);
         max-width: 400px;
@@ -107,7 +107,8 @@ function switchGoingWhere(goingWhere:string) {
 
 
 export default function SingleBracelet(props:{bracelet:Bracelet, num: number, selling: boolean}) {
-    const {isAuthenticated, user} = useAuth();
+    // const {isAuthenticated, user} = useAuth();
+    const {isAuthenticated} = useAuth();
 
     let bType;
     if (props.bracelet && props.bracelet.bType) {

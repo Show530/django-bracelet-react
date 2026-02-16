@@ -38,11 +38,11 @@ class GoogleLogin(SocialLoginView):
     callback_url = "http://localhost:5173"
     client_class = OAuth2Client
     # debugging
-    def post(self, request, *args, **kwargs):
-        print("="*50)
-        print("Received data:", request.data)
-        print("="*50)
-        return super().post(request, *args, **kwargs)
+    # def post(self, request, *args, **kwargs):
+    #     # print("="*50)
+    #     # print("Received data:", request.data)
+    #     # print("="*50)
+    #     return super().post(request, *args, **kwargs)
 # api path via
 # https://medium.com/@gazzaazhari/django-backend-react-frontend-basic-tutorial-6249af7964e4
 urlpatterns = [

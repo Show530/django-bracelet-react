@@ -26,6 +26,11 @@ const SingleBraceletTr = styled.tr`
 
 `;
 
+const StyledText = styled.p`
+    font-size: ${({theme}) => theme.text.body};
+    margin: auto;
+`;
+
 const StyledTd = styled.td`
     margin: 2% 3%;
     padding: 1.5%;
@@ -109,7 +114,7 @@ export default function AdminGallery() {
                     formData.append("caption", caption)
                 }
             }
-            const multHeaders = { "Content-Type": "multipart/form-data" };
+            // const multHeaders = { "Content-Type": "multipart/form-data" };
 
             // this is back to old code
             if (bracelet.id) {
@@ -196,13 +201,15 @@ export default function AdminGallery() {
     return (
         <ParentDiv>
             <AddBraceletDiv>
-                <StyledButton onClick={createBracelet}>Add a Bracelet</StyledButton>
+                <StyledButton onClick={createBracelet}>
+                    <StyledText>Add a Bracelet</StyledText>
+                </StyledButton>
             </AddBraceletDiv>
             <AllBraceletsTable>
                 <thead>
                     <tr>
                         {/*<th>Add a bracelet</th>*/}
-                        <th>Name</th>
+                        <th><StyledText>Name</StyledText></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -210,12 +217,16 @@ export default function AdminGallery() {
                     data.map((bracelet: Bracelet) =>
                         <SingleBraceletTr key={bracelet.id} >
                             {/*<span>Name:</span>*/}
-                            <StyledTd>{bracelet.name}</StyledTd>
+                            <StyledTd>
+                                <StyledText>{bracelet.name}</StyledText>
+                            </StyledTd>
                             <StyledTd>
                                 <button onClick={ function () {
                                     editBracelet(bracelet);
-                                }}
-                                >Edit</button>
+                                }}>
+                                    <StyledText>Edit</StyledText>
+                                    
+                                </button>
                             </StyledTd>
                             {/*<td>*/}
                             {/*    <button onClick={ function () {

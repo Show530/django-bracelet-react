@@ -3,7 +3,6 @@
 // year by year: so 2023, 2024, 2025
 // Bracelets that are being sold
 import {createBrowserRouter, Route, RouterProvider, Routes} from "react-router";
-// import Nav from "./components/Navbar/Nav.tsx";
 import ProtectedRoute from "./components/Navbar/ProtectedRoute.tsx";
 import Header from "./components/Header.tsx"
 import Footer from "./components/Footer";

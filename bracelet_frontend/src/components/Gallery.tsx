@@ -29,33 +29,37 @@ export default function Gallery() {
 
     // useEffect hook for error stuff and re-loading
     useEffect(() => {
-        // if on the gallery selling page, load that data
-        if (currPage == "Selling") {
-            axios.get("/api/images/?selling=true").
-            then((res) => setData(res.data)).
-            catch((err) => {
-                console.log(err);
-                setErr(err);
-            });
-        }
-        // if on the gallery year page, load that data
-        else if (year != null) {
-            axios.get(`/api/images/?year=${year}`)
-                .then((res) => setData(res.data))
-                .catch((err) => {
+        const fetchAllData = async () => {
+            // if on the gallery selling page, load that data
+            if (currPage == "Selling") {
+                axios.get("/api/images/?selling=true").
+                then((res) => setData(res.data)).
+                catch((err) => {
                     console.log(err);
                     setErr(err);
                 });
+            }
+            // if on the gallery year page, load that data
+            else if (year != null) {
+                axios.get(`/api/images/?year=${year}`)
+                    .then((res) => setData(res.data))
+                    .catch((err) => {
+                        console.log(err);
+                        setErr(err);
+                    });
+            }
+            // otherwise load all image data
+            else {
+                axios.get("/api/images/")
+                    .then((res) => setData(res.data))
+                    .catch((err) => {
+                        console.log(err);
+                        setErr(err);
+                    });
+            }
         }
-        // otherwise load all image data
-        else {
-            axios.get("/api/images/")
-                .then((res) => setData(res.data))
-                .catch((err) => {
-                    console.log(err);
-                    setErr(err);
-                });
-        }
+        fetchAllData();
+        
     }, [currPage, data.length, year]);
 
     if(err != null) {

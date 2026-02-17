@@ -181,10 +181,20 @@ export default function SingleBracelet(props:{bracelet:Bracelet, num: number, se
                             </StyledItem>
                         )
                     }
+                    {
+                        !isAuthenticated && props.selling && (
+                            <StyledItem>
+                                <StyledLabel>Purchase information</StyledLabel>
+                                <StyledVal>Please log in to see email link</StyledVal>
+                            </StyledItem>
+                        )
+                    }
+
                     { isAuthenticated && props.selling && (
                         <StyledItem> 
+                            <StyledLabel>Purchase information</StyledLabel>
                             <a href={mailToUrl} target="_blank" rel="noopener noreferrer">
-                                <StyledLabel>Send a request email</StyledLabel>
+                                <StyledVal>Send a request email</StyledVal>
                             </a>
                         </StyledItem>
                         )

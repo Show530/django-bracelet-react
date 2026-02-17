@@ -53,8 +53,8 @@ const StyledLink = styled(Link)`
     color: #2B2B2B;
 
     &:hover {
-        //color: #503E2A;
-        color: #445e4f;
+        //color: #445e4f;
+        color: #dde5e2;
     }
 `;
 
@@ -70,8 +70,7 @@ const StyledButton = styled.button`
     color: #303030;
 
     &:hover {
-        //color: #503E2A;
-        color: #445e4f;
+        color: #dde5e2;
     }
 `;
 

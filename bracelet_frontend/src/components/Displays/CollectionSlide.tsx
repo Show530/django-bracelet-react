@@ -38,7 +38,7 @@ const ImageWrapperDiv = styled.div`
 
 const StyledImg = styled.img`
     width: 100%;
-    max-width: 420px;
+    max-width: 300px;
     aspect-ratio: 3/4;
     object-fit: contain;
 
@@ -48,7 +48,8 @@ const StyledImg = styled.img`
 
     // mobile adjustment
     @media (max-width: 800px) {
-        max-width: 100%;   
+        width: 100%;   
+        max-width: 220px;
     }
 `;
 
@@ -69,6 +70,7 @@ const StyledText = styled.p`
     margin: 0;
 `;
 
+// function to get bracelet names per image (or truncate)
 function trunacteNames(bracelets:Image['bracelets'], max:number) {
     // let names: String[] = []
     if (bracelets.length > max) {
@@ -93,7 +95,6 @@ export default function CollectionSlide(props:{image:Image}) {
                 <StyledImg src={props.image.image_url} alt={props.image.caption}/>
             </ImageWrapperDiv>
 
-
             <InfoDiv>
                 {
                     props.image.bracelets.length > 1 
@@ -106,8 +107,7 @@ export default function CollectionSlide(props:{image:Image}) {
                                 <StyledText key={name}>{name}</StyledText>
                             ))
                         }
-                    </>
-                        
+                    </>    
                     :
                     <>
                     {names.map(name => (

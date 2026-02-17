@@ -12,17 +12,18 @@ import 'swiper/swiper-bundle.css';
 // import "swiper/css/pagination";
 
 const StyledSwiper = styled(Swiper)`
+    margin: 3% 0;
     width: 100%;
     // added
-    max-height: 90vh;
+    max-height: 80vh;
 
-    // changed from 4 to 2
     padding-block: 1rem;
     background: white;
+
     border-radius: 15px;
-    margin: 2% 0;
     box-shadow: 0 6px 18px rgba(0,0,0,0.08);
-     @media (max-width: 800px) {
+    
+    @media (max-width: 800px) {
         max-height: 100vh;
     }
 `;

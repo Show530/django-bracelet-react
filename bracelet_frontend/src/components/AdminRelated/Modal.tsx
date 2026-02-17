@@ -117,6 +117,7 @@ export default function Modal({ activeBracelet, toggle, onSave }: CustomModalPro
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [caption, setCaption] = useState<string>("");
 
+    
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
         setBracelet(

@@ -97,9 +97,10 @@ export default function AdminGallery() {
     }
 
     async function handleSubmit(bracelet:Bracelet, imageFile:File|null, caption:string) {
+        // close modal
         toggle();
         try {
-            // all here is new
+            // form data to add only edited fields of the bracelet to modify
             const formData = new FormData();
             for (const[key, value] of Object.entries(bracelet)) {
                 if (value !== null && value !== undefined) {
@@ -108,6 +109,7 @@ export default function AdminGallery() {
 
             }
 
+            // add image if added
             if(imageFile){
                 formData.append("image_file", imageFile);
                 if (caption != "") {
@@ -116,10 +118,11 @@ export default function AdminGallery() {
             }
             // const multHeaders = { "Content-Type": "multipart/form-data" };
 
-            // this is back to old code
+            // if bracelet exist: put request
+            // send database request WITH access_token
             if (bracelet.id) {
                 // await axios.put(`/api/bracelets/${bracelet.id}/`, bracelet);
-                console.log(Object.fromEntries(formData.entries()));
+                // console.log(Object.fromEntries(formData.entries()));
                 await axios.put(`/api/bracelets/${bracelet.id}/`, formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
@@ -128,9 +131,10 @@ export default function AdminGallery() {
                 }
                 );
             }
+            // if bracelet does not exist- post request
             else {
                 // await axios.post(`/api/bracelets/`, bracelet);
-                console.log(Object.fromEntries(formData.entries()));
+                // console.log(Object.fromEntries(formData.entries()));
                 await axios.post('/api/bracelets/', formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",

@@ -14,6 +14,7 @@ const StyledDiv = styled.div`
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     padding: 0.5rem;
+    // margin: 2%;
 
     @media (max-width: 800px) {
         grid-template-columns: 1fr;
@@ -23,13 +24,15 @@ const StyledDiv = styled.div`
 const StyledLink = styled(Link)`
     padding: 1%;
     margin: auto;
+    
 `;
 
 const StyledImgH1Div = styled.div`
     // justify-content: center;
     // margin: auto;
-    display: flex;
-    flex-direction: column;
+    // display: flex;
+    // flex-direction: column;
+
     align-items: center;
 `;
 

@@ -4,7 +4,7 @@
 import styled from 'styled-components';
 
 const Container = styled.div`
-    margin: 1% 0;
+    margin: 2% 0;
 `;
 
 const StyledImage = styled.img`

@@ -172,8 +172,8 @@ export default function SingleBracelet(props:{bracelet:Bracelet, num: number, se
                         <StyledLabel>Dates created:</StyledLabel>
                         <StyledVal>{props.bracelet.startDate} - {props.bracelet.endDate}</StyledVal>
                     </StyledItem>
+                    {/* only show price if on selling page */}
                     { props.selling &&
-                        // eventually will have price here!
                         (
                             <StyledItem>
                                 <StyledLabel>Price:</StyledLabel>

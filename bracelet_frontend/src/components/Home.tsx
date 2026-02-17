@@ -10,7 +10,9 @@ import type {Image} from "../interfaces/Image.ts"
 import FavoriteImageSlides from "./Displays/FavoriteImageSlides.tsx";
 
 export default function Home() {
-    const { isAuthenticated, loading, user } = useAuth();
+    // const { isAuthenticated, loading, user } = useAuth();
+    const { loading } = useAuth();
+
 
     const [err, setErr] = useState<Error | null>(null);
     const[imageData, setImageData] = useState<Image[]>([]);

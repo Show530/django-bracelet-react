@@ -16,7 +16,7 @@ import { MdOutlineArrowBackIos } from "react-icons/md";
 import { useNavigate } from "react-router";
 
 const StyledImg = styled.img`
-    width: 40%;
+    width: 38%;
     display: block;
     margin: 2% auto;
     border-radius: 25px;

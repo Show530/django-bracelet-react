@@ -44,14 +44,6 @@ const StyledContent = styled.div`
     width: 80vw;
     margin: auto;
 
-    // testing
-    // background: rgba(255,255,255,0.55);
-    // border-radius: 16px;
-    // padding: 1.5rem;
-
-    // box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    // end testing
-
     flex: 1;
     display: flex;
     flex-direction: column;

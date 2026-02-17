@@ -2,28 +2,44 @@ import styled from "styled-components";
 import { useState, useEffect } from 'react';
 import axios from "axios";
 
-import type {Bracelet} from "../../interfaces/Bracelet.ts";
+import type { Bracelet } from "../../interfaces/Bracelet.ts";
 import ErrorPage from "../Error.tsx";
 import Loading from "../Loading.tsx";
 import Modal from "./Modal.tsx"
-import {useParams} from "react-router";
+import { useParams } from "react-router";
 
 
 const ParentDiv=styled.div`
-    width: 80vw;
     margin: auto;
-    //border: 2px darkred inset;
 `;
 
 
 const AllBraceletsTable=styled.table`
+    width: 55%;
+    table-layout: fixed;
     justify-content: space-evenly;
-    border: 2px aqua;
     justify-self: center;
+    background-color: white;
+    border-radius: 19px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    padding: 1%;
+`;
+
+const StyledNameTh = styled.th`
+    width: 85%;
+    padding: 2% 2%;
+    background-color: rgba(156, 178, 171, 0.82);
+`;
+
+const StyledEditTh = styled.th`
+    width: 80px;
+    background-color: rgba(156, 178, 171, 0.82);
 `;
 
 const SingleBraceletTr = styled.tr`
-
+    &:nth-child(even) {
+        background-color: #dde5e2;
+    }
 `;
 
 const StyledText = styled.p`
@@ -36,6 +52,11 @@ const StyledTd = styled.td`
     padding: 1.5%;
 `;
 
+const EditTd = styled(StyledTd)`
+    text-align: right;
+    white-space: nowrap;
+`;
+
 
 const AddBraceletDiv = styled.div`
     display: flex;
@@ -46,8 +67,16 @@ const AddBraceletDiv = styled.div`
 const StyledButton = styled.button`
     //background-color: lightblue;
     margin: auto;
-    //font: clamp(14px, calc(24px + 2vw), 40px) Georgia, Garamond, serif;
+    border-radius: 10px;
+    background-color: none;
+
+    &:hover {
+        //color: #503E2A;
+        background-color: #a7aea9;
+    }
 `;
+
+
 
 // idea- when creating bracelet, add image to database/link them??
 // make sure that fields in form can be null (aren't mandatory)
@@ -212,26 +241,24 @@ export default function AdminGallery() {
             <AllBraceletsTable>
                 <thead>
                     <tr>
-                        {/*<th>Add a bracelet</th>*/}
-                        <th><StyledText>Name</StyledText></th>
+                        <StyledNameTh><StyledText>Name</StyledText></StyledNameTh>
+                        <StyledEditTh></StyledEditTh>
                     </tr>
                 </thead>
                 <tbody>
                 {
                     data.map((bracelet: Bracelet) =>
                         <SingleBraceletTr key={bracelet.id} >
-                            {/*<span>Name:</span>*/}
                             <StyledTd>
                                 <StyledText>{bracelet.name}</StyledText>
                             </StyledTd>
-                            <StyledTd>
-                                <button onClick={ function () {
+                            <EditTd>
+                                <StyledButton onClick={ function () {
                                     editBracelet(bracelet);
                                 }}>
                                     <StyledText>Edit</StyledText>
-                                    
-                                </button>
-                            </StyledTd>
+                                </StyledButton>
+                            </EditTd>
                             {/*<td>*/}
                             {/*    <button onClick={ function () {
                                     handleDelete(bracelet);

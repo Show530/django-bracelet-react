@@ -156,6 +156,60 @@ class ImageSerializer(serializers.ModelSerializer):
             'caption',
             'bracelets',
         )
+        extra_kwargs = {
+            'order': {'required': False},  # Make order optional
+            'favorite': {'required': False, 'default': False}  # Default to False
+        }
+
+    # Custom create method
+    # Returns complete instances based on data- based on documentation
+    def create(self, validated_data):
+        '''Returns image object '''
+        # Get variables from data- pop off to create with
+        image_file = validated_data.get("image_file", None)
+
+        # if image is included,
+        # create the image and bracelet image objects 
+        if not image_file:
+            raise serializers.ValidationError(
+                {"image_file": "This field is required."}
+            )
+        
+        # will fix based on last item below
+        if 'order' not in validated_data:
+            validated_data['order'] = -1  
+        
+
+        image = Image.objects.create(**validated_data)
+        # print("Image saved with id: ", image.id)
+        if image.order is None or image.order == -1:
+            lastImg = Image.objects.exclude(id=image.id).order_by('order').last()
+            if lastImg:
+                image.order = lastImg.order + 1
+            else:
+                image.order = 1
+            image.save(update_fields=["order"])
+
+        return image
+    
+    def update(self, instance, validated_data):
+        '''Returns updated Image instance'''
+        # Get variables from data- pop off so that fields are not included 
+        # for bracelet update
+        image_file = validated_data.get("image_file", None)
+        # print("Image_file is: ", image_file)
+        caption = validated_data.get("caption", "")
+        # print("Caption is: ", caption)
+
+        if caption is not None:
+            instance.caption = caption
+
+        if image_file is not None:
+            instance.image_file = image_file
+
+        instance.save()
+        return instance
+
 
     # attempting to fix absolute uri
     def get_image_url(self, obj):

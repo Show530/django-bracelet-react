@@ -1,6 +1,6 @@
 export interface Image {
-    id: number;
-    order: number;
+    id: string;
+    order: string;
     image_file: string;
     image_url: string;
     caption: string;

@@ -49,7 +49,7 @@ export default function Home() {
 
     // console.log("Is logged in: ", isAuthenticated);
 
-    if (loading || !imageData) {
+    if (loading || imageData.length === 0) {
         return <Loading where={"home"}/>
     }
 

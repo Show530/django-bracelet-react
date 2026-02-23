@@ -63,11 +63,12 @@ const StyledText = styled.p`
 `;
 
 const StyledButton = styled.button`
+    vertical-align: top;
     background: none;
     border: none;
     padding: 0;
     margin: 0;
-    color: #303030;
+    color: #2B2B2B;
 
     &:hover {
         color: #dde5e2;

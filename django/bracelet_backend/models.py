@@ -114,7 +114,7 @@ class Image(models.Model):
     timestamp = models.DateTimeField(auto_now=True)
     caption = models.TextField(blank=True)
 
-    favorite = models.BooleanField(blank=True)
+    favorite = models.BooleanField(blank=True, default=False)
 
     # def save(self, *args, **kwargs):
     #     super().save(*args, **kwargs)

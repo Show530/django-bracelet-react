@@ -112,7 +112,7 @@ const Button = styled.button<{$primary?: boolean}>`
     }
 `;
 
-export default function Modal({ activeBracelet, toggle, onSave }: CustomModalProps) {
+export default function BraceletModal({ activeBracelet, toggle, onSave }: CustomModalProps) {
     const [bracelet, setBracelet] = useState(activeBracelet);
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [caption, setCaption] = useState<string>("");

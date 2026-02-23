@@ -87,6 +87,7 @@ class ListImage(generics.ListCreateAPIView):
     serializer_class = ImageSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_class = ImageFilter
+    parser_classes = [MultiPartParser, FormParser]
     # allows anyone to read (GET) and only admin to create/delete (POST)
     permission_classes = [IsAuthenticatedOrReadOnly]
 
@@ -102,6 +103,7 @@ class DetailImage(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ImageSerializer
     # important- not id anymore! Can remove to change to pk
     lookup_field = 'order'
+    parser_classes = [MultiPartParser, FormParser]
     # allows anyone to read (GET) and only admin to create/delete (POST)
     permission_classes = [IsAuthenticatedOrReadOnly]
 

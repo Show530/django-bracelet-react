@@ -10,11 +10,14 @@ import Footer from "./components/Footer";
 import Home from "./components/Home.tsx";
 import YearGalleries from "./components/YearGalleries.tsx";
 import About from "./components/About";
+
 import AdminGallery from "./components/AdminRelated/AdminGallery.tsx";
+import AdminBracelets from "./components/AdminRelated/AdminBracelets.tsx";
 import styled from "styled-components";
 import Gallery from "./components/Gallery.tsx";
 import ImageDetails from "./components/ImageDetails.tsx";
 import Landing from "./auth/login.tsx";
+import AdminImages from "./components/AdminRelated/AdminImages.tsx";
 
 const StyledPageWrapper = styled.div`
     //width: 80vw;
@@ -82,6 +85,16 @@ function Root() {
                         <Route path={'/AdminGallery'} element={
                             <ProtectedRoute requireStaff={true}>
                                 <AdminGallery />
+                            </ProtectedRoute>
+                            } />
+                        <Route path={'/AdminGallery/Images'} element={
+                            <ProtectedRoute requireStaff={true}>
+                                <AdminImages />
+                            </ProtectedRoute>
+                            } />
+                        <Route path={'/AdminGallery/Bracelets'} element={
+                            <ProtectedRoute requireStaff={true}>
+                                <AdminBracelets />
                             </ProtectedRoute>
                             } />
                         <Route path={'/Login'} element={<Landing/>}/>

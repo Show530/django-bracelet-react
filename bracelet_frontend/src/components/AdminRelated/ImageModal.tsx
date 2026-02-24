@@ -1,14 +1,18 @@
 import styled from 'styled-components';
 import React, {useState } from 'react';
-import type {Image} from '../../interfaces/Image.ts';
+import type { Image } from '../../interfaces/Image.ts';
+// needed to add BraceletImage functionality
+import type { Bracelet } from '../../interfaces/Bracelet.ts';
+import axios from "axios";
+
 import { createPortal } from "react-dom";
 import { useEffect } from 'react';
+
 
 type Mode = "create" | "edit";
 
 // Followed
 // https://www.digitalocean.com/community/tutorials/build-a-to-do-application-using-django-and-react
-
 
 
 interface CustomModalProps {
@@ -19,7 +23,9 @@ interface CustomModalProps {
     onSave: (
         image: Image | undefined,
         imageFile: File | null,
-        caption: string ) => void;
+        caption: string,
+        selectedBracelets: Bracelet[] | null,
+     ) => void;
 }
 
 
@@ -87,17 +93,78 @@ const Input = styled.input`
     //}
 `;
 
-const Select = styled.select`
+// const Select = styled.select`
+//     padding: 0.5rem;
+//     font-size: ${({theme}) => theme.text.body};
+//     border: 1px solid #ccc;
+//     border-radius: 6px;
+//     background: white;
+//     cursor: pointer;
+
+//     &:focus {
+//         outline: none;
+//         border-color: #888;
+//     }
+// `;
+
+
+// BraceletImage functionality
+const SearchableSelect = styled.div`
+    position: relative;
+`;
+
+const SearchInput = styled.input`
+    width: 100%;
     padding: 0.5rem;
-    font-size: ${({theme}) => theme.text.body};
     border: 1px solid #ccc;
     border-radius: 6px;
-    background: white;
-    cursor: pointer;
+`;
 
-    &:focus {
-        outline: none;
-        border-color: #888;
+const DropdownList = styled.ul`
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    background: white;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-top: 4px;
+    list-style: none;
+    padding: 0;
+    z-index: 1000;
+`;
+
+const DropdownItem = styled.li`
+    padding: 0.5rem;
+    cursor: pointer;
+    vertical-align: middle;
+    
+    &:hover {
+        background: #f0f0f0;
+    }
+`;
+
+const SelectedBracelet = styled.div`
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #e8f5e9;
+    padding: 6px 12px;
+    border-radius: 16px;
+    margin: 4px;
+`;
+
+const RemoveButton = styled.button`
+    background: none;
+    border: none;
+    color: #d32f2f;
+    cursor: pointer;
+    font-weight: bold;
+    
+    &:hover {
+        color: #b71c1c;
     }
 `;
 
@@ -127,6 +194,39 @@ export default function ImageModal({ mode, activeImage, toggle, onSave }: Custom
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [caption, setCaption] = useState<string>(activeImage?.caption || "");
 
+    // management for BraceletImage functionality
+    const [allBracelets, setAllBracelets] = useState<Bracelet[]>([]);
+    const [selectedBracelets, setSelectedBracelets] = useState<Bracelet[]>([]);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [showDropdown, setShowDropdown] = useState(false);
+    const[loading, setLoading] = useState(true);
+    
+    // useEffect to get all of the bracelets
+    useEffect(() => {
+        // Fetch all bracelets and load bracelets linked to image
+        const fetchAndConnectBracelets = async () => {
+            const res = await axios.get('/api/bracelets/');
+            const fetchedBraceletData = res.data
+            setAllBracelets(fetchedBraceletData);
+
+            // console.log(allBracelets);
+
+            // Load bracelets linked to image if editing
+            if (mode === "edit" && activeImage?.bracelets) {
+                const linked = fetchedBraceletData.filter((bracelet: Bracelet) => 
+                    activeImage.bracelets.some(allB => allB.id.toString() === bracelet.id.toString())
+                );
+                setSelectedBracelets(linked);
+            }
+            else {
+                setSelectedBracelets([]);
+            }
+            };
+            setLoading(false);
+        fetchAndConnectBracelets();
+    }, [mode, activeImage]);
+
+    // useEffect to set images
     useEffect(() => {
         if (mode === "edit" && activeImage) {
             setImage(activeImage);
@@ -143,7 +243,23 @@ export default function ImageModal({ mode, activeImage, toggle, onSave }: Custom
             setCaption("");
         }
     }, [mode, activeImage]);
+
     
+    const filteredBracelets = allBracelets.filter(bracelet =>
+        bracelet.name.toLowerCase().includes(searchTerm.toLocaleLowerCase()) && 
+        !selectedBracelets?.some(selectedB => selectedB.id === bracelet.id)
+    );
+
+    const addBracelet = (bracelet: Bracelet) => {
+        setSelectedBracelets([...selectedBracelets, bracelet]);
+        setSearchTerm("");
+        setShowDropdown(false);
+    };
+
+    const removeBracelet = (braceletId: string) => {
+        setSelectedBracelets(selectedBracelets.filter(bracelet => bracelet.id !== braceletId));
+    }
+
     // const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     //     const { name, value } = e.target;
     //     setImage(
@@ -221,7 +337,53 @@ export default function ImageModal({ mode, activeImage, toggle, onSave }: Custom
                                readOnly
                         />
                     </FormGroup>
+                    {
+                        loading
+                        ? 
+                        <div>Loading bracelets...</div>
+                        :
+                        <FormGroup>
+                            <Label>Linked Bracelets</Label>
+                            <div>
+                                {
+                                    selectedBracelets.map(bracelet => (
+                                        <SelectedBracelet key={bracelet.id}>
+                                            <p>{bracelet.name}</p>
+                                            <RemoveButton onClick={() => removeBracelet(bracelet.id)}>
+                                                x
+                                            </RemoveButton>
+                                        </SelectedBracelet>
+                                    ))
+                                }
+                            </div> 
 
+                            <SearchableSelect>
+                                <SearchInput
+                                    placeholder='Search bracelets...'
+                                    value={searchTerm}
+                                    onChange={(e) => {
+                                        setSearchTerm(e.target.value);
+                                        setShowDropdown(true);
+                                    }}
+                                    onFocus={() => setShowDropdown(true)}
+                                />
+
+                                {showDropdown && searchTerm && filteredBracelets.length > 0 && (
+                                    <DropdownList>
+                                        {filteredBracelets.slice(0, 10).map(bracelet => (
+                                            <DropdownItem 
+                                                key={bracelet.id} 
+                                                onClick={() => addBracelet(bracelet)}
+                                            >
+                                                {bracelet.name}
+                                            </DropdownItem>
+                                        ))}
+                                    </DropdownList>
+                                )}
+                            </SearchableSelect>
+                        </FormGroup>
+                    }
+                    
 
                     <Footer>
                         <Button type="button"
@@ -230,7 +392,7 @@ export default function ImageModal({ mode, activeImage, toggle, onSave }: Custom
                             Cancel
                         </Button>
                         <Button type="button"
-                                $primary onClick={() => onSave(image, imageFile, caption)}
+                                $primary onClick={() => onSave(image, imageFile, caption, selectedBracelets)}
                         >
                             Save
                         </Button>

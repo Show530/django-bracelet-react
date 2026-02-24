@@ -144,6 +144,14 @@ class ImageSerializer(serializers.ModelSerializer):
     bracelets = serializers.SerializerMethodField()
     # added for absolute url
     image_url = serializers.SerializerMethodField()
+    # added to allow for BraceletImage creation on frontend
+    # define bracelet_ids as a serializer field
+    bracelet_ids = serializers.ListField(
+        # Changed to CharField since IDs are strings
+        child=serializers.CharField(),
+        write_only=True,
+        required=False
+    )
 
     class Meta:
         model = Image
@@ -155,10 +163,13 @@ class ImageSerializer(serializers.ModelSerializer):
             'image_url',
             'caption',
             'bracelets',
+            'bracelet_ids',
         )
         extra_kwargs = {
-            'order': {'required': False},  # Make order optional
-            'favorite': {'required': False, 'default': False}  # Default to False
+            # Make order optional
+            'order': {'required': False},
+             # Default to False
+            'favorite': {'required': False, 'default': False},
         }
 
     # Custom create method
@@ -166,6 +177,8 @@ class ImageSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         '''Returns image object '''
         # Get variables from data- pop off to create with
+        bracelet_ids = validated_data.pop("bracelet_ids", None)
+        
         image_file = validated_data.get("image_file", None)
 
         # if image is included,
@@ -190,12 +203,33 @@ class ImageSerializer(serializers.ModelSerializer):
                 image.order = 1
             image.save(update_fields=["order"])
 
+        # Update bracelet relationships if changed
+        if bracelet_ids:
+            # get rid of previous relationships
+            BraceletImage.objects.filter(image=image).delete()
+
+            for bracelet_id in bracelet_ids:
+                # make sure to make a string!
+                bracelet_id = str(bracelet_id).strip()
+                print(f"Looking for bracelet with id: {bracelet_id}")
+                
+                try:
+                    bracelet = Bracelet.objects.get(id=bracelet_id)
+                    BraceletImage.objects.create(
+                        image=image,
+                        bracelet=bracelet
+                    )
+                except Bracelet.DoesNotExist:
+                    print(f"Bracelet with id {bracelet_id} not found")
+
+
         return image
     
     def update(self, instance, validated_data):
         '''Returns updated Image instance'''
         # Get variables from data- pop off so that fields are not included 
         # for bracelet update
+        bracelet_ids = validated_data.pop("bracelet_ids", None)
         image_file = validated_data.get("image_file", None)
         # print("Image_file is: ", image_file)
         caption = validated_data.get("caption", "")
@@ -208,6 +242,26 @@ class ImageSerializer(serializers.ModelSerializer):
             instance.image_file = image_file
 
         instance.save()
+        
+        # Update bracelet relationships if changed
+        if bracelet_ids:
+            # get rid of previous relationships
+            BraceletImage.objects.filter(image=instance).delete()
+
+            for bracelet_id in bracelet_ids:
+                # make sure to make a string!
+                bracelet_id = str(bracelet_id).strip()
+                print(f"Looking for bracelet with id: {bracelet_id}")
+                
+                try:
+                    bracelet = Bracelet.objects.get(id=bracelet_id)
+                    BraceletImage.objects.create(
+                        image=instance,
+                        bracelet=bracelet
+                    )
+                except Bracelet.DoesNotExist:
+                    print(f"Bracelet with id {bracelet_id} not found")
+            
         return instance
 
 

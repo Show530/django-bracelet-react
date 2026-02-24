@@ -5,7 +5,7 @@ export interface Image {
     image_url: string;
     caption: string;
     bracelets : {
-        id: number;
+        id: string;
         name: string;
     }[];
 }

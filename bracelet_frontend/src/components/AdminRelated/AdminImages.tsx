@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 import axios from "axios";
 
 import type { Image } from "../../interfaces/Image.ts";
+import type { Bracelet } from "../../interfaces/Bracelet.ts";
+
 import ErrorPage from "../Error.tsx";
 import Loading from "../Loading.tsx";
 import ImageModal from "./ImageModal.tsx"
@@ -36,7 +38,7 @@ const StyledEditTh = styled.th`
     background-color: rgba(156, 178, 171, 0.82);
 `;
 
-const SingleBraceletTr = styled.tr`
+const SingleImageTr = styled.tr`
     &:nth-child(even) {
         background-color: #dde5e2;
     }
@@ -121,7 +123,7 @@ export default function AdminImages() {
         setModalOpen(!modalOpen);
     }
 
-    async function handleSubmit(image:Image | undefined, imageFile: File | null, caption: string) {
+    async function handleSubmit(image:Image | undefined, imageFile: File | null, caption: string, selectedBracelets: Bracelet[] | null) {
         // close modal
         toggle();
         try {
@@ -136,8 +138,18 @@ export default function AdminImages() {
                 formData.append("image_file", imageFile);
             }
 
-            if(mode === "edit" && image?.id) {
-                await axios.put(`/api/images/${image.order}/`, formData, {
+            if (selectedBracelets) {
+                // const braceletIds = selectedBracelets.map(bracelet => bracelet.id);
+                // formData.append("bracelet_ids", JSON.stringify(braceletIds));
+                selectedBracelets.forEach(bracelet => {
+                    formData.append("bracelet_ids", bracelet.id.toString());
+                });
+            }
+
+            if(mode === "edit" && image?.order) {
+                // trying patch because no data is edited
+                // patch works if no data is changed, put requires at least one changed field
+                await axios.patch(`/api/images/${image.order}/`, formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                         Authorization: `Bearer ${localStorage.getItem("access_token")}`
@@ -151,7 +163,7 @@ export default function AdminImages() {
                         "Content-Type": "multipart/form-data",
                         Authorization: `Bearer ${localStorage.getItem("access_token")}`
                     }
-                }
+                    }
                 );
             }
            
@@ -163,27 +175,18 @@ export default function AdminImages() {
         // alert("save" + JSON.stringify(bracelet));
     }
 
-    // async function handleDelete(bracelet) {
+    // async function handleDelete(image) {
     //     try {
-    //         await axios.delete(`/api/bracelets/${bracelet.id}`);
+    //         await axios.delete(`/api/images/${image.order}`);
     //         await refreshList();
     //     }
     //     catch (err) {
     //         console.log("Error when handling delete: ", err);
     //     }
-    //     // alert("delete" + JSON.stringify(bracelet));
+    //     // alert("delete" + JSON.stringify(image));
     // }
 
     function createImage() {
-        // const newImage = {
-        //     id: "",
-        //     order: "",
-        //     image_file: "",
-        //     image_url: "",
-        //     caption: "",
-        //     bracelets : [],
-        // };
-        // setActiveImage(newImage);
         setMode("create");
         setActiveImage(undefined);
         setModalOpen(true);
@@ -228,7 +231,7 @@ export default function AdminImages() {
                 <tbody>
                 {
                     data.map((image: Image) =>
-                        <SingleBraceletTr key={image.id} >
+                        <SingleImageTr key={image.id} >
                             <StyledTd>
                                 <StyledText>{image.caption}</StyledText>
                             </StyledTd>
@@ -241,10 +244,10 @@ export default function AdminImages() {
                             </EditTd>
                             {/*<td>*/}
                             {/*    <button onClick={ function () {
-                                    handleDelete(bracelet);
+                                    handleDelete(image);
                                 }}>Delete</button>*/}
                             {/*</td>*/}
-                        </SingleBraceletTr>
+                        </SingleImageTr>
                     )}
                 </tbody>
             </AllImagesTable>

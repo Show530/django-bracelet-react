@@ -12,7 +12,7 @@ urlpatterns = [
     path('bracelets/<int:pk>/', views.DetailBracelet.as_view()),
     path('images/', views.ListImage.as_view()),
     # important: now gets images based on their ORDER, not pk
-    path('images/<int:order>', views.DetailImage.as_view()),
+    path('images/<int:order>/', views.DetailImage.as_view()),
     # path('images/')
     path('year-boundaries/', views.year_bounds), # api route to calc year bounds
 ]

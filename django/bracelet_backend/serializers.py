@@ -204,7 +204,7 @@ class ImageSerializer(serializers.ModelSerializer):
             image.save(update_fields=["order"])
 
         # Update bracelet relationships if changed
-        if bracelet_ids:
+        if bracelet_ids is not None:
             # get rid of previous relationships
             BraceletImage.objects.filter(image=image).delete()
 
@@ -244,7 +244,7 @@ class ImageSerializer(serializers.ModelSerializer):
         instance.save()
         
         # Update bracelet relationships if changed
-        if bracelet_ids:
+        if bracelet_ids is not None:
             # get rid of previous relationships
             BraceletImage.objects.filter(image=instance).delete()
 

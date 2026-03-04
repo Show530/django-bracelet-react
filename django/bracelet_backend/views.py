@@ -22,11 +22,21 @@ from bracelet_backend.serializers import BraceletSerializer, ImageSerializer
 from bracelet_backend.filters import BraceletFilter, ImageFilter
 # allows bracelet forms to accpet images- upload from front end
 from rest_framework.parsers import MultiPartParser, FormParser
-
-
-
+# allows custom pagination to be created
+from rest_framework.pagination import PageNumberPagination
+# allows order for api
+from rest_framework.filters import OrderingFilter
 
 # Create your views here.
+
+# custom pagination class
+class ImagePagination(PageNumberPagination):
+    page_size = 24
+    page_size_query_param = 'page_size'
+    max_page_size = 100
+
+
+
 @api_view(['GET'])
 def year_bounds(request):
     ''' API view for getting the boundaries for the images of each year '''
@@ -56,9 +66,12 @@ class ListBracelet(generics.ListCreateAPIView):
     ''' API view for getting, and posting to bracelet objects '''
     queryset = Bracelet.objects.all()
     serializer_class = BraceletSerializer
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_class = BraceletFilter
     parser_classes = [MultiPartParser, FormParser]
+    ordering_fields = ['order', 'created_at']
+    ordering = ['order']
+
     # allows anyone to read (GET) and only admin to create/delete (POST)
     permission_classes = [IsAuthenticatedOrReadOnly]
 
@@ -85,9 +98,14 @@ class ListImage(generics.ListCreateAPIView):
     ''' API view for getting, and posting to image objects '''
     queryset = Image.objects.all()
     serializer_class = ImageSerializer
-    filter_backends = [DjangoFilterBackend]
+    # custom pagination
+    pagination_class = ImagePagination
+    filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_class = ImageFilter
     parser_classes = [MultiPartParser, FormParser]
+    ordering_fields = ['order', 'created_at']
+    ordering = ['order']
+
     # allows anyone to read (GET) and only admin to create/delete (POST)
     permission_classes = [IsAuthenticatedOrReadOnly]
 

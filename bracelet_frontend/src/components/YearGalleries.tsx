@@ -97,8 +97,8 @@ export default function YearGalleries() {
                 // and assign data
                 const favsPerYear: YearImage[] = resps.map((res, index) => ({
                     year: years[index],
-                    image: res.data.length > 0
-                            ? getRandomImage(res.data)
+                    image: res.data.results.length > 0
+                            ? getRandomImage(res.data.results)
                             : null
                 }));
 

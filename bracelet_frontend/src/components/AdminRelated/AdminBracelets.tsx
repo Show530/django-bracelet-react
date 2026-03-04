@@ -109,7 +109,7 @@ export default function AdminBracelets() {
 
     async function refreshList() {
         try {
-            const res = await axios.get("/api/bracelets/");
+            const res = await axios.get("/api/bracelets/?ordering=-order");
             setData(res.data);
         }
         catch (err) {

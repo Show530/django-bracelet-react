@@ -49,6 +49,10 @@ const StyledText = styled.p`
     margin: auto;
 `;
 
+const StyledCaptions = styled(StyledText)`
+    overflow-wrap: break-word;
+`;
+
 const StyledTd = styled.td`
     margin: 2% 3%;
     padding: 1.5%;
@@ -78,7 +82,12 @@ const StyledButton = styled.button`
     }
 `;
 
-
+const StyledPrevNextDiv = styled.div`
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin: 1%;
+`;
 
 // 
 export default function AdminImages() {
@@ -86,6 +95,12 @@ export default function AdminImages() {
     const currPage = params["*"] ?? "";
 
     const[data, setData] = useState<Image[]>([]);
+    // added for pagination
+    const [pageNum, setPageNum] = useState(1);
+    const [totalPages, setTotalPages] = useState<number>(0);
+    const [prevPage, setPrevPage] = useState<string | null>(null);
+    const [nextPage, setNextPage] = useState<string | null>(null);
+
     const [err, setErr] = useState<Error | null>(null);
     const[modalOpen, setModalOpen] = useState(false);
     const [mode, setMode] = useState<"create" | "edit">("create");
@@ -105,10 +120,16 @@ export default function AdminImages() {
         refreshList();
     }, []);
 
-    async function refreshList() {
+    // pageNumber is a default value- if specified, it will ignore
+    async function refreshList(pageNumber = 1) {
         try {
-            const res = await axios.get("/api/images/");
-            setData(res.data);
+            const res = await axios.get(`/api/images/?ordering=-order&page=${pageNumber}`);
+            // console.log(res.data);
+            setTotalPages(Math.ceil(res.data.count / 24 ))
+            setData(res.data.results);
+            setPrevPage(res.data.previous);
+            setNextPage(res.data.next);
+            setPageNum(pageNumber);
         }
         catch (err) {
             console.log("Error when refreshing list: ", err);
@@ -233,7 +254,7 @@ export default function AdminImages() {
                     data.map((image: Image) =>
                         <SingleImageTr key={image.id} >
                             <StyledTd>
-                                <StyledText>{image.caption}</StyledText>
+                                <StyledCaptions>{image.caption}</StyledCaptions>
                             </StyledTd>
                             <EditTd>
                                 <StyledButton onClick={ function () {
@@ -251,6 +272,27 @@ export default function AdminImages() {
                     )}
                 </tbody>
             </AllImagesTable>
+            <StyledPrevNextDiv>
+                {
+                    totalPages > 1 && (
+                        <StyledText>Page {pageNum} of {totalPages}</StyledText>
+                    )
+                }
+            </StyledPrevNextDiv>
+
+            <StyledPrevNextDiv>
+                {prevPage && (
+                    <StyledButton onClick={() => refreshList(pageNum - 1)}>
+                        <StyledText>Previous</StyledText>
+                    </StyledButton>
+                )}
+
+                {nextPage && (
+                    <StyledButton onClick={() => refreshList(pageNum + 1)}>
+                        <StyledText>Next</StyledText>
+                    </StyledButton>
+                )}
+            </StyledPrevNextDiv>
 
             {modalOpen ? (
                     <ImageModal mode={mode} activeImage={activeImage} toggle={toggle} onSave={handleSubmit} />

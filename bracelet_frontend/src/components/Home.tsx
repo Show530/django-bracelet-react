@@ -27,9 +27,9 @@ export default function Home() {
     useEffect(() => {
         const fetchAllData = async () => {
             try {
-                
-                const imageResp = await axios.get("api/images/?favorite=true");
-                const imageRespData = imageResp.data;
+                // hard coded to 50 for now
+                const imageResp = await axios.get("api/images/?favorite=true&page_size=50");
+                const imageRespData = imageResp.data.results;
 
                 if (!imageRespData) {
                     setErr(new Error("Images not found."));

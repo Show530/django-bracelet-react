@@ -12,6 +12,7 @@ const ParentDiv=styled.div`
     width: 80vw;
     margin: auto;
     //border: 2px darkred inset;
+    justify-content: center;
 `;
 
 // type RouteParams = {
@@ -20,9 +21,37 @@ const ParentDiv=styled.div`
 //     "year": number;
 // };
 
+const ButtonDiv = styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+`;
+
+const StyledButton = styled.button`
+    //background-color: lightblue;
+    text-align: center;
+    margin: 1%;
+    border-radius: 10px;
+    background-color: none;
+
+    &:hover {
+        //color: #503E2A;
+        background-color: #a7aea9;
+    }
+`;
+
+const ButtonText = styled.p`
+    font-size: ${({theme}) => theme.text.body};
+    margin: 0;
+`;
+
 export default function Gallery() {
     const[data, setData] = useState<Image[]>([]);
     const [err, setErr] = useState<Error | null>(null);
+    // added for pagination
+    const [pageNum, setPageNum] = useState(1);
+    const [hasMorePages, setHasMorePages] = useState(true);
+
     const params = useParams();
     const currPage = params["*"] ?? "";
     const year = params["year"] ?? "";
@@ -32,8 +61,17 @@ export default function Gallery() {
         const fetchAllData = async () => {
             // if on the gallery selling page, load that data
             if (currPage == "Selling") {
-                await axios.get("/api/images/?selling=true").
-                then((res) => setData(res.data)).
+                await axios.get(`/api/images/?selling=true&page=${pageNum}`).
+                then((res) => {
+                    if(pageNum === 1) {
+                        setData(res.data.results);
+                        
+                    }
+                    else {
+                        setData(prev => [...prev, ...res.data.results]);
+                    }
+                    setHasMorePages(res.data.next !== null);
+                }).
                 catch((err) => {
                     console.log(err);
                     setErr(err);
@@ -41,8 +79,16 @@ export default function Gallery() {
             }
             // if on the gallery year page, load that data
             else if (year != null) {
-                await axios.get(`/api/images/?year=${year}`)
-                    .then((res) => setData(res.data))
+                await axios.get(`/api/images/?year=${year}&page=${pageNum}`)
+                    .then((res) => {
+                        if(pageNum === 1) {
+                            setData(res.data.results);
+                        }
+                        else {
+                            setData(prev => [...prev, ...res.data.results]);
+                        }
+                        setHasMorePages(res.data.next !== null);
+                    })
                     .catch((err) => {
                         console.log(err);
                         setErr(err);
@@ -50,8 +96,16 @@ export default function Gallery() {
             }
             // otherwise load all image data
             else {
-                await axios.get("/api/images/")
-                    .then((res) => setData(res.data))
+                await axios.get(`/api/images/?page=${pageNum}`)
+                    .then((res) => {
+                        if(pageNum === 1) {
+                            setData(res.data.results);
+                        }
+                        else {
+                            setData(prev => [...prev, ...res.data.results]);
+                        }
+                        setHasMorePages(res.data.next !== null);
+                    })
                     .catch((err) => {
                         console.log(err);
                         setErr(err);
@@ -60,7 +114,7 @@ export default function Gallery() {
         }
         fetchAllData();
         
-    }, [currPage, data.length, year]);
+    }, [currPage, year, pageNum]);
 
     if(err != null) {
         return (
@@ -77,6 +131,13 @@ export default function Gallery() {
     return (
         <ParentDiv>
             <Images data={data}/>
+            <ButtonDiv>
+                {hasMorePages && 
+                    <StyledButton onClick={() => setPageNum(prev => prev + 1)}>
+                        <ButtonText>Load More</ButtonText>
+                    </StyledButton>
+                }
+            </ButtonDiv>
         </ParentDiv>
     );
 

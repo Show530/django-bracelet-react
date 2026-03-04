@@ -80,6 +80,12 @@ const Label = styled.label`
     color: #444;
 `;
 
+const StyledTextLikeLabel = styled.p`
+    margin-bottom: 0.3rem;
+    font-weight: 500;
+    color: #444;
+`;
+
 const Input = styled.input`
     padding: 0.5rem;
     font-size: ${({theme}) => theme.text.body};
@@ -290,7 +296,7 @@ export default function ImageModal({ mode, activeImage, toggle, onSave }: Custom
                 <form>
                     {image?.image_url && (
                         <FormGroup>
-                            <Label>Current Image:</Label>
+                            <StyledTextLikeLabel>Current Image:</StyledTextLikeLabel>
                             <img
                                 src={image.image_url}
                                 alt={image.caption}
@@ -343,7 +349,7 @@ export default function ImageModal({ mode, activeImage, toggle, onSave }: Custom
                         <div>Loading bracelets...</div>
                         :
                         <FormGroup>
-                            <Label>Linked Bracelets</Label>
+                            <StyledTextLikeLabel>Linked Bracelets</StyledTextLikeLabel>
                             <div>
                                 {
                                     selectedBracelets.map(bracelet => (

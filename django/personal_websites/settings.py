@@ -66,6 +66,8 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',
 
+    'storages', # for image storage
+
     'bracelet_backend', # FOR bracelet website
 ]
 # for oauth
@@ -100,6 +102,25 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+}
+
+# for image storage
+STORAGES = {
+    "default" : {
+        "BACKEND": "storages.backends.s3.S3Storage",
+        "OPTIONS": {
+            "bucket_name": config('CLOUDFLARE_R2_BUCKET'),
+            "endpoint_url": config('CLOUDFLARE_R2_BUCKET_ENDPOINT'),
+            "access_key": config('CLOUDFLARE_R2_ACCESS_KEY'),
+            "secret_key": config('CLOUDFLARE_R2_SECRET_KEY'),
+            "file_overwrite": True,
+            "default_acl": None,
+            "custom_domain": config('CLOUDFLARE_PUBLIC_DOMAIN', default=None),
+        }
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    }
 }
 
 

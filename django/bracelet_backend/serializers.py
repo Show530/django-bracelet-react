@@ -6,6 +6,59 @@
 from rest_framework import serializers
 from bracelet_backend.models import Bracelet, Image, BraceletImage
 from django.contrib.auth.models import User
+# for optimizing images
+from PIL import Image as PILImage
+from io import BytesIO
+from django.core.files.uploadedfile import InMemoryUploadedFile
+
+class ImageOptimizer:
+    '''Custom utility class for image optimization'''
+    def __init__(self, max_size=(900, 1200), quality=85):
+        self.max_size = max_size
+        self.quality=quality
+
+    def optimize_image(self, image_file):
+        '''Resize and optimize image before adding to database
+            input: image_file: uploaded file or file-like object
+            output: InMempryUploaded file: optimized image
+        '''
+        img = PILImage.open(image_file)
+        # try:
+
+        # except Exception as e:
+        #     # Log the error in production
+        #     import logging
+        #     logger = logging.getLogger(__name__)
+        #     logger.error(f"Image optimization failed: {e}")
+            
+        #     # Fallback: save original without optimization
+        #     return image_file
+
+        # convert RGBA to RGB to save as a JPEG- JPEG cannot have transparency
+        # this adds a white background if needed
+        if img.mode in ('RGBA', 'LA', 'P'):
+            background = PILImage.new('RGB', img.size, (255, 255, 255))
+            if img.mode == 'RGBA':
+                background.paste(img, mask=img.split()[-1])
+            else:
+                background.paste(img)
+            img = background
+        
+        # resize if needded
+        img.thumbnail(self.max_size, PILImage.Resampling.LANCZOS)
+
+        # save optimized img
+        output = BytesIO()
+        img.save(output, format='JPEG', quality=self.quality, optimize=True)
+        output.seek(0)
+
+        # gets filename or sets a default
+        filename = getattr(image_file, 'name', 'optimized.jpg')
+
+        return InMemoryUploadedFile(
+            output, 'ImageField', filename, 
+            'image/jpeg', output.getbuffer().nbytes, None
+        )
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
@@ -76,8 +129,13 @@ class BraceletSerializer(serializers.ModelSerializer):
         if image_file:
             print("In Image File if statement- found")
             # order cannot be null on create, but will change after object is created
+
+            # first optimize image, then create it
+            optimizer = ImageOptimizer(max_size=(900, 1200), quality=85)
+            opt_image_file = optimizer.optimize_image(image_file)
+
             image = Image.objects.create(
-                image_file=image_file,
+                image_file=opt_image_file,
                 caption=caption or bracelet.name,
                 favorite=False,
                 order=-1
@@ -118,8 +176,13 @@ class BraceletSerializer(serializers.ModelSerializer):
         if image_file:
             print("In Image File if statement- found")
             # order cannot be null on create, but will change after object is created
+
+            # first optimize image, then create it
+            optimizer = ImageOptimizer(max_size=(900, 1200), quality=85)
+            opt_image_file = optimizer.optimize_image(image_file)
+
             image = Image.objects.create(
-                image_file=image_file,
+                image_file=opt_image_file,
                 caption=caption or instance.name,
                 favorite=False,
                 order=-1
@@ -192,6 +255,9 @@ class ImageSerializer(serializers.ModelSerializer):
         if 'order' not in validated_data:
             validated_data['order'] = -1  
         
+        # first optimize image, then create it
+        optimizer = ImageOptimizer(max_size=(900, 1200), quality=85)
+        validated_data['image_file'] = optimizer.optimize_image(image_file)
 
         image = Image.objects.create(**validated_data)
         # print("Image saved with id: ", image.id)
@@ -222,7 +288,7 @@ class ImageSerializer(serializers.ModelSerializer):
                 except Bracelet.DoesNotExist:
                     print(f"Bracelet with id {bracelet_id} not found")
 
-
+        print('Finished create')
         return image
     
     def update(self, instance, validated_data):

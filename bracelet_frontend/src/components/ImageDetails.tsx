@@ -21,6 +21,10 @@ const StyledImg = styled.img`
     margin: 2% auto;
     border-radius: 25px;
     box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+
+    @media (max-width: 800px) {
+        width: 50%;
+    }
 `;
 
 const RowDiv = styled.div`
@@ -35,6 +39,13 @@ const RowDiv = styled.div`
 // const AnimatedLink = L`
 
 // `
+const SizedBackArrow = styled(MdOutlineArrowBackIos)`
+    font-size: ${({theme}) => theme.text.body};
+`;
+
+const SizedForwardArrow = styled(MdOutlineArrowForwardIos)`
+    font-size: ${({theme}) => theme.text.body};
+`;
 
 type RouteParams = {
     // because the route uses a wildcard
@@ -238,11 +249,11 @@ export default function ImageDetails() {
                             {
                                 year
                                 ? <Link to={`/${currPage}/${year}/${String(Number(imageOrder) - 1)}`}>
-                                        <MdOutlineArrowBackIos />
+                                        <SizedBackArrow />
                                     </Link>
                                 :
                                 <Link to={`/${currPage}/${String(Number(imageOrder) - 1)}`}>
-                                    <MdOutlineArrowBackIos />
+                                    <SizedBackArrow />
                                 </Link>
                             }
                             </>
@@ -261,11 +272,11 @@ export default function ImageDetails() {
                             {
                                 year
                                     ? <Link to={`/${currPage}/${year}/${String(Number(imageOrder) + 1)}`}>
-                                        <MdOutlineArrowForwardIos />
+                                        <SizedForwardArrow />
                                     </Link>
                                     :
                                     <Link to={`/${currPage}/${String(Number(imageOrder) + 1)}`}>
-                                        <MdOutlineArrowForwardIos />
+                                        <SizedForwardArrow />
                                     </Link>
                             }
                             </>

@@ -13,11 +13,69 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+// new axios instance for refresh
+const axiosRefresh = axios.create();
+
 
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [loading, setLoading] = useState(true);
     const [user, setUser] = useState<User | null>(null);
+
+    // https://medium.com/@velja/token-refresh-with-axios-interceptors-for-a-seamless-authentication-experience-854b06064bde
+    // axios interceptor for token refresh
+    useEffect(() => {
+        const interceptor = axios.interceptors.response.use(
+            // ignores sucesses/all public calls
+            (response) => response,
+            async (error) => {
+                const orginalReq = error.config;
+
+                // if 401 error and not retried
+                if (error.response?.status === 401 && !orginalReq._retry) {
+                    // set to true for no infinite looping
+                    orginalReq._retry = true;
+
+                    const refreshToken = localStorage.getItem('refresh_token');
+
+                    if (refreshToken) {
+                        try {
+                            // make request to refresh token
+                            const response = await axiosRefresh.post('/api/auth/token/refresh/', {
+                                refresh: refreshToken
+                            });
+
+                            const newAccessToken = response.data.access;
+
+                            //update stored token
+                            localStorage.setItem('access_token', newAccessToken);
+
+                            // update request with new token
+                            orginalReq.headers.Authorization = `Bearer ${newAccessToken}`;
+
+                            // retry og request
+                            return axios(orginalReq);
+                        }
+                        catch (refreshError) {
+                            console.error('Token refresh failed:', refreshError);
+                            logout();
+                            return Promise.reject(refreshError);
+                        }
+                    }
+                    else {
+                        // no refresh token, so logout?
+                        logout();
+                    }
+                }
+                return Promise.reject(error);
+            }
+        );
+        // clean up on unmount
+        return () => {
+            axios.interceptors.response.eject(interceptor);
+        };
+
+    }, []);
 
     useEffect(() => {
         checkAuth();
@@ -46,8 +104,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             setUser(response.data);
             setIsAuthenticated(true);
         } catch (err) {
-            localStorage.removeItem('access_token');
-            localStorage.removeItem('refresh_token');
+             // let interceptor handle refresh, but this failed too
+            // localStorage.removeItem('access_token');
+            // localStorage.removeItem('refresh_token');
+
+            console.error('Auth check failed:', err);
             setIsAuthenticated(false);
             setUser(null);
         } 

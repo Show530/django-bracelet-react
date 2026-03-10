@@ -18,11 +18,13 @@ from django.conf import settings
 from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls.static import static
+# for google oauth
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from dj_rest_auth.registration.views import SocialLoginView
-import json
-
+# import json # was for debugging
+# for token refresh
+from rest_framework_simplejwt.views import TokenRefreshView
 
 # https://www.digitalocean.com/community/tutorials/build-a-to-do-application-using-django-and-react#step-2-setting-up-the-apis
 # from rest_framework import routers
@@ -49,10 +51,12 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('bracelet_backend.urls')),
 
-    path("accounts/", include("allauth.urls")),  # for oauth
+    path('accounts/', include('allauth.urls')),  # for oauth
     path('api/auth/', include('dj_rest_auth.urls')), # for oauth
     path('api/auth/registration/', include('dj_rest_auth.registration.urls')), # for oauth
-    
+    # token refresh path
+    path('api/auth/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
     # problem fixed?
     # Google social login
     path(

@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import {Link} from "react-router";
 import {useState, useEffect} from "react";
-import axios from "axios";
+import api from "../axiosConfig.ts";
 
 import type {Image} from "../interfaces/Image.ts";
 import type {YearBounds} from "../interfaces/YearBounds.ts"
@@ -80,13 +80,13 @@ export default function YearGalleries() {
         const fetchAllData = async () => {
             try {
                 // get year boundaries
-                const response = await axios.get('/api/year-boundaries/');
+                const response = await api.get('/year-boundaries/');
                 const yearBoundsRes: YearBounds = response.data;
                 const years = Object.keys(yearBoundsRes);
                 
                 // get data for each year favorite
                 const reqs = years.map(year =>
-                    axios.get(`api/images/?favorite=true&year=${year}`)
+                    api.get(`/images/?favorite=true&year=${year}`)
                 );
                 const resps = await Promise.all(reqs);
 

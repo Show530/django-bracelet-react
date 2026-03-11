@@ -15,6 +15,7 @@ export default defineConfig({
         // target: "http://192.0.2.215:8000",
         target: 'http://localhost:8000',
         changeOrigin: true,
+        secure: false,
       },
     // added to attempt to get images to load on phonr
     // "/media": {

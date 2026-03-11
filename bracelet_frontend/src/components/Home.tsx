@@ -5,7 +5,7 @@ import ErrorPage from './Error.tsx';
 
 // swiper gallery functionality
 import { useState, useEffect } from 'react';
-import axios from "axios";
+import api from "../axiosConfig.ts";
 import type {Image} from "../interfaces/Image.ts"
 import FavoriteImageSlides from "./Displays/FavoriteImageSlides.tsx";
 
@@ -16,19 +16,12 @@ export default function Home() {
 
     const [err, setErr] = useState<Error | null>(null);
     const[imageData, setImageData] = useState<Image[]>([]);
-    // const [] = 
-    // useEffect (() => {
-    //     const token = localStorage.getItem('access_token');
-    //     // console.log("Token in Home: ", token);
-    //     // setIsLoggedIn(!!token);
-
-    // }, []);
 
     useEffect(() => {
         const fetchAllData = async () => {
             try {
                 // hard coded to 50 for now
-                const imageResp = await axios.get("api/images/?favorite=true&page_size=50");
+                const imageResp = await api.get("/images/?favorite=true&page_size=50");
                 const imageRespData = imageResp.data.results;
 
                 if (!imageRespData) {
@@ -60,22 +53,3 @@ export default function Home() {
         <FavoriteImageSlides images={imageData}/>
     );
 }
-
-// <>
-        //     <p>
-        //         {
-        //             isAuthenticated 
-        //             ? 
-        //             <>
-        //                 Logged in as {user?.email}
-        //                 {
-        //                     user?.is_staff && <> "staff"</>
-        //                 }
-        //             </>
-
-        //             : 
-        //             "Not logged in"
-        //         }
-        //         {" "}Some stuff.
-        //     </p>
-        // </>

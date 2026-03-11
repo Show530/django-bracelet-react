@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../../axiosConfig.ts";
 
 import type { Bracelet } from "../../interfaces/Bracelet.ts";
 import ErrorPage from "../Error.tsx";
@@ -109,7 +109,7 @@ export default function AdminBracelets() {
 
     async function refreshList() {
         try {
-            const res = await axios.get("/api/bracelets/?ordering=-order");
+            const res = await api.get("/bracelets/?ordering=-order");
             setData(res.data);
         }
         catch (err) {
@@ -152,10 +152,9 @@ export default function AdminBracelets() {
             if (bracelet.id) {
                 // await axios.put(`/api/bracelets/${bracelet.id}/`, bracelet);
                 // console.log(Object.fromEntries(formData.entries()));
-                await axios.put(`/api/bracelets/${bracelet.id}/`, formData, {
+                await api.put(`/bracelets/${bracelet.id}/`, formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
-                        Authorization: `Bearer ${localStorage.getItem("access_token")}`
                     }
                 }
                 );
@@ -164,10 +163,9 @@ export default function AdminBracelets() {
             else {
                 // await axios.post(`/api/bracelets/`, bracelet);
                 // console.log(Object.fromEntries(formData.entries()));
-                await axios.post('/api/bracelets/', formData, {
+                await api.post('/bracelets/', formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
-                        Authorization: `Bearer ${localStorage.getItem("access_token")}`
                     }
                 }
                 );

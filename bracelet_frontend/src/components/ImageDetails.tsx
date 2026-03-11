@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {Link, useParams} from "react-router";
 
 import styled from "styled-components";
-import axios from "axios";
+import api from "../axiosConfig.ts";
 
 import type {Image} from "../interfaces/Image.ts";
 import type {Bracelet} from "../interfaces/Bracelet.ts";
@@ -82,12 +82,12 @@ export default function ImageDetails() {
         const fetchAllData = async () => {
             try {
                 // setting arrays for start/end arrows
-                const response = await axios.get('/api/year-boundaries/');
+                const response = await api.get('/year-boundaries/');
                 const yearBoundsRes: YearBounds = response.data;
         
 
                 // call for getting image data
-                const imageRes = await axios.get("/api/images/"+ imageOrder);
+                const imageRes = await api.get("/images/"+ imageOrder);
                 const image = imageRes.data as Image;
                 if(!image) {
                     setErr(new Error("Image not found"));
@@ -104,7 +104,7 @@ export default function ImageDetails() {
                 // get all the bracelets associated with image
                 const responses = await Promise.all(
                     currBraceletPks.map((braceletPk) =>
-                        axios.get(`/api/bracelets/${braceletPk}/`)
+                        api.get(`/bracelets/${braceletPk}/`)
                     )
                 );
                 let currBraceletData = responses.map((res) => res.data);

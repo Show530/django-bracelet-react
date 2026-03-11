@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../../axiosConfig.ts";
 
 import type { Image } from "../../interfaces/Image.ts";
 import type { Bracelet } from "../../interfaces/Bracelet.ts";
@@ -123,7 +123,7 @@ export default function AdminImages() {
     // pageNumber is a default value- if specified, it will ignore
     async function refreshList(pageNumber = 1) {
         try {
-            const res = await axios.get(`/api/images/?ordering=-order&page=${pageNumber}`);
+            const res = await api.get(`/images/?ordering=-order&page=${pageNumber}`);
             // console.log(res.data);
             setTotalPages(Math.ceil(res.data.count / 24 ))
             setData(res.data.results);
@@ -170,19 +170,17 @@ export default function AdminImages() {
             if(mode === "edit" && image?.order) {
                 // trying patch because no data is edited
                 // patch works if no data is changed, put requires at least one changed field
-                await axios.patch(`/api/images/${image.order}/`, formData, {
+                await api.patch(`/images/${image.order}/`, formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
-                        Authorization: `Bearer ${localStorage.getItem("access_token")}`
                     }
                 }
                 );
             }
             else { 
-                await axios.post('/api/images/', formData, {
+                await api.post('/images/', formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
-                        Authorization: `Bearer ${localStorage.getItem("access_token")}`
                     }
                     }
                 );

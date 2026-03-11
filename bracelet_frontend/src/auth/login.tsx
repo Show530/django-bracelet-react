@@ -2,7 +2,8 @@
 import { useGoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router";
 import {useAuth} from "./AuthContext.tsx";
-import axios from "axios";
+import {useState} from "react";
+import api from "../axiosConfig.ts";
 import styled from "styled-components";
 import ErrorPage from "../components/Error.tsx";
 
@@ -59,44 +60,36 @@ const GoogleIcon = () => (
 
 export default function Landing() {
     const navigate = useNavigate();
-    const { login: authLogin } = useAuth();
+    const { checkAuth } = useAuth();
+    const [err, setErr] = useState<boolean>(false);
 
     const login = useGoogleLogin({
             onSuccess: async (tokenResponse) => {
                 try {
                     // console.log("Token response: ", tokenResponse);
-                    const response = await axios.post('/api/auth/social/google/',
-                    {
-                        access_token: tokenResponse.access_token,
-                    },
-                    {
-                        headers: {"Content-Type": "application/json"},
-                        withCredentials: true,
-                    }
-
+                    await api.post('/auth/social/google/',
+                        {
+                            access_token: tokenResponse.access_token,
+                        },
                     );
 
-                    // console.log("Response data: ", response.data);
-                    // store JWT tokens if existing
-                    if (response.data.access) {
-                        await authLogin(response.data.access, response.data.refresh);
-
-                        // console.log("login sucessful!", response.data);
-                        navigate("/");
-                    }
+                    await checkAuth();
+                    navigate("/");
                 }
                 catch(error) {
                     console.error("Login failed");
-                    return <ErrorPage err={new Error("Login failed.")}/>
+                    setErr(true);
                 }
             },
             onError: () => {
                 console.log("Login Failed.");
-                return <ErrorPage err={new Error("Login failed.")}/>
+                setErr(true);
             }
         }
     );
-
+    if (err === true) {
+        return <ErrorPage err={new Error("Login failed.")}/>
+    }
 
     return (
         <PageContainer>

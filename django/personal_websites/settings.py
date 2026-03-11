@@ -124,7 +124,12 @@ REST_FRAMEWORK = {
 # JWT
 REST_AUTH = {
     "USE_JWT": True,
-    "JWT_AUTH_HTTPONLY": False,
+    # "JWT_AUTH_HTTPONLY": False,
+    "JWT_AUTH_COOKIE": "access_token",
+    "JWT_AUTH_REFRESH_COOKIE": "refresh_token",
+    "JWT_AUTH_HTTPONLY": True,
+    "JWT_AUTH_SECURE": not DEBUG,
+    "JWT_AUTH_SAMESITE": "Lax",
     "USER_DETAILS_SERIALIZER": "bracelet_backend.serializers.UserSerializer",
 }
 
@@ -190,22 +195,18 @@ MIDDLEWARE = [
 # for API usage
 # https://medium.com/@gazzaazhari/django-backend-react-frontend-basic-tutorial-6249af7964e4
 # and using vite react
-CORS_ORIGIN_WHITELIST = [
-    'http://localhost:5173',
-    # 'http://127.0.0.1:5173',
-    # 'http://192.0.2.215:800',
-    'http://192.0.2.215:5173',
-]
-#  old port using create-react-app
-#  'http://localhost:3000',
-# And for crFedentials support/for authentication purposes:
-CORS_ALLOW_CREDENTIALS = True
-# added for oauth
-# CORS_ALLOWED_ORGINS = [
+# CORS_ORIGIN_WHITELIST = [
 #     'http://localhost:5173',
+#     # 'http://127.0.0.1:5173',
+#     # 'http://192.0.2.215:800',
 #     'http://192.0.2.215:5173',
 # ]
-CORS_ALLOWED_ORGINS = config('CORS_ALLOWED_ORGINS')
+#  old port using create-react-app
+#  'http://localhost:3000',
+
+CORS_ALLOWED_ORIGINS = config('CORS_ALLOWED_ORIGINS', cast=lambda v: [s.strip() for s in v.split(',')])
+# And for crFedentials support/for authentication purposes:
+CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_HEADERS = [
     'accept', 
     'accept-encoding',

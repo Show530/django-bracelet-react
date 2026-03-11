@@ -27,8 +27,8 @@ const StyledItem = styled.div`
     // width: 100%;
 `;
 
-const StyledLabel = styled.h3 `
-    //font-size: 1.5rem;
+const StyledLabel = styled.h3`
+    text-align: center;
     font-size: ${({theme}) => theme.text.label};
     color: #666;
     text-transform: lowercase;
@@ -36,7 +36,7 @@ const StyledLabel = styled.h3 `
 `;
 
 const StyledVal = styled.h3 `
-    //font-size: 3rem;
+    text-align: center;
     font-size: ${({theme}) => theme.text.value};
     font-weight: 500;
     color: #111;

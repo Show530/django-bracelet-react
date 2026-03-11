@@ -3,7 +3,8 @@ import CollectionSlide from "./CollectionSlide.tsx";
 import styled from "styled-components";
 
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation, Pagination, Autoplay } from "swiper/modules";
+import { Navigation, Pagination, Autoplay, Keyboard } from "swiper/modules";
+// import {useState, useEffect} from "react";
 
 import 'swiper/swiper-bundle.css';
 
@@ -29,13 +30,30 @@ const StyledSwiper = styled(Swiper)`
 `;
 
 export default function FavoriteImageSlides(props:{images:Image[]}) {
+    // const [width, setWidth] = useState<number>(window.innerWidth);
+
+    // function handleWindowSizeChange() {
+    //     setWidth(window.innerWidth);
+    // }
+    // useEffect(() => {
+    //     window.addEventListener('resize', handleWindowSizeChange);
+    //     return () => {
+    //         window.removeEventListener('resize', handleWindowSizeChange);
+    //     }
+    // }, []);
+
+    // const isMobile = width <= 800;
+
     return (
         <StyledSwiper
-            modules={[Navigation, Pagination, Autoplay]}
+            modules={[Navigation, Pagination, Autoplay, Keyboard]}
             navigation
             pagination={{clickable: true}}
             // delay controls how fast it plays- mess around?
             autoplay={{ delay: 7000}}
+            // direction={isMobile ? "horizontal": "vertical"}
+            direction="horizontal"
+            keyboard={{enabled: true}}
         >
             {props.images.map (img => (
                 <SwiperSlide key={img.id}>

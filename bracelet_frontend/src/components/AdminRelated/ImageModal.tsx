@@ -3,7 +3,7 @@ import React, {useState } from "react";
 import type { Image } from "../../interfaces/Image.ts";
 // needed to add BraceletImage functionality
 import type { Bracelet } from "../../interfaces/Bracelet.ts";
-import axios from "axios";
+import api from "../../axiosConfig.ts";
 
 import { createPortal } from "react-dom";
 import { useEffect } from 'react';
@@ -211,7 +211,7 @@ export default function ImageModal({ mode, activeImage, toggle, onSave }: Custom
     useEffect(() => {
         // Fetch all bracelets and load bracelets linked to image
         const fetchAndConnectBracelets = async () => {
-            const res = await axios.get('/api/bracelets/');
+            const res = await api.get('/bracelets/');
             const fetchedBraceletData = res.data
             setAllBracelets(fetchedBraceletData);
 

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useEffect, useState } from "react";
 import type {Image} from "../interfaces/Image.ts";
-import axios from "axios";
+import api from "../axiosConfig.ts";
 
 import Images from "./Displays/Images.tsx";
 import ErrorPage from "./Error.tsx";
@@ -61,7 +61,7 @@ export default function Gallery() {
         const fetchAllData = async () => {
             // if on the gallery selling page, load that data
             if (currPage == "Selling") {
-                await axios.get(`/api/images/?selling=true&page=${pageNum}`).
+                await api.get(`/images/?selling=true&page=${pageNum}`).
                 then((res) => {
                     if(pageNum === 1) {
                         setData(res.data.results);
@@ -79,7 +79,7 @@ export default function Gallery() {
             }
             // if on the gallery year page, load that data
             else if (year != null) {
-                await axios.get(`/api/images/?year=${year}&page=${pageNum}`)
+                await api.get(`/images/?year=${year}&page=${pageNum}`)
                     .then((res) => {
                         if(pageNum === 1) {
                             setData(res.data.results);
@@ -96,7 +96,7 @@ export default function Gallery() {
             }
             // otherwise load all image data
             else {
-                await axios.get(`/api/images/?page=${pageNum}`)
+                await api.get(`/images/?page=${pageNum}`)
                     .then((res) => {
                         if(pageNum === 1) {
                             setData(res.data.results);

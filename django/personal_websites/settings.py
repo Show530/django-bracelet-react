@@ -39,8 +39,8 @@ if not DEBUG:
     SECURE_HSTS_PRELOAD = True
 
     # adding domains!
-    SESSION_COOKIE_DOMAIN = '.accsophsories.com'
-    CSRF_COOKIE_DOMAIN = '.accsophsories.com'
+    # SESSION_COOKIE_DOMAIN = '.accsophsories.com'
+    # CSRF_COOKIE_DOMAIN = '.accsophsories.com'
 
 # Application definition
 

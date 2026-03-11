@@ -12,11 +12,9 @@ import FavoriteImageSlides from "./Displays/FavoriteImageSlides.tsx";
 export default function Home() {
     // const { isAuthenticated, loading, user } = useAuth();
     const { loading } = useAuth();
-
-
     const [err, setErr] = useState<Error | null>(null);
     const[imageData, setImageData] = useState<Image[]>([]);
-    console.log("API URL:", import.meta.env.VITE_DJANGO_API_URL);
+
     useEffect(() => {
         const fetchAllData = async () => {
             try {

@@ -57,6 +57,14 @@ export default function ErrorPage({err}: errProps) {
                 </StyledDiv>
             );
         }
+        else if (err.message === ("Gallery year mismatch")) {
+            return (
+                <StyledDiv>
+                    <StyledText>The year selected has no bracelets in the database.</StyledText>
+                    <StyledSmaller>Did you change the url?</StyledSmaller>
+                </StyledDiv>
+            );
+        }
         else if(err.message === ("Year mismatch")) {
             return (
                 <StyledDiv>

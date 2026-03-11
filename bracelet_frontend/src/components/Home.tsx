@@ -16,7 +16,7 @@ export default function Home() {
 
     const [err, setErr] = useState<Error | null>(null);
     const[imageData, setImageData] = useState<Image[]>([]);
-
+    console.log("API URL:", import.meta.env.VITE_DJANGO_API_URL);
     useEffect(() => {
         const fetchAllData = async () => {
             try {

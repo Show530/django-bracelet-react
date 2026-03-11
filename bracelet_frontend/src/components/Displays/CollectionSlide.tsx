@@ -1,6 +1,6 @@
-import type { Image } from '../../interfaces/Image.ts'
-import styled from 'styled-components';
-import { Link } from 'react-router';
+import type { Image } from "../../interfaces/Image.ts";
+import styled from "styled-components";
+import { Link } from "react-router";
 
 const SlideDiv = styled.div`
     width: 100%;

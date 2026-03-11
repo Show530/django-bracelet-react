@@ -1,6 +1,6 @@
-import type { Image } from '../../interfaces/Image.ts'
-import CollectionSlide from './CollectionSlide.tsx'
-import styled from 'styled-components';
+import type { Image } from "../../interfaces/Image.ts";
+import CollectionSlide from "./CollectionSlide.tsx";
+import styled from "styled-components";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";

@@ -127,7 +127,7 @@ class BraceletSerializer(serializers.ModelSerializer):
         # if image is included,
         # create the image and bracelet image objects 
         if image_file:
-            print("In Image File if statement- found")
+            # print("In Image File if statement- found")
             # order cannot be null on create, but will change after object is created
 
             # first optimize image, then create it
@@ -146,11 +146,11 @@ class BraceletSerializer(serializers.ModelSerializer):
                 image.order = lastImg.order + 1
                 image.save(update_fields=["order"])
             
-            print("Image is: ", image)
+            # print("Image is: ", image)
 
             # no need to save var of BraceletImage because goal is to create it!
             BraceletImage.objects.create(bracelet=bracelet, image=image)
-            print("Saved BI")
+            # print("Saved BI")
 
         # for bracelet: set order to id
         if bracelet.order != bracelet.id:
@@ -174,7 +174,7 @@ class BraceletSerializer(serializers.ModelSerializer):
         instance.save()
 
         if image_file:
-            print("In Image File if statement- found")
+            # print("In Image File if statement- found")
             # order cannot be null on create, but will change after object is created
 
             # first optimize image, then create it
@@ -193,10 +193,10 @@ class BraceletSerializer(serializers.ModelSerializer):
                 lastImg = Image.objects.last()
                 image.order = lastImg.order + 1
                 image.save(update_fields=["order"])
-            print("Image is: ", image)
+            # print("Image is: ", image)
 
             BraceletImage.objects.create(bracelet=instance, image=image)
-            print("Saved BI")
+            # print("Saved BI")
 
         return instance
 
@@ -277,7 +277,7 @@ class ImageSerializer(serializers.ModelSerializer):
             for bracelet_id in bracelet_ids:
                 # make sure to make a string!
                 bracelet_id = str(bracelet_id).strip()
-                print(f"Looking for bracelet with id: {bracelet_id}")
+                # print(f"Looking for bracelet with id: {bracelet_id}")
                 
                 try:
                     bracelet = Bracelet.objects.get(id=bracelet_id)
@@ -287,8 +287,9 @@ class ImageSerializer(serializers.ModelSerializer):
                     )
                 except Bracelet.DoesNotExist:
                     print(f"Bracelet with id {bracelet_id} not found")
+                    continue
 
-        print('Finished create')
+        # print('Finished create')
         return image
     
     def update(self, instance, validated_data):
@@ -317,7 +318,7 @@ class ImageSerializer(serializers.ModelSerializer):
             for bracelet_id in bracelet_ids:
                 # make sure to make a string!
                 bracelet_id = str(bracelet_id).strip()
-                print(f"Looking for bracelet with id: {bracelet_id}")
+                # print(f"Looking for bracelet with id: {bracelet_id}")
                 
                 try:
                     bracelet = Bracelet.objects.get(id=bracelet_id)
@@ -327,6 +328,7 @@ class ImageSerializer(serializers.ModelSerializer):
                     )
                 except Bracelet.DoesNotExist:
                     print(f"Bracelet with id {bracelet_id} not found")
+                    continue
             
         return instance
 

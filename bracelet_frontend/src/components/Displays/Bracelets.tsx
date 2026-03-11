@@ -1,7 +1,7 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 // import {Bracelet} from "../interfaces/Bracelet.ts";
-import type {Bracelet} from '../../interfaces/Bracelet.ts';
-import SingleBracelet from './SingleBracelet.tsx';
+import type {Bracelet} from "../../interfaces/Bracelet.ts";
+import SingleBracelet from "./SingleBracelet.tsx";
 
 const AllBraceletsDiv=styled.div`
     display: flex;

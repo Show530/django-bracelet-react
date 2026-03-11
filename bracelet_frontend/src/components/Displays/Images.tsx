@@ -1,6 +1,6 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 // import {Bracelet} from "../interfaces/Bracelet.ts";
-import type {Image} from '../../interfaces/Image.ts';
+import type {Image} from "../../interfaces/Image.ts";
 import {Link, useParams} from "react-router";
 
 const AllImagesDiv=styled.div`

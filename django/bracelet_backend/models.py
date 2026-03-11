@@ -157,9 +157,9 @@ class BraceletImage(models.Model):
 
 # 129
 # update order of images
-def update_imageO() :
-    '''Function to update the order fields of bracelets'''
-    images = Image.objects.filter(order__gte=75).update(order=models.F('order') - 1)
+# def update_imageO() :
+#     '''Function to update the order fields of bracelets'''
+#     images = Image.objects.filter(order__gte=75).update(order=models.F('order') - 1)
     # images = images.filter(order__lte=140).update(order=models.F('order') - 1)
     
     # for image in images:

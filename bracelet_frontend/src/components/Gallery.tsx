@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 import type {Image} from "../interfaces/Image.ts";
 import axios from "axios";
 

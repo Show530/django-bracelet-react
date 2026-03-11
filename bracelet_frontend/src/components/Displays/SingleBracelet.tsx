@@ -1,8 +1,8 @@
-import styled from 'styled-components';
-import type {Bracelet} from '../../interfaces/Bracelet.ts';
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import { useAuth } from '../../auth/AuthContext.tsx';
+import styled from "styled-components";
+import type {Bracelet} from "../../interfaces/Bracelet.ts";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import { useAuth } from "../../auth/AuthContext.tsx";
 
 const StyledCard = styled(Card) `
     width: 100px; 

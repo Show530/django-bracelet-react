@@ -1,7 +1,7 @@
-import { createContext, useContext, useState, useEffect } from 'react';
-import type { ReactNode } from 'react';
-import axios from 'axios';
-import type { User } from '../interfaces/User';
+import { createContext, useContext, useState, useEffect } from "react";
+import type { ReactNode } from "react";
+import axios from "axios";
+import type { User } from "../interfaces/User";
 
 interface AuthContextType {
     isAuthenticated: boolean;
@@ -15,7 +15,6 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 // new axios instance for refresh
 const axiosRefresh = axios.create();
-
 
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -58,6 +57,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                         }
                         catch (refreshError) {
                             console.error('Token refresh failed:', refreshError);
+                            
                             logout();
                             return Promise.reject(refreshError);
                         }
@@ -104,7 +104,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             setUser(response.data);
             setIsAuthenticated(true);
         } catch (err) {
-             // let interceptor handle refresh, but this failed too
+            // let interceptor handle refresh, but this failed too
             // localStorage.removeItem('access_token');
             // localStorage.removeItem('refresh_token');
 

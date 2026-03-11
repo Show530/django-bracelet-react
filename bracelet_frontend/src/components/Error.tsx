@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 
 interface errProps {
@@ -28,7 +28,14 @@ export default function ErrorPage({err}: errProps) {
 
     // database is down!!
     if(err) {
-        if(err.message === ("Request failed with status code 500")) {
+        if (err.message === ("404 page")) {
+            return (
+                <StyledDiv>
+                    <StyledText>404 - Page not found</StyledText>
+                </StyledDiv>
+            );
+        }
+        else if(err.message === ("Request failed with status code 500")) {
             return (
                 <StyledDiv>
                     <StyledText>Having issues connecting to the database!</StyledText>

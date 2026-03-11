@@ -1,8 +1,8 @@
-import styled from 'styled-components';
-import React, {useState } from 'react';
-import type { Image } from '../../interfaces/Image.ts';
+import styled from "styled-components";
+import React, {useState } from "react";
+import type { Image } from "../../interfaces/Image.ts";
 // needed to add BraceletImage functionality
-import type { Bracelet } from '../../interfaces/Bracelet.ts';
+import type { Bracelet } from "../../interfaces/Bracelet.ts";
 import axios from "axios";
 
 import { createPortal } from "react-dom";

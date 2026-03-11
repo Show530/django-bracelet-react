@@ -1,5 +1,5 @@
-import styled from 'styled-components';
-import Nav from './Navbar/Nav.tsx';
+import styled from "styled-components";
+import Nav from "./Navbar/Nav.tsx";
 
 const StyledHeader = styled.header`
     position: sticky;

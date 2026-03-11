@@ -20,18 +20,23 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
+# Security
 # SECURITY WARNING: keep the secret key used in production secret!
-
 SECRET_KEY = config('DJANGO_SECRET_KEY')
-
-
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=lambda v: [s.strip() for s in v.split(',')])
 
-# TAKE OUT ON DEPLOY '*'
-# 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1' ,'192.0.2.215', '192.0.2.215:5173', '192.0.2.215:8000']
-
+# for HTTPS - needed for production
+if not DEBUG:
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    # CSRF_COOKIE_SECURE = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_HSTS_SECONDS = 31536000  # 1 year
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    SECURE_HSTS_PRELOAD = True
 
 # Application definition
 
@@ -64,10 +69,9 @@ INSTALLED_APPS = [
 
     'bracelet_backend', # FOR bracelet website
 ]
+
 # for oauth
 SITE_ID = 1
-
-# more oauth
 SOCIALACCOUNT_PROVIDERS = {
     'google': {
         'SCOPE': [
@@ -80,6 +84,31 @@ SOCIALACCOUNT_PROVIDERS = {
     }
 }
 
+ACCOUNT_LOGIN_METHODS = {'email'}
+ACCOUNT_SIGNUP_FIELDS = [
+    'email*',
+    'password1*',
+    'password2*'
+]
+ACCOUNT_EMAIL_VERIFICATION = 'none'
+
+
+# ACCOUNT_EMAIL_REQUIRED = True
+# ACCOUNT_USERNAME_REQUIRED = False
+# ACCOUNT_AUTHENTICATION_METHOD = "email"
+# ACCOUNT_UNIQUE_EMAIL = True
+# ACCOUNT_SIGNUP_FIELDS = {
+#     "username": {"required": False},
+#     "email": {"required": False},
+# }
+# fixing django expectations for backend
+SOCIALACCOUNT_AUTO_SIGNUP = True
+SOCIALACCOUNT_EMAIL_AUTHENTICATION = True
+SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
+SOCIALACCOUNT_LOGIN_ON_GET = True
+
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
 
 # for API usage
 REST_FRAMEWORK = {
@@ -92,13 +121,27 @@ REST_FRAMEWORK = {
     ),
 }
 
-# for oauth
+# JWT
+REST_AUTH = {
+    "USE_JWT": True,
+    "JWT_AUTH_HTTPONLY": False,
+    "USER_DETAILS_SERIALIZER": "bracelet_backend.serializers.UserSerializer",
+}
+
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    # 'ROTATE_REFRESH_TOKENS': True,  # Issue new refresh token on refresh
+    # 'BLACKLIST_AFTER_ROTATION': True,  # Invalidate old refresh tokens
 }
+# pip install djangorestframework-simplejwt --break-system-packages
+# INSTALLED_APPS = [
+#     # ...
+#     'rest_framework_simplejwt.token_blacklist',
+# ]
 
-# for image storage
+
+# for image storage/r2 storage
 STORAGES = {
     "default" : {
         "BACKEND": "storages.backends.s3.S3Storage",
@@ -113,11 +156,12 @@ STORAGES = {
         }
     },
     "staticfiles": {
-        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        # "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
     }
 }
 
-
+# Middleware
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware', # for API usage
     'django.middleware.common.CommonMiddleware', # for API usage
@@ -143,7 +187,6 @@ MIDDLEWARE = [
 #     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 # ]
 
-
 # for API usage
 # https://medium.com/@gazzaazhari/django-backend-react-frontend-basic-tutorial-6249af7964e4
 # and using vite react
@@ -155,13 +198,14 @@ CORS_ORIGIN_WHITELIST = [
 ]
 #  old port using create-react-app
 #  'http://localhost:3000',
-# And for crFedentials support:
+# And for crFedentials support/for authentication purposes:
 CORS_ALLOW_CREDENTIALS = True
 # added for oauth
-CORS_ALLOWED_ORGINS = [
-    'http://localhost:5173',
-    'http://192.0.2.215:5173',
-]
+# CORS_ALLOWED_ORGINS = [
+#     'http://localhost:5173',
+#     'http://192.0.2.215:5173',
+# ]
+CORS_ALLOWED_ORGINS = config('CORS_ALLOWED_ORGINS')
 CORS_ALLOW_HEADERS = [
     'accept', 
     'accept-encoding',
@@ -174,39 +218,11 @@ CORS_ALLOW_HEADERS = [
     'x-requested-with',
     ]
 
-
-# for oauth
-ACCOUNT_LOGIN_METHODS = {'email'}
-ACCOUNT_SIGNUP_FIELDS = [
-    'email*',
-    'password1*',
-    'password2*'
-]
-ACCOUNT_EMAIL_VERIFICATION = 'none'
-
-
-# ACCOUNT_EMAIL_REQUIRED = True
-# ACCOUNT_USERNAME_REQUIRED = False
-# ACCOUNT_AUTHENTICATION_METHOD = "email"
-# ACCOUNT_UNIQUE_EMAIL = True
-# ACCOUNT_SIGNUP_FIELDS = {
-#     "username": {"required": False},
-#     "email": {"required": False},
-# }
-# fixing django expectations for backend
-SOCIALACCOUNT_AUTO_SIGNUP = True
-SOCIALACCOUNT_EMAIL_AUTHENTICATION = True
-SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
-SOCIALACCOUNT_LOGIN_ON_GET = True
-
-# still oauth
-REST_AUTH = {
-    "USE_JWT": True,
-    "JWT_AUTH_HTTPONLY": False,
-    "USER_DETAILS_SERIALIZER": "bracelet_backend.serializers.UserSerializer",
-}
-LOGIN_REDIRECT_URL = "/"
-LOGOUT_REDIRECT_URL = "/"
+# CSRF protection
+CSRF_TRUSTED_ORIGINS = config('CSRF_TRUSTED_ORIGINS', cast=lambda v: [s.strip() for s in v.split(',')])
+CSRF_COOKIE_HTTPONLY = False  # Keep False for frontend access
+CSRF_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_SECURE = not DEBUG
 
 ROOT_URLCONF = 'personal_websites.urls'
 
@@ -224,6 +240,23 @@ TEMPLATES = [
         },
     },
 ]
+
+# Logging 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'INFO',
+        },
+    },
+}
 
 WSGI_APPLICATION = 'personal_websites.wsgi.application'
 
@@ -288,8 +321,8 @@ STATIC_URL = 'static/'
 #     os.path.join(BASE_DIR, "static"),
 # ]
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-MEDIA_URL= "media/"  # note: no leading slash!
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
+# MEDIA_URL= "media/"  # note: no leading slash!
 
 
 # Default primary key field type

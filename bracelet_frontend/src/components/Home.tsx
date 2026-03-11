@@ -48,13 +48,12 @@ export default function Home() {
     }, []);
 
     // console.log("Is logged in: ", isAuthenticated);
+    if (err != null) {
+        return <ErrorPage err={err} /> 
+    }
 
     if (loading || imageData.length === 0) {
         return <Loading where={"home"}/>
-    }
-
-    if(err != null) {
-        return <ErrorPage err={err} /> 
     }
 
     return (

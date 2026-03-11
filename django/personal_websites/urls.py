@@ -22,6 +22,9 @@ from django.conf.urls.static import static
 from allauth.socialaccount.providers.google.views import GoogleOAuth2Adapter
 from allauth.socialaccount.providers.oauth2.client import OAuth2Client
 from dj_rest_auth.registration.views import SocialLoginView
+# for oauth to prevent rate limiting 
+from django_ratelimit.decorators import ratelimit
+from django.utils.decorators import method_decorator
 # import json # was for debugging
 # for token refresh
 from rest_framework_simplejwt.views import TokenRefreshView
@@ -34,17 +37,13 @@ from rest_framework_simplejwt.views import TokenRefreshView
 # router.register(r'bracelets', views.ListBracelet, 'bracelet')
 
 # Create a view that specifies the adapter
+@method_decorator(ratelimit(key='ip', rate='5/m', method='POST'), name ='dispatch')
 class GoogleLogin(SocialLoginView):
     adapter_class = GoogleOAuth2Adapter
     # react frontend
     callback_url = "http://localhost:5173"
     client_class = OAuth2Client
-    # debugging
-    # def post(self, request, *args, **kwargs):
-    #     # print("="*50)
-    #     # print("Received data:", request.data)
-    #     # print("="*50)
-    #     return super().post(request, *args, **kwargs)
+   
 # api path via
 # https://medium.com/@gazzaazhari/django-backend-react-frontend-basic-tutorial-6249af7964e4
 urlpatterns = [
@@ -68,5 +67,5 @@ urlpatterns = [
     # path('bracelet_backend/', include('bracelet_backend.urls'))
 ]
 
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# if settings.DEBUG:
+#     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

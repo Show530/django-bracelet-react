@@ -1,6 +1,6 @@
-import styled from 'styled-components';
-import React, {useState } from 'react';
-import type {Bracelet} from '../../interfaces/Bracelet.ts';
+import styled from "styled-components";
+import React, {useState } from "react";
+import type {Bracelet} from "../../interfaces/Bracelet.ts";
 import { createPortal } from "react-dom";
 
 // Followed

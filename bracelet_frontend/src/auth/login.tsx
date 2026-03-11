@@ -3,7 +3,7 @@ import { useGoogleLogin } from "@react-oauth/google";
 import { useNavigate } from "react-router";
 import {useAuth} from "./AuthContext.tsx";
 import axios from "axios";
-import styled from 'styled-components';
+import styled from "styled-components";
 import ErrorPage from "../components/Error.tsx";
 
 // const DJANGO_API_URL = import.meta.env.VITE_DJANGO_API_URL;

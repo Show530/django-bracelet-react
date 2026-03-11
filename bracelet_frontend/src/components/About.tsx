@@ -1,7 +1,7 @@
 // explain who i am, experience, etc
 // maybe show a few fav creations?
 // Footer with instagram, bracelet book, etc
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const Container = styled.div`
     margin: 2% 0;

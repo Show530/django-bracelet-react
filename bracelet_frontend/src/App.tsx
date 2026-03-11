@@ -18,6 +18,7 @@ import Gallery from "./components/Gallery.tsx";
 import ImageDetails from "./components/ImageDetails.tsx";
 import Landing from "./auth/login.tsx";
 import AdminImages from "./components/AdminRelated/AdminImages.tsx";
+import ErrorPage from "./components/Error.tsx"
 
 const StyledPageWrapper = styled.div`
     //width: 80vw;
@@ -60,7 +61,8 @@ const StyledMain = styled.main`
 
 function Root() {
 
-  return (
+    const fourHundErr = new Error("404 page");
+    return (
       <>
         <StyledPageWrapper>
             <Header />
@@ -98,6 +100,7 @@ function Root() {
                             </ProtectedRoute>
                             } />
                         <Route path={'/Login'} element={<Landing/>}/>
+                        <Route path='*' element={<ErrorPage err={fourHundErr}/>}/>
                     </Routes>
                 </StyledMain>
             </StyledContent>

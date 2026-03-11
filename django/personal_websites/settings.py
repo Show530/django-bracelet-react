@@ -31,12 +31,15 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=lambda v: [s.strip() for s in v.spl
 if not DEBUG:
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
-    # CSRF_COOKIE_SECURE = True
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
     SECURE_HSTS_SECONDS = 31536000  # 1 year
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
+
+    # adding domains!
+    SESSION_COOKIE_DOMAIN = '.accsophsories.com'
+    CSRF_COOKIE_DOMAIN = '.accsophsories.com'
 
 # Application definition
 
@@ -130,6 +133,8 @@ REST_AUTH = {
     "JWT_AUTH_HTTPONLY": True,
     "JWT_AUTH_SECURE": not DEBUG,
     "JWT_AUTH_SAMESITE": "Lax",
+    # adding domains!
+    "JWT_AUTH_COOKIE_DOMAIN": ".accsophsories.com" if not DEBUG else None,
     "USER_DETAILS_SERIALIZER": "bracelet_backend.serializers.UserSerializer",
 }
 
@@ -258,6 +263,18 @@ LOGGING = {
         },
     },
 }
+# if not DEBUG:
+#     ADMINS = [
+#         ('Sophia', 'accsophsories@gmail.com'),
+#     ]
+    
+#     EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+#     EMAIL_HOST = 'smtp.gmail.com'
+#     EMAIL_PORT = 587
+#     EMAIL_USE_TLS = True
+#     EMAIL_HOST_USER = config('EMAIL_HOST_USER', default='')
+#     EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default='')
+#     SERVER_EMAIL = config('EMAIL_HOST_USER', default='noreply@accsophsories.com')
 
 WSGI_APPLICATION = 'personal_websites.wsgi.application'
 
@@ -321,9 +338,6 @@ STATIC_URL = 'static/'
 # STATICFILES_DIRS = [
 #     os.path.join(BASE_DIR, "static"),
 # ]
-
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
-# MEDIA_URL= "media/"  # note: no leading slash!
 
 
 # Default primary key field type

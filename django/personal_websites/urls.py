@@ -28,7 +28,7 @@ from django.utils.decorators import method_decorator
 # import json # was for debugging
 # for token refresh
 from rest_framework_simplejwt.views import TokenRefreshView
-
+from decouple import config
 # https://www.digitalocean.com/community/tutorials/build-a-to-do-application-using-django-and-react#step-2-setting-up-the-apis
 # from rest_framework import routers
 # from bracelet_backend import views
@@ -41,7 +41,7 @@ from rest_framework_simplejwt.views import TokenRefreshView
 class GoogleLogin(SocialLoginView):
     adapter_class = GoogleOAuth2Adapter
     # react frontend
-    callback_url = "http://localhost:5173"
+    callback_url = config('GOOGLE_OAUTH_CALLBACK', default="http://localhost:5173")
     client_class = OAuth2Client
    
 # api path via

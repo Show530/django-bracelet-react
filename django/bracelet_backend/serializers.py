@@ -339,7 +339,7 @@ class ImageSerializer(serializers.ModelSerializer):
         request = self.context.get('request')
         if request is not None:
             return request.build_absolute_uri(obj.image_file.url)
-        return obj.image.url
+        return obj.image_file.url
 
 
     def get_bracelets(self, obj):

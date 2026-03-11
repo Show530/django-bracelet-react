@@ -36,7 +36,6 @@ class ImagePagination(PageNumberPagination):
     max_page_size = 100
 
 
-
 @api_view(['GET'])
 def year_bounds(request):
     ''' API view for getting the boundaries for the images of each year '''

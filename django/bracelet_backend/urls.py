@@ -6,8 +6,13 @@ from django.urls import path
 # from .views import *
 # from django.contrib.auth import views as auth_views
 from . import views
+from django.http import JsonResponse
+
+def home(request):
+    return JsonResponse({"status": "API running"})
 
 urlpatterns = [
+    path('', home),
     path('bracelets/', views.ListBracelet.as_view()),
     path('bracelets/<int:pk>/', views.DetailBracelet.as_view()),
     path('images/', views.ListImage.as_view()),

@@ -143,7 +143,7 @@ export default function Gallery() {
         <ParentDiv>
             <Images data={data}/>
             {
-                hasMorePages && 
+                hasMorePages && !isLoadingMore &&
                 <div ref={bottomDivRef} style={{height: '10px'}}></div>
             }
             

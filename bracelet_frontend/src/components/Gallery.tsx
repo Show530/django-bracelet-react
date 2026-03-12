@@ -39,6 +39,9 @@ export default function Gallery() {
     const bottomDivRef = useRef<HTMLDivElement>(null);
     // second ref to prevent simultanious reloads
     const isLoadingRef = useRef(false);
+    // third ref!! (ugh) for preventing the observer from firing until that first
+    // set of images loads
+    const isFirstPageLoadedRef = useRef(false);
 
     // useEffect hook for error stuff and re-loading
     useEffect(() => {
@@ -88,6 +91,10 @@ export default function Gallery() {
                 setIsLoadingMore(false);
                 // reset after load finishes
                 isLoadingRef.current = false;
+
+                if(pageNum === 1) {
+                    isFirstPageLoadedRef.current = true;
+                }
             }
         };
 
@@ -101,7 +108,7 @@ export default function Gallery() {
             (entries) => {
                 // when bottom div is visible and more pages exist
                 // use ref because it is synchronous!
-                if (entries[0].isIntersecting && hasMorePages && !isLoadingRef.current) {
+                if (entries[0].isIntersecting && hasMorePages && !isLoadingRef.current && isFirstPageLoadedRef.current) {
                     isLoadingRef.current = true;
                     setPageNum(prev => prev + 1);
                 }
@@ -110,7 +117,7 @@ export default function Gallery() {
                 // triggers when 10% of the bottom div is visible
                 threshold: 0,
                 // start loading 100px before reaching bottom of screen
-                rootMargin: '100px 0px',
+                rootMargin: '50px 0px',
             }
         );
 

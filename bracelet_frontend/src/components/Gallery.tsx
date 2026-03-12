@@ -37,6 +37,8 @@ export default function Gallery() {
 
     // ref for bottom div for loading
     const bottomDivRef = useRef<HTMLDivElement>(null);
+    // second ref to prevent simultanious reloads
+    const isLoadingRef = useRef(false);
 
     // useEffect hook for error stuff and re-loading
     useEffect(() => {
@@ -60,6 +62,7 @@ export default function Gallery() {
 
                         if (!(year in yearBoundsRes)) {
                             setErr(new Error("Gallery year mismatch"));
+                            isLoadingRef.current = false;
                             return;
                         }
                     }
@@ -83,6 +86,8 @@ export default function Gallery() {
             }
             finally{
                 setIsLoadingMore(false);
+                // reset after load finishes
+                isLoadingRef.current = false;
             }
         };
 
@@ -95,15 +100,17 @@ export default function Gallery() {
         const observer = new IntersectionObserver(
             (entries) => {
                 // when bottom div is visible and more pages exist
-                if (entries[0].isIntersecting && hasMorePages && !isLoadingMore) {
+                // use ref because it is synchronous!
+                if (entries[0].isIntersecting && hasMorePages && !isLoadingRef.current) {
+                    isLoadingRef.current = true;
                     setPageNum(prev => prev + 1);
                 }
             },
             {
                 // triggers when 10% of the bottom div is visible
-                threshold: 0.1,
+                threshold: 0,
                 // start loading 100px before reaching bottom of screen
-                rootMargin: '100px',
+                rootMargin: '100px 0px',
             }
         );
 
@@ -125,6 +132,7 @@ export default function Gallery() {
         setPageNum(1);
         setData([]);
         setHasMorePages(true);
+        isLoadingRef.current = false;
     }, [currPage, year]);
 
     if(err != null) {
@@ -143,8 +151,8 @@ export default function Gallery() {
         <ParentDiv>
             <Images data={data}/>
             {
-                hasMorePages && !isLoadingMore &&
-                <div ref={bottomDivRef} style={{height: '10px'}}></div>
+                hasMorePages &&
+                <div ref={bottomDivRef} style={{height: '80px'}}></div>
             }
             
             {
